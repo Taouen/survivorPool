@@ -1,73 +1,81 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
-import { useState, useEffect } from 'react';
+// import { DataGrid } from '@mui/x-data-grid';
+import { useState, useEffect, useCallback } from 'react';
+import { survivors as survivorsList } from '../components/survivors';
+import { players as playersList } from '../components/players';
+import EpisodeSelector from '../components/EpisodeSelector';
 
-export default function Home() {
+const sanityClient = require('@sanity/client');
+const client = sanityClient({
+  projectId: '806pz8zb',
+  dataset: 'production',
+  apiVersion: '2021-12-11', // use current UTC date - see "specifying API version"!
+  token: '', // or leave blank for unauthenticated usage
+  useCdn: true, // `false` if you want to ensure fresh data
+});
+
+export default function Home({ players, survivors }) {
+  /* const getData = useCallback(async () => {
+    const playerList = await client
+      .fetch('*[_type == "player"] {name, score, picks}')
+      .catch((err) => console.error(err));
+
+    setPlayers(playerList);
+
+    const survivorsList = await client
+      .fetch('*[_type == "survivor"] {name, scores, totalScore, eliminated}')
+      .catch((err) => console.error(err));
+
+    setSurvivors(survivorsList);
+  }, []); */
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
-        <title>Survivor Fantasy Pool</title>
+        <title>Survivor Fantasy Pool | Standings</title>
       </Head>
-      <Layout>This is the body</Layout>
-      {/* <main className="flex flex-col items-center justify-center w-full flex-1 px-20 text-center">
-        <h1 className="text-6xl font-bold">
-          Welcome to{' '}
-          <a className="text-blue-600" href="https://nextjs.org">
-            Next.js!
-          </a>
-        </h1>
+      <Layout>
+        <EpisodeSelector />
 
-        <p className="mt-3 text-2xl">
-          Get started by editing{' '}
-          <code className="p-3 font-mono text-lg bg-gray-100 rounded-md">
-            pages/index.js
-          </code>
-        </p>
+        <table className="w-full">
+          <thead className="bg-black flex text-white w-full">
+            <tr className="flex w-full text-center md:text-left  items-center ">
+              <th className="p-2 text-left w-1/4">Name</th>
+              <th className="p-2 w-1/4">Rank</th>
+              <th className="p-2 w-1/4">Episode Score</th>
+              <th className="p-2 w-1/4">Total Score</th>
+            </tr>
+          </thead>
 
-        <div className="flex flex-wrap items-center justify-around max-w-4xl mt-6 sm:w-full">
-          <a
-            href="https://nextjs.org/docs"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Documentation &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Find in-depth information about Next.js features and API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Learn &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Learn about Next.js in an interactive course with quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Examples &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Discover and deploy boilerplate example Next.js projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/import?filter=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className="p-6 mt-6 text-left border w-96 rounded-xl hover:text-blue-600 focus:text-blue-600"
-          >
-            <h3 className="text-2xl font-bold">Deploy &rarr;</h3>
-            <p className="mt-4 text-xl">
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className="flex items-center justify-center w-full h-24 "></footer> */}
+          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full max-h-96">
+            {players.map(({ name, rank, episodeScores, totalScore }, index) => {
+              return (
+                <tr
+                  key={index}
+                  className="flex w-full text-center md:text-left mb-1"
+                >
+                  <td className="p-2 text-left w-1/4">{name}</td>
+                  <td className="p-2 w-1/4">{rank}</td>
+                  <td className="p-2 w-1/4">{episodeScores[0]}</td>
+                  <td className="p-2 w-1/4">{totalScore}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Layout>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const players = playersList;
+  const survivors = survivorsList;
+  return {
+    props: {
+      survivors,
+      players,
+    },
+  };
 }
