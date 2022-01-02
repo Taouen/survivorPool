@@ -10,6 +10,7 @@ import {
   faChevronRight,
   faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 /* const sanityClient = require('@sanity/client');
 const client = sanityClient({
