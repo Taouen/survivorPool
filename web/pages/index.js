@@ -1,10 +1,15 @@
 import Head from 'next/head';
 import Layout from '../components/Layout';
-// import { DataGrid } from '@mui/x-data-grid';
 import { useState, useEffect, useCallback } from 'react';
 import { survivors as survivorsList } from '../components/survivors';
 import { players as playersList } from '../components/players';
-import EpisodeSelector from '../components/EpisodeSelector';
+import StandingsTable from '../components/StandingsTable';
+import Carousel from 'nuka-carousel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronRight,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 const sanityClient = require('@sanity/client');
 const client = sanityClient({
@@ -36,34 +41,26 @@ export default function Home({ players, survivors }) {
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
       <Layout>
-        <EpisodeSelector />
-
-        <table className="w-full">
-          <thead className="bg-black flex text-white w-full">
-            <tr className="flex w-full text-center md:text-left  items-center ">
-              <th className="p-2 text-left w-1/4">Name</th>
-              <th className="p-2 w-1/4">Rank</th>
-              <th className="p-2 w-1/4">Episode Score</th>
-              <th className="p-2 w-1/4">Total Score</th>
-            </tr>
-          </thead>
-
-          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full max-h-96">
-            {players.map(({ name, rank, episodeScores, totalScore }, index) => {
-              return (
-                <tr
-                  key={index}
-                  className="flex w-full text-center md:text-left mb-1"
-                >
-                  <td className="p-2 text-left w-1/4">{name}</td>
-                  <td className="p-2 w-1/4">{rank}</td>
-                  <td className="p-2 w-1/4">{episodeScores[0]}</td>
-                  <td className="p-2 w-1/4">{totalScore}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <Carousel
+          renderTopLeftControls={({ previousSlide }) => (
+            <button onClick={previousSlide}>
+              <FontAwesomeIcon icon={faChevronLeft} />
+            </button>
+          )}
+          renderTopRightControls={({ nextSlide }) => (
+            <button onClick={nextSlide}>
+              <FontAwesomeIcon icon={faChevronRight} />
+            </button>
+          )}
+          renderCenterLeftControls={null}
+          renderCenterRightControls={null}
+          renderBottomCenterControls={null}
+          slideIndex={2}
+        >
+          <StandingsTable players={players} episode="1" />
+          <StandingsTable players={players} episode="2" />
+          <StandingsTable players={players} episode="3" />
+        </Carousel>
       </Layout>
     </div>
   );

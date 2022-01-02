@@ -10,32 +10,37 @@ export default function picks({ players, survivors }) {
         <title>Survivor Fantasy Pool | Player Picks</title>
       </Head>
       <Layout>
-        <table className="w-full">
-          <thead className="bg-black flex text-white w-full">
-            <tr className="flex text-left w-full items-center ">
-              <th className="p-2 w-1/6">Player</th>
-              <th className="p-2 w-1/6">MVP</th>
-              <th className="p-2 w-1/6"></th>
-              <th className="p-2 w-1/6"></th>
-              <th className="p-2 w-1/6"></th>
-              <th className="p-2 w-1/6"></th>
-            </tr>
-          </thead>
-
-          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full max-h-96">
-            {players.map(({ name, mvp, picks }, index) => {
-              return (
-                <tr key={index} className="flex w-full text-center ">
-                  <td className="p-2 text-left w-1/6 ">{name}</td>
-                  <td className="p-2 text-left w-1/6">{mvp}</td>
-                  {picks.map((pick) => {
-                    return <td className="p-2 text-left w-1/6">{pick}</td>;
-                  })}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+        <div className="flex flex-wrap justify-center">
+          {players.map(({ name, picks, mvp }) => {
+            return (
+              <table
+                key={name}
+                className="flex flex-col w-full md:w-1/4 md:mx-2 mb-8 md:mb-4 "
+              >
+                <thead className="flex text-lg justify-center">
+                  <tr className="flex pb-2">
+                    <th>{name}</th>
+                  </tr>
+                </thead>
+                <tbody className="flex flex-col">
+                  <tr className="flex justify-center border border-grey-500 py-1">
+                    <td className="flex">MVP: {mvp}</td>
+                  </tr>
+                  <tr className="flex justify-around border border-grey-500 border-t-0">
+                    {picks.map((pick) => (
+                      <td
+                        key={pick}
+                        className="flex p-2 border-r border-grey-500 last:border-r-0 w-1/4 justify-center"
+                      >
+                        {pick}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            );
+          })}
+        </div>
       </Layout>
     </div>
   );
