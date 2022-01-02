@@ -11,14 +11,14 @@ import {
   faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 
-const sanityClient = require('@sanity/client');
+/* const sanityClient = require('@sanity/client');
 const client = sanityClient({
   projectId: '806pz8zb',
   dataset: 'production',
   apiVersion: '2021-12-11', // use current UTC date - see "specifying API version"!
   token: '', // or leave blank for unauthenticated usage
   useCdn: true, // `false` if you want to ensure fresh data
-});
+}); */
 
 export default function Home({ players, survivors }) {
   /* const getData = useCallback(async () => {
