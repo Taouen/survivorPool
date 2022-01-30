@@ -21,7 +21,30 @@ const client = sanityClient({
   useCdn: true, // `false` if you want to ensure fresh data
 }); */
 
-export default function Home({ players, survivors }) {
+export default function Home(props) {
+  const [currentEpisode, setCurrentEpidsode] = useState(2);
+  const [players, setPlayers] = useState([...props.players]);
+  const [survivors, setSurvivors] = useState([...props.survivors]);
+
+  const getScores = (
+    { mvp, picks, episodeScores, totalScore },
+    survivors,
+    episode
+  ) => {
+    // run for each player
+
+    const episodeScore = 0;
+    survivors.forEach((survivor) => {
+      if (mvp === survivor.name) episodeScore += survivor.scores[episode - 2];
+      picks.forEach((pick) => {
+        if (pick === survivor.name) {
+          episodeScore += survivor.scores[episode - 1];
+        }
+      });
+    });
+    episodeScores.push(episodeScore);
+    totalScore += episodeScore;
+  };
   /* const getData = useCallback(async () => {
     const playerList = await client
       .fetch('*[_type == "player"] {name, score, picks}')
@@ -36,6 +59,15 @@ export default function Home({ players, survivors }) {
     setSurvivors(survivorsList);
   }, []); */
 
+  const updateStandings = () => {
+    const people = [...players];
+
+    people.forEach((person) => {
+      getScores(person, survivors, currentEpisode);
+    });
+    setPlayers(people);
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -45,22 +77,25 @@ export default function Home({ players, survivors }) {
         <Carousel
           renderTopLeftControls={({ previousSlide }) => (
             <button onClick={previousSlide}>
-              <FontAwesomeIcon icon={faChevronLeft} />
+              <FontAwesomeIcon icon={faChevronLeft} /> Previous
             </button>
           )}
           renderTopRightControls={({ nextSlide }) => (
             <button onClick={nextSlide}>
-              <FontAwesomeIcon icon={faChevronRight} />
+              Next <FontAwesomeIcon icon={faChevronRight} />
             </button>
           )}
           renderCenterLeftControls={null}
           renderCenterRightControls={null}
           renderBottomCenterControls={null}
-          slideIndex={2}
+          slideIndex={currentEpisode - 1}
         >
-          <StandingsTable players={players} episode="1" />
-          <StandingsTable players={players} episode="2" />
-          <StandingsTable players={players} episode="3" />
+          <StandingsTable
+            players={players}
+            survivors={survivors}
+            getScores={getScores}
+            episode={2}
+          />
         </Carousel>
       </Layout>
     </div>

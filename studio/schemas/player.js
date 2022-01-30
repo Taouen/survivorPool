@@ -9,6 +9,11 @@ export default {
       type: 'string',
     },
     {
+      name: 'email',
+      title: 'Email',
+      type: 'string',
+    },
+    {
       name: 'mvp',
       title: 'MVP',
       type: 'reference',

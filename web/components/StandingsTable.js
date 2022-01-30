@@ -1,4 +1,9 @@
-export default function StandingsTable({ players, episode }) {
+export default function StandingsTable({
+  episode,
+  players,
+  survivors,
+  getScores,
+}) {
   return (
     <div>
       <h2 className="mb-2">Episode {episode}</h2>
