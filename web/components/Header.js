@@ -23,7 +23,7 @@ const Header = () => {
       <h1 className="text-2xl md:text-4xl">Survivor Fantasy Pool</h1>
       <ul className="flex">
         {pages.map((page) => (
-          <li className={linkStyles}>
+          <li key={page.title} className={linkStyles}>
             <Link href={page.path}>{page.title}</Link>
           </li>
         ))}
