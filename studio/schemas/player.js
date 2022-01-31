@@ -16,19 +16,18 @@ export default {
     {
       name: 'mvp',
       title: 'MVP',
-      type: 'reference',
-      to: [{ type: 'survivor' }],
+      type: 'string',
     },
     {
       name: 'picks',
       title: 'Picks',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'survivor' }] }],
+      of: [{ type: 'string' }],
       initialValue: [],
     },
     {
-      name: 'score',
-      title: 'Score',
+      name: 'totalScore',
+      title: 'Total Score',
       type: 'number',
       initialValue: 0,
     },
