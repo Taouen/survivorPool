@@ -19,7 +19,7 @@ const validate = (values) => {
 const TextInput = ({ name, formik }) => {
   return (
     <input
-      className={`text-black p-1 w-full ${
+      className={`text-black p-1 w-full border ${
         formik.errors[name] && formik.touched[name]
           ? 'border-2 border-red-400'
           : null
@@ -110,7 +110,7 @@ export default function SignupForm({ players, survivors }) {
             ))}
           </fieldset>
 
-          <button className="bg-gray-700 p-1 w-20 rounded" type="submit">
+          <button className="border p-1 w-20 rounded" type="submit">
             Sign Up
           </button>
         </form>
