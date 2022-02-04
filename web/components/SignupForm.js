@@ -53,10 +53,10 @@ export default function SignupForm({ players, survivors }) {
       {(formik) => (
         <form
           onSubmit={formik.handleSubmit}
-          className="flex flex-col items-center"
+          className="flex flex-col text-lg md:text-base items-center"
         >
           <div className="flex flex flex-col items-start mb-4 w-full">
-            <label htmlFor="name" className="mb-1">
+            <label htmlFor="username" className="mb-1">
               Username:
             </label>
             <TextInput name="username" formik={formik} />
@@ -69,7 +69,7 @@ export default function SignupForm({ players, survivors }) {
           </div>
 
           <div className="flex flex-col items-start mb-4 w-full">
-            <label htmlFor="name" className="mb-1">
+            <label htmlFor="email" className="mb-1">
               Email Address:
             </label>
             <TextInput name="email" formik={formik} />
@@ -85,14 +85,15 @@ export default function SignupForm({ players, survivors }) {
             </legend>
 
             {survivors.map((survivor) => (
-              <div className="flex" key={survivor.name}>
+              <div className="flex mb-2" key={survivor.name}>
                 <Field
                   type="radio"
                   name="mvp"
-                  id={survivor.name}
+                  id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="mr-2"
+                  className="mr-2 w-7 h-7 md:w-4 md:h-4"
                   onChange={formik.handleChange}
+                  aria-label={survivor.name}
                 />
 
                 <Field
@@ -100,7 +101,7 @@ export default function SignupForm({ players, survivors }) {
                   id={survivor.name}
                   name="picks"
                   value={survivor.name}
-                  className="mr-2"
+                  className="mr-2 w-7 h-7 md:w-4 md:h-4"
                   onChange={formik.handleChange}
                 />
                 {'  '}
