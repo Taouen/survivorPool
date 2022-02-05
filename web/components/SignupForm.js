@@ -13,13 +13,25 @@ const validate = (values) => {
     errors.email = 'Invalid email address';
   }
 
+  if (values.picks.length < 5) {
+    errors.picks = `Please select ${
+      5 - values.picks.length
+    } more survivors for your tribe`;
+  }
+
+  if (!values.mvp) {
+    errors.mvp = 'Please select an MVP.';
+  } else if (!values.picks.includes(values.mvp)) {
+    errors.mvp = 'Please select an MVP from your 5 selected survivors.';
+  }
+
   return errors;
 };
 
 const TextInput = ({ name, formik }) => {
   return (
     <input
-      className={`text-black p-1 w-full border ${
+      className={`text-black p-1 w-full rounded border ${
         formik.errors[name] && formik.touched[name]
           ? 'border-2 border-red-400'
           : null
@@ -44,8 +56,11 @@ export default function SignupForm({ players, survivors }) {
         mvp: '',
       }}
       validate={validate}
+      validateOnBlur={false}
+      validateOnChange={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         console.log(values);
+
         setSubmitting(false);
         resetForm();
       }}
@@ -78,20 +93,31 @@ export default function SignupForm({ players, survivors }) {
               <div className="text-sm text-red-400">{formik.errors.email}</div>
             ) : null}
           </div>
-          <fieldset>
-            <legend className="mb-2 text-left">
+          <fieldset className="flex flex-col">
+            <legend className="mb-4 text-left">
               Select 5 Survivors for your tribe, and pick one to be your MVP
               (who you think will win)
             </legend>
+            {formik.errors.mvp && formik.touched.mvp ? (
+              <div className="text-sm text-red-400 self-start">
+                {formik.errors.mvp}
+              </div>
+            ) : null}
+            {formik.errors.picks && formik.touched.picks ? (
+              <div className="text-sm self-start text-red-400">
+                {formik.errors.picks}
+              </div>
+            ) : null}
+            <h2 className="self-start">MVP</h2>
 
             {survivors.map((survivor) => (
-              <div className="flex mb-2" key={survivor.name}>
+              <div className="flex mb-2 items-center" key={survivor.name}>
                 <Field
                   type="radio"
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="mr-2 w-7 h-7 md:w-4 md:h-4"
+                  className="ml-1 mr-4 form-radio text-transparent md:ml-2 w-7 h-7 md:w-4 md:h-4"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
                 />
@@ -101,7 +127,7 @@ export default function SignupForm({ players, survivors }) {
                   id={survivor.name}
                   name="picks"
                   value={survivor.name}
-                  className="mr-2 w-7 h-7 md:w-4 md:h-4"
+                  className="mr-2 w-6 h-6 md:w-4 md:h-4"
                   onChange={formik.handleChange}
                 />
                 {'  '}
@@ -110,7 +136,11 @@ export default function SignupForm({ players, survivors }) {
             ))}
           </fieldset>
 
-          <button className="border p-1 w-20 rounded" type="submit">
+          <button
+            className="border p-1 w-20 rounded"
+            onClick={formik.handleSubmit}
+            type="submit"
+          >
             Sign Up
           </button>
         </form>
