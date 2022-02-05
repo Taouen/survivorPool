@@ -1,6 +1,7 @@
+import Head from 'next/head';
+
 import { survivors as survivorsList } from '../components/survivors';
 import { players as playersList } from '../components/players';
-import Head from 'next/head';
 import Layout from '../components/Layout';
 import SignupForm from '../components/SignupForm';
 

@@ -14,15 +14,22 @@ export default {
       type: 'string',
     },
     {
+      name: 'picks',
+      title: 'Picks',
+      type: 'array',
+      of: [{ type: 'string' }],
+      initialValue: [],
+    },
+    {
       name: 'mvp',
       title: 'MVP',
       type: 'string',
     },
     {
-      name: 'picks',
-      title: 'Picks',
+      name: 'episodeScores',
+      title: 'Episode Scores',
       type: 'array',
-      of: [{ type: 'string' }],
+      of: [{ type: 'number' }],
       initialValue: [],
     },
     {
