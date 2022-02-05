@@ -17,6 +17,10 @@ const validate = (values) => {
     errors.picks = `Please select ${
       5 - values.picks.length
     } more survivors for your tribe`;
+  } else if (values.picks.length > 5) {
+    errors.picks = `Please select only 5 survivors. You have ${
+      values.picks.length - 5
+    } too many selected.`;
   }
 
   if (!values.mvp) {
@@ -99,12 +103,12 @@ export default function SignupForm({ players, survivors }) {
               (who you think will win)
             </legend>
             {formik.errors.mvp && formik.touched.mvp ? (
-              <div className="text-sm text-red-400 self-start">
+              <div className="text-sm text-left text-red-400 self-start">
                 {formik.errors.mvp}
               </div>
             ) : null}
             {formik.errors.picks && formik.touched.picks ? (
-              <div className="text-sm self-start text-red-400">
+              <div className="text-sm text-left self-start text-red-400">
                 {formik.errors.picks}
               </div>
             ) : null}
