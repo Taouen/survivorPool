@@ -121,13 +121,26 @@ export default function SignupForm({ players, survivors }) {
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="ml-1 mr-4 form-radio text-transparent md:ml-2 w-7 h-7 md:w-4 md:h-4"
+                  className="ml-1 mr-4 form-radio text-transparent disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
+                  disabled={
+                    formik.values.picks.length < 5 ||
+                    formik.values.picks.includes(survivor.name)
+                      ? false
+                      : true
+                  }
                 />
 
                 <Field
                   type="checkbox"
+                  // disable as long as 5 selections are made, but don't disable selected options. Then enable all when there are fewer than 5
+                  disabled={
+                    formik.values.picks.length < 5 ||
+                    formik.values.picks.includes(survivor.name)
+                      ? false
+                      : true
+                  }
                   id={survivor.name}
                   name="picks"
                   value={survivor.name}
