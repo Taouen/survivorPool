@@ -43,5 +43,10 @@ export default {
       title: 'Rank',
       type: 'number',
     },
+    {
+      name: 'paid',
+      title: 'Paid',
+      type: 'boolean',
+    },
   ],
 };
