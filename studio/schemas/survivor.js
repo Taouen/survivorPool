@@ -8,12 +8,7 @@ export default {
       title: 'Name',
       type: 'string',
     },
-    {
-      name: 'totalScore',
-      title: 'Total Score',
-      type: 'number',
-      initialValue: 0,
-    },
+
     {
       name: 'scores',
       title: 'Scores',
