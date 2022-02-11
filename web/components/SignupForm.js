@@ -1,10 +1,22 @@
 import { Formik, Field } from 'formik';
 
-const validate = (values) => {
+const sanityClient = require('@sanity/client');
+const client = sanityClient({
+  projectId: '806pz8zb',
+  dataset: 'development',
+  apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
+  token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
+  useCdn: true, // `false` if you want to ensure fresh data
+});
+
+const validate = async (values) => {
   const errors = {};
+  const usernames = await client.fetch('*[_type == player] {username}');
 
   if (!values.username) {
     errors.username = 'Please enter a Username.';
+  } else if (usernames.includes(values.username)) {
+    errors.username = `Please choose a different username, someone has already claimed this one.`;
   }
 
   if (!values.email) {
@@ -50,12 +62,30 @@ const TextInput = ({ name, formik }) => {
   );
 };
 
-export default function SignupForm({ players, survivors }) {
+const createPlayer = (values) => {
+  const { picks, username, email, mvp } = values;
+
+  picks.splice(picks.indexOf(mvp), 1);
+  client.createIfNotExists({
+    _type: 'player',
+    _id: `${username}`,
+    username: username,
+    email: email,
+    picks: picks,
+    mvp: mvp,
+    episodeScores: [],
+    totalScore: 0,
+    rank: 0,
+    paid: false,
+  });
+};
+
+export default function SignupForm({ survivors, setSignupComplete }) {
   return (
     <Formik
       initialValues={{
-        username: '',
-        email: '',
+        username: 'Taouen',
+        email: 'tanner.wiltshire@gmail.com',
         picks: [],
         mvp: '',
       }}
@@ -63,8 +93,8 @@ export default function SignupForm({ players, survivors }) {
       validateOnBlur={false}
       validateOnChange={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        console.log(values);
-
+        createPlayer(values);
+        setSignupComplete(true);
         setSubmitting(false);
         resetForm();
       }}

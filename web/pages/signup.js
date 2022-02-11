@@ -1,11 +1,17 @@
 import Head from 'next/head';
 import { useState } from 'react';
 
-import { survivors as survivorsList } from '../components/survivors';
-import { players as playersList } from '../components/players';
-import client from '../components/Client';
 import Layout from '../components/Layout';
 import SignupForm from '../components/SignupForm';
+
+const sanityClient = require('@sanity/client');
+const client = sanityClient({
+  projectId: '806pz8zb',
+  dataset: 'development',
+  apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
+  token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
+  useCdn: true, // `false` if you want to ensure fresh data
+});
 
 export default function picks({ survivors }) {
   const [signupComplete, setSignupComplete] = useState(false);
@@ -20,7 +26,6 @@ export default function picks({ survivors }) {
           <p>Thanks for signing up!</p>
         ) : (
           <SignupForm
-            client={client}
             survivors={survivors}
             setSignupComplete={setSignupComplete}
           />
