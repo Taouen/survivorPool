@@ -10,10 +10,10 @@ const client = sanityClient({
   dataset: 'development',
   apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
   token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
-  useCdn: true, // `false` if you want to ensure fresh data
+  useCdn: false, // `false` if you want to ensure fresh data
 });
 
-export default function picks({ survivors }) {
+export default function signup({ players, survivors }) {
   const [signupComplete, setSignupComplete] = useState(false);
 
   return (
@@ -27,6 +27,7 @@ export default function picks({ survivors }) {
         ) : (
           <SignupForm
             survivors={survivors}
+            players={players}
             setSignupComplete={setSignupComplete}
           />
         )}
@@ -35,14 +36,19 @@ export default function picks({ survivors }) {
   );
 }
 
-export async function getServerSideProps() {
+export async function getStaticProps() {
   const survivors = await client
     .fetch('*[_type == "survivor"] {name}')
+    .catch((err) => console.error(err));
+  const players = await client
+    .fetch('*[_type == "player"] {username}')
     .catch((err) => console.error(err));
 
   return {
     props: {
+      players,
       survivors,
     },
+    revalidate: 5,
   };
 }

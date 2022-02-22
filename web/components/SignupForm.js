@@ -1,22 +1,34 @@
 import { Formik, Field } from 'formik';
 
-const sanityClient = require('@sanity/client');
-const client = sanityClient({
-  projectId: '806pz8zb',
-  dataset: 'development',
-  apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
-  token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
-  useCdn: true, // `false` if you want to ensure fresh data
-});
+const validateUsername = (values) => {
+  return fetch(
+    'https://806pz8zb.api.sanity.io/v2022-02-08/data/query/development?query=*[_type == "player"] {username}',
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.SANITY_TOKEN}`,
+      },
+    }
+  ).then((res) =>
+    res.json().then((data) => {
+      const errors = {};
+      data.result.forEach((user) => {
+        if (values.username === user.username) {
+          errors.username =
+            'Please choose a different username, this one has already be taken.';
+          console.log('Username taken');
+        }
+      });
+      return errors;
+    })
+  );
+  // Error message is not displaying.
+};
 
-const validate = async (values) => {
+const validate = (values) => {
   const errors = {};
-  const usernames = await client.fetch('*[_type == player] {username}');
 
   if (!values.username) {
     errors.username = 'Please enter a Username.';
-  } else if (usernames.includes(values.username)) {
-    errors.username = `Please choose a different username, someone has already claimed this one.`;
   }
 
   if (!values.email) {
@@ -66,35 +78,39 @@ const createPlayer = (values) => {
   const { picks, username, email, mvp } = values;
 
   picks.splice(picks.indexOf(mvp), 1);
-  client.createIfNotExists({
-    _type: 'player',
-    _id: `${username}`,
-    username: username,
-    email: email,
-    picks: picks,
-    mvp: mvp,
-    episodeScores: [],
-    totalScore: 0,
-    rank: 0,
-    paid: false,
-  });
+  client
+    .createIfNotExists({
+      _type: 'player',
+      _id: `${username}`,
+      username: username,
+      email: email,
+      picks: picks,
+      mvp: mvp,
+      episodeScores: [],
+      totalScore: 0,
+      rank: 0,
+      paid: false,
+    })
+    .catch((err) => {
+      console.error(err);
+    });
 };
 
-export default function SignupForm({ survivors, setSignupComplete }) {
+export default function SignupForm({ players, survivors, setSignupComplete }) {
   return (
     <Formik
       initialValues={{
-        username: 'Taouen',
+        username: '',
         email: 'tanner.wiltshire@gmail.com',
         picks: [],
         mvp: '',
       }}
       validate={validate}
-      validateOnBlur={false}
       validateOnChange={false}
+      validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        createPlayer(values);
-        setSignupComplete(true);
+        // createPlayer(values);
+        // setSignupComplete(true);
         setSubmitting(false);
         resetForm();
       }}
@@ -108,10 +124,24 @@ export default function SignupForm({ survivors, setSignupComplete }) {
             <label htmlFor="username" className="mb-1">
               Username:
             </label>
-            <TextInput name="username" formik={formik} />
+            {/* <TextInput name="username" formik={formik} /> */}
+            <Field
+              className={`text-black  p-1 w-full rounded border ${
+                formik.errors.username && formik.touched.username
+                  ? 'border-2 border-red-400'
+                  : null
+              }`}
+              name="username"
+              id="username"
+              type="text"
+              validate={validateUsername(formik.values)}
+              autoComplete="username"
+              value={formik.values.username}
+              {...formik.getFieldProps('username')}
+            />
 
             {formik.errors.username && formik.touched.username ? (
-              <div className="text-sm text-red-400">
+              <div className="text-sm text-left text-red-400">
                 {formik.errors.username}
               </div>
             ) : null}
