@@ -9,32 +9,17 @@ const client = sanityClient({
   useCdn: false, // `false` if you want to ensure fresh data
 });
 
-const validateUsername = (values) => {
-  return fetch(
-    'https://806pz8zb.api.sanity.io/v2022-02-08/data/query/development?query=*[_type == "player"] {username}',
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.SANITY_TOKEN}`,
-      },
-    }
-  ).then((res) =>
-    res.json().then((data) => {
-      const errors = {};
-      data.result.forEach((user) => {
-        if (values.username === user.username) {
-          errors.username =
-            'Please choose a different username, this one has already be taken.';
-          console.log('Username taken');
-        }
-      });
-      return errors;
-    })
-  );
-  // Error message is not displaying.
-};
-
-const validate = (values) => {
+const validate = async (values) => {
   const errors = {};
+
+  const usernames = await fetch('/api/usernames').then((data) => data.json());
+
+  usernames.forEach((item) => {
+    if (values.username === item.username) {
+      errors.username =
+        'Please choose another username, this one has already been taken.';
+    }
+  });
 
   if (!values.username) {
     errors.username = 'Please enter a Username.';
@@ -110,7 +95,7 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
     <Formik
       initialValues={{
         username: '',
-        email: 'tanner.wiltshire@gmail.com',
+        email: '',
         picks: [],
         mvp: '',
       }}
@@ -143,7 +128,6 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
               name="username"
               id="username"
               type="text"
-              validate={validateUsername(formik.values)}
               autoComplete="username"
               value={formik.values.username}
               {...formik.getFieldProps('username')}
