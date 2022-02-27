@@ -28,17 +28,13 @@ const validate = async (values) => {
   if (!values.email) {
     errors.email = 'Please enter your email address.';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
+    errors.email = 'Please enter a valid email address';
   }
 
   if (values.picks.length < 5) {
     errors.picks = `Please select ${
       5 - values.picks.length
     } more survivors for your tribe`;
-  } else if (values.picks.length > 5) {
-    errors.picks = `Please select only 5 survivors. You have ${
-      values.picks.length - 5
-    } too many selected.`;
   }
 
   if (!values.mvp) {
@@ -68,26 +64,16 @@ const TextInput = ({ name, formik }) => {
   );
 };
 
-const createPlayer = (values) => {
-  const { picks, username, email, mvp } = values;
-
-  picks.splice(picks.indexOf(mvp), 1);
-  client
-    .createIfNotExists({
-      _type: 'player',
-      _id: `${username}`,
-      username: username,
-      email: email,
-      picks: picks,
-      mvp: mvp,
-      episodeScores: [],
-      totalScore: 0,
-      rank: 0,
-      paid: false,
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+const submitPlayer = (values) => {
+  fetch('/api/createplayer', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(values),
+  })
+    .then((response) => response.json())
+    .catch((err) => console.log(err));
 };
 
 export default function SignupForm({ players, survivors, setSignupComplete }) {
@@ -101,9 +87,9 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
       }}
       validate={validate}
       validateOnChange={false}
-      validateOnBlur={false}
+      // validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        // createPlayer(values);
+        submitPlayer(values);
         // setSignupComplete(true);
         setSubmitting(false);
         resetForm();
@@ -118,20 +104,7 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
             <label htmlFor="username" className="mb-1">
               Username:
             </label>
-            {/* <TextInput name="username" formik={formik} /> */}
-            <Field
-              className={`text-black  p-1 w-full rounded border ${
-                formik.errors.username && formik.touched.username
-                  ? 'border-2 border-red-400'
-                  : null
-              }`}
-              name="username"
-              id="username"
-              type="text"
-              autoComplete="username"
-              value={formik.values.username}
-              {...formik.getFieldProps('username')}
-            />
+            <TextInput name="username" formik={formik} />
 
             {formik.errors.username && formik.touched.username ? (
               <div className="text-sm text-left text-red-400">
@@ -174,7 +147,7 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="ml-1 mr-4 form-radio text-transparent disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4"
+                  className="ml-1 mr-4 form-radio text-transparent border border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
                   disabled={
@@ -205,9 +178,15 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
               </div>
             ))}
           </fieldset>
+          {Object.keys(formik.errors).length !== 0 && (
+            <div className="text-sm text-left text-red-400">
+              There are errors on the page, please make sure you've entered
+              everything correctly.
+            </div>
+          )}
 
           <button
-            className="border p-1 w-20 rounded"
+            className="border mt-4 p-1 w-20 rounded"
             onClick={formik.handleSubmit}
             type="submit"
           >
