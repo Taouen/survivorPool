@@ -15,7 +15,7 @@ const validate = async (values) => {
   const usernames = await fetch('/api/usernames').then((data) => data.json());
 
   usernames.forEach((item) => {
-    if (values.username === item.username) {
+    if (values.username.toLowerCase() === item.username.toLowerCase()) {
       errors.username =
         'Please choose another username, this one has already been taken.';
     }
