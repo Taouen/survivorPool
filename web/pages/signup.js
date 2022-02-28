@@ -36,7 +36,7 @@ export default function signup({ players, survivors }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const survivors = await client
     .fetch('*[_type == "survivor"] {name}')
     .catch((err) => console.error(err));
@@ -49,6 +49,5 @@ export async function getStaticProps() {
       players,
       survivors,
     },
-    revalidate: 5,
   };
 }

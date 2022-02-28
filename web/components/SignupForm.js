@@ -87,7 +87,7 @@ export default function SignupForm({ players, survivors, setSignupComplete }) {
       }}
       validate={validate}
       validateOnChange={false}
-      // validateOnBlur={false}
+      validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         submitPlayer(values);
         // setSignupComplete(true);
