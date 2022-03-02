@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   const { picks, username, email, mvp } = req.body;
   picks.splice(picks.indexOf(mvp), 1);
   client
-    .createIfNotExists({
+    .create({
       _type: 'player',
       _id: `${username}`,
       username: username,
@@ -23,8 +23,10 @@ export default async function handler(req, res) {
       rank: 0,
       paid: false,
     })
+    .then(() => {
+      res.status(201).json(req.body);
+    })
     .catch((err) => {
       console.error(err);
     });
-  res.status(201).json(req.body);
 }

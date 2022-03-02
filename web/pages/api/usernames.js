@@ -10,9 +10,10 @@ const client = sanityClient({
 export default async function handler(req, res) {
   const usernames = await client
     .fetch('*[_type == "player"] {username}')
+    .then(() => {
+      res.status(200).json(usernames);
+    })
     .catch((err) => {
       console.log(err);
     });
-
-  res.status(200).json(usernames);
 }
