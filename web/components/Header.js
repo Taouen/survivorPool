@@ -5,8 +5,12 @@ const Header = () => {
 
   const pages = [
     {
-      title: 'Standings',
+      title: 'Home',
       path: '/',
+    },
+    {
+      title: 'Standings',
+      path: '/standings',
     },
     {
       title: 'Player Picks',
