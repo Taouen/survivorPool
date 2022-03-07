@@ -16,6 +16,17 @@ const client = sanityClient({
 export default function signup({ players, survivors }) {
   const [signupComplete, setSignupComplete] = useState(false);
 
+  survivors.sort((a, b) =>
+    a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0
+  );
+  players.sort((a, b) =>
+    a.username.toLowerCase() - b.username.toLowerCase() < 0
+      ? 1
+      : b.username.toLowerCase() > a.username.toLowerCase()
+      ? -1
+      : 0
+  );
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -27,7 +38,6 @@ export default function signup({ players, survivors }) {
         ) : (
           <SignupForm
             survivors={survivors}
-            players={players}
             setSignupComplete={setSignupComplete}
           />
         )}
