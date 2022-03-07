@@ -76,7 +76,7 @@ const submitPlayer = (values) => {
     .catch((err) => console.log(err));
 };
 
-export default function SignupForm({ players, survivors, setSignupComplete }) {
+export default function SignupForm({ survivors, setSignupComplete }) {
   return (
     <Formik
       initialValues={{

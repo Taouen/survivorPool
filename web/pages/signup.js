@@ -16,6 +16,10 @@ const client = sanityClient({
 export default function signup({ players, survivors }) {
   const [signupComplete, setSignupComplete] = useState(false);
 
+  survivors.sort((a, b) =>
+    a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0
+  );
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -27,7 +31,6 @@ export default function signup({ players, survivors }) {
         ) : (
           <SignupForm
             survivors={survivors}
-            players={players}
             setSignupComplete={setSignupComplete}
           />
         )}
@@ -40,13 +43,9 @@ export async function getServerSideProps() {
   const survivors = await client
     .fetch('*[_type == "survivor"] {name}')
     .catch((err) => console.error(err));
-  const players = await client
-    .fetch('*[_type == "player"] {username}')
-    .catch((err) => console.error(err));
 
   return {
     props: {
-      players,
       survivors,
     },
   };
