@@ -13,16 +13,6 @@ const client = sanityClient({
 });
 
 export default function picks({ players, survivors }) {
-  survivors.sort((a, b) =>
-    a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0
-  );
-  players.sort((a, b) =>
-    a.username.toLowerCase() - b.username.toLowerCase() < 0
-      ? 1
-      : b.username.toLowerCase() > a.username.toLowerCase()
-      ? -1
-      : 0
-  );
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -72,9 +62,21 @@ export default function picks({ players, survivors }) {
 export async function getStaticProps() {
   const survivors = await client
     .fetch('*[_type == "survivor"] {name}')
+    .then((data) =>
+      data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
+    )
     .catch((err) => console.error(err));
   const players = await client
     .fetch('*[_type == "player"]')
+    .then((data) =>
+      data.sort((a, b) =>
+        a.username.toLowerCase() - b.username.toLowerCase() < 0
+          ? 1
+          : b.username.toLowerCase() > a.username.toLowerCase()
+          ? -1
+          : 0
+      )
+    )
     .catch((err) => console.error(err));
 
   return {
