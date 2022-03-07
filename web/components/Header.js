@@ -9,16 +9,16 @@ const Header = () => {
       path: '/',
     },
     {
+      title: 'Sign Up',
+      path: '/signup',
+    },
+    {
       title: 'Standings',
       path: '/standings',
     },
     {
       title: 'Player Picks',
       path: '/picks',
-    },
-    {
-      title: 'Sign Up',
-      path: '/signup',
     },
   ];
 
