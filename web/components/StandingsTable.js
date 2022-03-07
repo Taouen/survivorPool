@@ -1,9 +1,4 @@
-export default function StandingsTable({
-  episode,
-  players,
-  survivors,
-  getScores,
-}) {
+export default function StandingsTable({ episode, players }) {
   return (
     <div>
       <h2 className="mb-2">Episode {episode}</h2>
@@ -17,20 +12,22 @@ export default function StandingsTable({
           </tr>
         </thead>
 
-        <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll w-full max-h-96">
-          {players.map(({ name, rank, episodeScores, totalScore }, index) => {
-            return (
-              <tr
-                key={index}
-                className="flex w-full text-center md:text-left mb-1"
-              >
-                <td className="p-2 text-left w-1/4">{name}</td>
-                <td className="p-2 w-1/4">{rank}</td>
-                <td className="p-2 w-1/4">{episodeScores[0]}</td>
-                <td className="p-2 w-1/4">{totalScore}</td>
-              </tr>
-            );
-          })}
+        <tbody className="bg-grey-light flex flex-col items-center justify-between w-full">
+          {players.map(
+            ({ username, rank, episodeScores, totalScore }, index) => {
+              return (
+                <tr
+                  key={index}
+                  className="flex w-full text-center md:text-left mb-1"
+                >
+                  <td className="p-2 text-left w-1/4">{username}</td>
+                  <td className="p-2 w-1/4">{rank}</td>
+                  <td className="p-2 w-1/4">{episodeScores[episode - 2]}</td>
+                  <td className="p-2 w-1/4">{totalScore}</td>
+                </tr>
+              );
+            }
+          )}
         </tbody>
       </table>
     </div>
