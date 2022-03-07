@@ -16,7 +16,7 @@ export default async function handler(req, res) {
       _id: `${username}`,
       username: username,
       email: email,
-      picks: picks,
+      picks: picks.sort(),
       mvp: mvp,
       episodeScores: [],
       totalScore: 0,
