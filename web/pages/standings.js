@@ -21,6 +21,18 @@ export default function Home({ players, survivors }) {
       : 0
   );
 
+  const createTables = (episode) => {
+    for (let i = 0; i < episode - 1; i++) {
+      return (
+        <StandingsTable
+          key={'episode' + i}
+          players={players}
+          episode={episode}
+        />
+      );
+    }
+  };
+
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -54,13 +66,7 @@ export default function Home({ players, survivors }) {
             renderBottomCenterControls={null}
             slideIndex={currentEpisode - 1}
           >
-            {players[0].episodeScores.map((episode, index) => (
-              <StandingsTable
-                key={index}
-                players={players}
-                episode={index + 2}
-              />
-            ))}
+            {createTables(currentEpisode)}
           </Carousel>
         )}
       </Layout>
