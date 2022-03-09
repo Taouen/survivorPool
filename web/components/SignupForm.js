@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Formik, Field } from 'formik';
+import { ClipLoader } from 'react-spinners';
 
 const validate = async (values) => {
   const errors = {};
@@ -55,7 +57,7 @@ const TextInput = ({ name, formik }) => {
   );
 };
 
-const submitPlayer = (values, setIsSubmitted) => {
+const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
   fetch('/api/createplayer', {
     method: 'POST',
     headers: {
@@ -64,10 +66,12 @@ const submitPlayer = (values, setIsSubmitted) => {
     body: JSON.stringify(values),
   })
     .then(() => setIsSubmitted(true))
+    .then(() => setIsSubmitting(false))
     .catch((err) => console.log(err));
 };
 
 export default function SignupForm({ survivors, setIsSubmitted }) {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   return (
     <Formik
       initialValues={{
@@ -80,9 +84,9 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        submitPlayer(values, setIsSubmitted);
+        setIsSubmitting(true);
+        submitPlayer(values, setIsSubmitted, setIsSubmitting);
         setSubmitting(false);
-        resetForm();
       }}
     >
       {(formik) => (
@@ -175,6 +179,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
             </div>
           )}
 
+          {isSubmitting && <ClipLoader color={'lime'} />}
           <button
             className="border mt-4 p-1 w-20 rounded"
             onClick={formik.handleSubmit}
