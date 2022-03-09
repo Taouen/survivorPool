@@ -16,7 +16,7 @@ export default function Home(props) {
 
         <div className="flex flex-col items-start justify-start w-full px-4 md:px-16">
           <section className="mb-4 text-left">
-            <h3 className="text-lg mb-2">Rules</h3>
+            <h3 className="text-xl mb-2">Rules</h3>
             <p>Entry Fee: $20</p>
             <ol className="list-decimal  text-left ml-6 md:ml-4 flex flex-col items-start">
               <li>
@@ -60,7 +60,7 @@ export default function Home(props) {
           </section>
 
           <section className="text-left mb-4">
-            <h3 className="text-lg mb-2">Scoring</h3>
+            <h3 className="text-xl mb-2">Scoring</h3>
             <p>
               The scoring system used comes from{' '}
               <Link href="https://www.globaltv.com/shows/survivor/articles/survivor-42-fantasy-tribe-pool/#scoring">

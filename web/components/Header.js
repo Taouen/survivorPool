@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
 const Header = () => {
-  const linkStyles = 'px-2 md:px-4 hover:text-gray-500 hover:underline';
+  const linkStyles =
+    'px-2 md:px-4 hover:text-red-500 dark:hover:text-red-400 hover:underline';
 
   const pages = [
     {
