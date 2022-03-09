@@ -14,11 +14,11 @@ import Client from '../components/Client';
 
 export default function Home({ players }) {
   const [currentEpisode, setCurrentEpidsode] = useState(
-    /* players[0]
+    players[0]
       ? players[0].episodeScores
         ? players[0].episodeScores.length + 1
         : 1
-      : 0 */ 2
+      : 0
   );
 
   const createTables = (episode) => {
@@ -39,7 +39,7 @@ export default function Home({ players }) {
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
       <Layout>
-        {/*   {players.length === 0 && (
+        {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
         )}
 
@@ -48,7 +48,7 @@ export default function Home({ players }) {
             Points begin to accumulate starting with episode 2. Check back
             later!
           </p>
-        )} */}
+        )}
         {currentEpisode > 1 && (
           <>
             <p className=" text-left mb-8">
