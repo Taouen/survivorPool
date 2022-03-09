@@ -55,7 +55,7 @@ const TextInput = ({ name, formik }) => {
   );
 };
 
-const submitPlayer = (values) => {
+const submitPlayer = (values, setIsSubmitted) => {
   fetch('/api/createplayer', {
     method: 'POST',
     headers: {
@@ -63,11 +63,11 @@ const submitPlayer = (values) => {
     },
     body: JSON.stringify(values),
   })
-    .then((response) => response.json())
+    .then(() => setIsSubmitted(true))
     .catch((err) => console.log(err));
 };
 
-export default function SignupForm({ survivors, setSignupComplete }) {
+export default function SignupForm({ survivors, setIsSubmitted }) {
   return (
     <Formik
       initialValues={{
@@ -80,8 +80,7 @@ export default function SignupForm({ survivors, setSignupComplete }) {
       validateOnChange={false}
       validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        submitPlayer(values);
-        // setSignupComplete(true);
+        submitPlayer(values, setIsSubmitted);
         setSubmitting(false);
         resetForm();
       }}

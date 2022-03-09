@@ -12,7 +12,7 @@ import Layout from '../components/Layout';
 import StandingsTable from '../components/StandingsTable';
 import Client from '../components/Client';
 
-export default function Home({ players, survivors }) {
+export default function Home({ players }) {
   const [currentEpisode, setCurrentEpidsode] = useState(
     players[0]
       ? players[0].episodeScores
@@ -39,7 +39,7 @@ export default function Home({ players, survivors }) {
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
       <Layout>
-        {currentEpisode === 0 && (
+        {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
         )}
 
@@ -96,6 +96,6 @@ export async function getStaticProps() {
       survivors,
       players,
     },
-    revalidate: 60,
+    revalidate: 10,
   };
 }
