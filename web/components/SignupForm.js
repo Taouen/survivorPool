@@ -40,7 +40,7 @@ const validate = async (values) => {
 const TextInput = ({ name, formik }) => {
   return (
     <input
-      className={`text-black p-1 w-full rounded border ${
+      className={`text-black p-1 w-full focus:ring focus:ring-lime-500 outline-none rounded border ${
         formik.errors[name] && formik.touched[name]
           ? 'border-2 border-red-400'
           : null
@@ -138,7 +138,7 @@ export default function SignupForm({ survivors, setSignupComplete }) {
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="ml-1 mr-4 form-radio text-transparent border border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4"
+                  className="ml-1 mr-4 form-radio text-transparent border border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
                   disabled={
@@ -161,7 +161,7 @@ export default function SignupForm({ survivors, setSignupComplete }) {
                   id={survivor.name}
                   name="picks"
                   value={survivor.name}
-                  className="mr-2 w-6 h-6 md:w-4 md:h-4"
+                  className="mr-2 w-6 h-6 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                 />
                 {'  '}
