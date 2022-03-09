@@ -1,7 +1,7 @@
-import { survivors as survivorsList } from '../components/survivors';
-import { players as playersList } from '../components/players';
 import Head from 'next/head';
+
 import Layout from '../components/Layout';
+import Client from '../components/Client.js';
 
 export default function picks({ players, survivors }) {
   return (
@@ -15,12 +15,27 @@ export default function picks({ players, survivors }) {
 }
 
 export async function getStaticProps() {
-  const players = playersList;
-  const survivors = survivorsList;
+  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
+    .then((data) =>
+      data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
+    )
+    .catch((err) => console.error(err));
+  const players = await Client.fetch('*[_type == "player"]')
+    .then((data) =>
+      data.sort((a, b) =>
+        a.username.toLowerCase() - b.username.toLowerCase() < 0
+          ? 1
+          : b.username.toLowerCase() > a.username.toLowerCase()
+          ? -1
+          : 0
+      )
+    )
+    .catch((err) => console.error(err));
   return {
     props: {
       survivors,
       players,
     },
+    revalidate: 10,
   };
 }
