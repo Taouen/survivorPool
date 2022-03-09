@@ -1,15 +1,7 @@
 import Head from 'next/head';
 
 import Layout from '../components/Layout';
-
-const sanityClient = require('@sanity/client');
-const client = sanityClient({
-  projectId: '806pz8zb',
-  dataset: 'development',
-  apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
-  token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
-  useCdn: false, // `false` if you want to ensure fresh data
-});
+import Client from '../components/Client';
 
 export default function picks({ players, survivors }) {
   return (
@@ -59,14 +51,12 @@ export default function picks({ players, survivors }) {
 }
 
 export async function getStaticProps() {
-  const survivors = await client
-    .fetch('*[_type == "survivor"] {name}')
+  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
     .then((data) =>
       data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
     )
     .catch((err) => console.error(err));
-  const players = await client
-    .fetch('*[_type == "player"]')
+  const players = await Client.fetch('*[_type == "player"]')
     .then((data) =>
       data.sort((a, b) =>
         a.username.toLowerCase() - b.username.toLowerCase() < 0

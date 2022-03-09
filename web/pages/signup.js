@@ -3,17 +3,9 @@ import { useState } from 'react';
 
 import Layout from '../components/Layout';
 import SignupForm from '../components/SignupForm';
+import Client from '../components/Client';
 
-const sanityClient = require('@sanity/client');
-const client = sanityClient({
-  projectId: '806pz8zb',
-  dataset: 'development',
-  apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
-  token: process.env.SANITY_TOKEN, // or leave blank for unauthenticated usage
-  useCdn: false, // `false` if you want to ensure fresh data
-});
-
-export default function signup({ players, survivors }) {
+export default function signup({ survivors }) {
   const [signupComplete, setSignupComplete] = useState(false);
 
   return (
@@ -36,8 +28,7 @@ export default function signup({ players, survivors }) {
 }
 
 export async function getServerSideProps() {
-  const survivors = await client
-    .fetch('*[_type == "survivor"] {name}')
+  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
     .then((data) =>
       data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
     )
