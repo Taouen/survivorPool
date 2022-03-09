@@ -3,13 +3,28 @@ import Head from 'next/head';
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
 
+const deletePlayers = () => {
+  if (window.confirm('Are you sure you want to delete all players?')) {
+    if (window.confirm('Are you really sure?')) {
+      fetch('/api/deleteplayers')
+        .then((response) => response.json())
+        .catch((err) => console.log(err));
+    }
+  }
+};
+
 export default function picks({ players, survivors }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
         <title>Survivor Fantasy Pool | Admin</title>
       </Head>
-      <Layout>Welcome to the admin page.</Layout>
+      <Layout>
+        Welcome to the admin page.
+        <button className="border mt-4 p-1 rounded" onClick={deletePlayers}>
+          Delete all players
+        </button>
+      </Layout>
     </div>
   );
 }
