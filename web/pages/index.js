@@ -39,7 +39,7 @@ export default function Home(props) {
               </li>
               <li>
                 <p>
-                  Send your $20 entry fee via eTransfer to Tanner at{' '}
+                  Send your $20 entry fee via eTransfer to{' '}
                   <strong>tanner.wiltshire@gmail.com</strong>. Set the password
                   to "survivor". You won't show up in the standings until your
                   entry fee is received!

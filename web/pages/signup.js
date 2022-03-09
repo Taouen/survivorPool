@@ -19,7 +19,7 @@ export default function signup({ survivors }) {
             <h2 className="text-xl mb-8 self-center">Thanks for signing up!</h2>
             <h3 className="text-lg mb-4">Next Steps</h3>
             <p className="text-left mb-4">
-              Send your $20 entry fee via eTransfer to Tanner at{' '}
+              Send your $20 entry fee via eTransfer to{' '}
               <strong>tanner.wiltshire@gmail.com</strong>. Set the password to
               "survivor". You won't show up in the standings until your entry
               fee is received!

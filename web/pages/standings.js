@@ -14,11 +14,11 @@ import Client from '../components/Client';
 
 export default function Home({ players }) {
   const [currentEpisode, setCurrentEpidsode] = useState(
-    players[0]
+    /* players[0]
       ? players[0].episodeScores
         ? players[0].episodeScores.length + 1
         : 1
-      : 0
+      : 0 */ 2
   );
 
   const createTables = (episode) => {
@@ -39,7 +39,7 @@ export default function Home({ players }) {
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
       <Layout>
-        {players.length === 0 && (
+        {/*   {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
         )}
 
@@ -48,26 +48,41 @@ export default function Home({ players }) {
             Points begin to accumulate starting with episode 2. Check back
             later!
           </p>
-        )}
+        )} */}
         {currentEpisode > 1 && (
-          <Carousel
-            renderTopLeftControls={({ previousSlide }) => (
-              <button onClick={previousSlide}>
-                <FontAwesomeIcon icon={faChevronLeft} /> Previous
-              </button>
-            )}
-            renderTopRightControls={({ nextSlide }) => (
-              <button onClick={nextSlide}>
-                Next <FontAwesomeIcon icon={faChevronRight} />
-              </button>
-            )}
-            renderCenterLeftControls={null}
-            renderCenterRightControls={null}
-            renderBottomCenterControls={null}
-            slideIndex={currentEpisode - 1}
-          >
-            {createTables(currentEpisode)}
-          </Carousel>
+          <>
+            <p className=" text-left mb-8">
+              Don't see yourself in the standings? Make sure you've sent your
+              entry fee via eTransfer to{' '}
+              <strong>tanner.wiltshire@gmail.com</strong>. If you have sent your
+              payment already and believe this is an error, please{' '}
+              <a
+                className=" text-red-600 dark:text-red-400  hover:underline"
+                href="mailto:tanner.wiltshire@gmail.com?subject=User missing from standings"
+              >
+                contact me
+              </a>
+              .
+            </p>
+            <Carousel
+              renderTopLeftControls={({ previousSlide }) => (
+                <button onClick={previousSlide}>
+                  <FontAwesomeIcon icon={faChevronLeft} /> Previous
+                </button>
+              )}
+              renderTopRightControls={({ nextSlide }) => (
+                <button onClick={nextSlide}>
+                  Next <FontAwesomeIcon icon={faChevronRight} />
+                </button>
+              )}
+              renderCenterLeftControls={null}
+              renderCenterRightControls={null}
+              renderBottomCenterControls={null}
+              slideIndex={currentEpisode - 1}
+            >
+              {createTables(currentEpisode)}
+            </Carousel>
+          </>
         )}
       </Layout>
     </div>

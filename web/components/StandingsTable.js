@@ -1,7 +1,7 @@
 export default function StandingsTable({ episode, players }) {
   return (
     <div>
-      <h2 className="mb-4">Episode {episode}</h2>
+      <h2 className="mb-4 text-xl">Episode {episode}</h2>
       <table className="w-full">
         <thead className="bg-black flex text-white w-full">
           <tr className="flex w-full text-center md:text-left  items-center ">
