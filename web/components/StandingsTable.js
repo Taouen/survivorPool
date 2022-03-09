@@ -14,18 +14,20 @@ export default function StandingsTable({ episode, players }) {
 
         <tbody className="bg-grey-light flex flex-col items-center justify-between w-full">
           {players.map(
-            ({ username, rank, episodeScores, totalScore }, index) => {
-              return (
-                <tr
-                  key={index}
-                  className="flex w-full text-center md:text-left mb-1"
-                >
-                  <td className="p-2 text-left w-1/4">{username}</td>
-                  <td className="p-2 w-1/4">{rank}</td>
-                  <td className="p-2 w-1/4">{episodeScores[episode - 2]}</td>
-                  <td className="p-2 w-1/4">{totalScore}</td>
-                </tr>
-              );
+            ({ username, rank, episodeScores, totalScore, paid }, index) => {
+              if (paid) {
+                return (
+                  <tr
+                    key={index}
+                    className="flex w-full text-center md:text-left mb-1"
+                  >
+                    <td className="p-2 text-left w-1/4">{username}</td>
+                    <td className="p-2 w-1/4">{rank}</td>
+                    <td className="p-2 w-1/4">{episodeScores[episode - 2]}</td>
+                    <td className="p-2 w-1/4">{totalScore}</td>
+                  </tr>
+                );
+              }
             }
           )}
         </tbody>
