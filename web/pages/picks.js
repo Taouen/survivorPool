@@ -1,6 +1,5 @@
-import { survivors as survivorsList } from '../components/survivors';
-import { players as playersList } from '../components/players';
 import Head from 'next/head';
+
 import Layout from '../components/Layout';
 
 const sanityClient = require('@sanity/client');
@@ -84,5 +83,6 @@ export async function getStaticProps() {
       survivors,
       players,
     },
+    revalidate: 10,
   };
 }
