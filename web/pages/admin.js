@@ -6,9 +6,13 @@ import Client from '../components/Client.js';
 const deletePlayers = () => {
   if (window.confirm('Are you sure you want to delete all players?')) {
     if (window.confirm('Are you really sure?')) {
-      fetch('/api/deleteplayers')
-        .then((response) => response.json())
-        .catch((err) => console.log(err));
+      try {
+        fetch('/api/deleteplayers').then(() =>
+          window.alert('All players have been deleted.')
+        );
+      } catch {
+        console.error(error);
+      }
     }
   }
 };
