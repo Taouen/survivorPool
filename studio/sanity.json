@@ -5,7 +5,7 @@
   },
   "api": {
     "projectId": "806pz8zb",
-    "dataset": "development"
+    "dataset": "season42"
   },
   "plugins": [
     "@sanity/base",
