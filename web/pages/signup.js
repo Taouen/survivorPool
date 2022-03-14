@@ -38,7 +38,7 @@ export default function signup({ survivors }) {
 }
 
 export async function getServerSideProps() {
-  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
+  const survivors = await Client.fetch('*[_type == "survivor"]')
     .then((data) =>
       data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
     )

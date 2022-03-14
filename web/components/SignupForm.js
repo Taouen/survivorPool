@@ -145,8 +145,10 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
                   disabled={
-                    formik.values.picks.length < 5 ||
-                    formik.values.picks.includes(survivor.name)
+                    survivor.eliminated
+                      ? true
+                      : formik.values.picks.length < 5 ||
+                        formik.values.picks.includes(survivor.name)
                       ? false
                       : true
                   }
@@ -156,8 +158,10 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   type="checkbox"
                   // disable as long as 5 selections are made, but don't disable selected options. Then enable all when there are fewer than 5
                   disabled={
-                    formik.values.picks.length < 5 ||
-                    formik.values.picks.includes(survivor.name)
+                    survivor.eliminated
+                      ? true
+                      : formik.values.picks.length < 5 ||
+                        formik.values.picks.includes(survivor.name)
                       ? false
                       : true
                   }
@@ -168,7 +172,12 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   onChange={formik.handleChange}
                 />
                 {'  '}
-                <label htmlFor={survivor.name}>{survivor.name}</label>
+                <label htmlFor={survivor.name}>
+                  {survivor.name}{' '}
+                  <span className="text-red-600 dark:text-red-400">
+                    {survivor.eliminated ? 'Eliminated' : null}
+                  </span>
+                </label>
               </div>
             ))}
           </fieldset>
