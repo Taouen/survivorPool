@@ -7,6 +7,8 @@ import Client from '../components/Client';
 
 export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const hideTime = 1647475199827;
+  const hideSignup = Date.now() > hideTime;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
@@ -14,7 +16,9 @@ export default function signup({ survivors }) {
         <title>Survivor Fantasy Pool | Sign Up</title>
       </Head>
       <Layout>
-        {isSubmitted ? (
+        {hideSignup ? (
+          <h3>Sign up has ended for this season!</h3>
+        ) : isSubmitted ? (
           <div className="flex flex-col items-start">
             <h2 className="text-xl mb-8 self-center">Thanks for signing up!</h2>
             <h3 className="text-lg mb-4">Next Steps</h3>
