@@ -7,7 +7,7 @@ import Client from '../components/Client';
 
 export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const hideTime = 1647475199827;
+  const hideTime = 1647475199827; // Season 42 specific
   const hideSignup = Date.now() > hideTime;
 
   return (

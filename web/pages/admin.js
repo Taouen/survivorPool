@@ -5,6 +5,17 @@ import { Formik, Field } from 'formik';
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
 
+const validate = (values) => {
+  const errors = {};
+
+  if (
+    !Object.values(values.scores).every((score) => typeof score === 'number')
+  ) {
+    errors.scores = 'Please enter only numbers in the score boxes.';
+  }
+  return errors;
+};
+
 const deletePlayers = () => {
   if (window.confirm('Are you sure you want to delete all players?')) {
     if (window.confirm('Are you really sure?')) {
@@ -19,21 +30,59 @@ const deletePlayers = () => {
   }
 };
 
-const updateScores = (values, setSubmitted) => {
-  fetch('/api/updatescores', {
+const resetPlayerScores = (players) => {
+  const data = { players };
+  if (window.confirm('Are you sure you want to delete all player scores?')) {
+    if (window.confirm('Are you really sure?')) {
+      fetch('/api/deletescores', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }).catch((err) => console.log(err));
+    }
+  }
+};
+
+const updateScores = (values, setSubmitted, players) => {
+  const data = {
+    values,
+    players,
+  };
+  if (window.confirm('Are you sure you want to delete all player scores?')) {
+    if (window.confirm('Are you really sure?')) {
+      fetch('/api/updatescores', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(() => {
+          setSubmitted(true);
+        })
+        .catch((err) => console.log(err));
+    }
+  }
+};
+
+const deleteEpisodeScores = (players, values) => {
+  const data = {
+    players,
+    values,
+  };
+
+  fetch('/api/deleteepisodescore', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(values),
-  })
-    .then(() => {
-      setSubmitted(true);
-    })
-    .catch((err) => console.log(err));
+    body: JSON.stringify(data),
+  }).catch((err) => console.log(err));
 };
 
-export default function picks({ players, survivors }) {
+export default function admin({ players, survivors }) {
   const [Submitted, setSubmitted] = useState(false);
 
   const initialValues = {
@@ -57,8 +106,11 @@ export default function picks({ players, survivors }) {
         <h2 className="text-xl md:text-2xl mb-8">Welcome to the admin page.</h2>
         <Formik
           initialValues={initialValues}
+          validateOnBlur={false}
+          validateOnChange={false}
+          validate={validate}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            updateScores(values, setSubmitted);
+            updateScores(values, setSubmitted, players);
             resetForm();
           }}
         >
@@ -84,7 +136,7 @@ export default function picks({ players, survivors }) {
                         id={survivor.name + ' Episode Score'}
                         onChange={formik.handleChange}
                         aria-label={survivor.name}
-                        disabled={survivor.eliminated}
+                        disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
                         className="text-black p-1 ml-4 w-20 
                        focus:ring focus:ring-lime-500 outline-none rounded border"
                       />
@@ -95,6 +147,7 @@ export default function picks({ players, survivors }) {
                         value={survivor.name}
                         className="ml-2 w-6 h-6 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
                         onChange={formik.handleChange}
+                        disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
                         checked={formik.values.eliminated.includes(
                           survivor.name
                         )}
@@ -103,6 +156,16 @@ export default function picks({ players, survivors }) {
                   </div>
                 );
               })}
+              {formik.errors.scores && formik.touched.scores ? (
+                <div className="text-sm text-left text-red-400">
+                  {formik.errors.scores}
+                </div>
+              ) : null}
+              {formik.errors.eliminated && formik.touched.eliminated ? (
+                <div className="text-sm text-left text-red-400">
+                  {formik.errors.eliminated}
+                </div>
+              ) : null}
               <button
                 className="border mt-4 p-1 rounded"
                 onClick={formik.handleSubmit}
@@ -114,10 +177,47 @@ export default function picks({ players, survivors }) {
           )}
         </Formik>
         <div className="border border-red-500 rounded w-full p-2">
-          <h3 className="text-xl">Danger Zone</h3>
-          <button className="border mt-4 p-1 rounded" onClick={deletePlayers}>
-            Delete all players
-          </button>
+          <h3 className="text-xl mb-4 ">Danger Zone</h3>
+          <div className="flex w-full justify-center">
+            <Formik
+              initialValues={{ episode: '' }}
+              validateOnBlur={false}
+              validateOnChange={false}
+              onSubmit={(values, { resetForm }) => {
+                deleteEpisodeScores(players, values);
+                resetForm();
+              }}
+            >
+              {(formik) => (
+                <form onSubmit={formik.handleSubmit}>
+                  <Field
+                    type="number"
+                    id="episode"
+                    name="episode"
+                    className="text-black p-1 ml-4 w-20 
+                       focus:ring focus:ring-lime-500 outline-none rounded border"
+                    onChange={formik.handleChange}
+                  />
+                  <button
+                    className="border ml-2 p-1 rounded"
+                    onClick={formik.handleSubmit}
+                    type="submit"
+                  >
+                    Delete Episode Scores
+                  </button>
+                </form>
+              )}
+            </Formik>
+            <button
+              className="border p-1 ml-2 rounded"
+              onClick={() => resetPlayerScores(players)}
+            >
+              Reset player scores
+            </button>
+            <button className="border ml-2 p-1 rounded" onClick={deletePlayers}>
+              Delete all players
+            </button>
+          </div>
         </div>
       </Layout>
     </div>
