@@ -64,6 +64,11 @@ export default function Home({ players }) {
               </a>
               .
             </p>
+            <p className="mb-2 text-red-600 dark:text-red-400">
+              Apparently I've made some mistake in the code, Mike should not
+              have 716 points this episode. All other scores should be correct,
+              please bear with me while I solve the issue.
+            </p>
             <Carousel
               renderTopLeftControls={({ previousSlide }) => (
                 <button onClick={previousSlide}>
