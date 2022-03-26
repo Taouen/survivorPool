@@ -25,7 +25,11 @@ export default function StandingsTable({ episode, players }) {
                   <td className="p-2 text-left w-2/5">{username}</td>
                   <td className="p-2 w-1/5">{rank}</td>
                   <td className="p-2 w-1/5">{episodeScores[episode - 2]}</td>
-                  <td className="p-2 w-1/5">{totalScore}</td>
+                  <td className="p-2 w-1/5">
+                    {episodeScores
+                      .slice(0, episode - 1)
+                      .reduce((a, b) => a + b, 0)}
+                  </td>
                 </tr>
               );
             })}
