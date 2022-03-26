@@ -22,15 +22,13 @@ export default function Home({ players }) {
   );
 
   const createTables = (episode) => {
+    const tables = [];
     for (let i = 0; i < episode - 1; i++) {
-      return (
-        <StandingsTable
-          key={'episode' + i}
-          players={players}
-          episode={episode}
-        />
+      tables.push(
+        <StandingsTable key={'episode' + i} players={players} episode={i + 2} />
       );
     }
+    return tables;
   };
 
   return (
