@@ -7,8 +7,7 @@ export default async function handler(req, res) {
     const { _id } = player;
     Client.patch(_id)
       .set({ totalScore: 0, episodeScores: [], rank: 0 })
-      .commit()
-      .then(() => window.alert('Player scores successfully reset.'));
+      .commit();
   });
 
   res.status(201).json(req.body);

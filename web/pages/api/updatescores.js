@@ -4,34 +4,38 @@ const scoreRankings = [];
 const episodePlayers = [];
 
 export default async function handler(req, res) {
-  const { values, players } = req.body;
+  const { values, players, survivors } = req.body;
   const { scores, eliminated } = values;
 
   players.forEach((player) => {
     const { mvp, picks, username, _id, totalScore } = player;
-    let episodeScore = 0;
+    const pickScores = [];
 
     Object.keys(scores).forEach((survivor) => {
-      if (mvp === survivor) episodeScore += scores[survivor];
+      if (mvp === survivor) pickScores.push(scores[survivor]);
 
       picks.forEach((pick) => {
         if (pick === survivor) {
-          episodeScore += scores[survivor];
+          pickScores.push(scores[survivor]);
         }
       });
     });
 
-    scoreRankings.push(totalScore + parseInt(episodeScore));
+    const episodeScore = pickScores
+      .filter((element) => typeof element === 'number')
+      .reduce((a, b) => a + b, 0);
+
+    scoreRankings.push(totalScore + episodeScore);
     episodePlayers.push({
-      score: totalScore + parseInt(episodeScore),
+      score: totalScore + episodeScore,
       id: _id,
     });
 
     Client.patch(_id)
       .setIfMissing({ episodeScores: [] })
-      .append('episodeScores', [parseInt(episodeScore)])
+      .append('episodeScores', [episodeScore])
       .setIfMissing({ totalScore: 0 })
-      .inc({ totalScore: parseInt(episodeScore) })
+      .inc({ totalScore: episodeScore })
       .commit()
       .then(() => console.log('Updated scores'))
       .catch((err) => console.error(err));
@@ -65,5 +69,10 @@ export default async function handler(req, res) {
       .then(() => console.log('Updated rank'));
   });
 
+  survivors.forEach((survivor) => {
+    if (eliminated.includes(survivor.name)) {
+      Client.patch(survivor._id).set({ eliminated: true }).commit();
+    }
+  });
   res.status(201).json(req.body);
 }

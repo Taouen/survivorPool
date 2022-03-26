@@ -5,17 +5,6 @@ import { Formik, Field } from 'formik';
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
 
-const validate = (values) => {
-  const errors = {};
-
-  if (
-    !Object.values(values.scores).every((score) => typeof score === 'number')
-  ) {
-    errors.scores = 'Please enter only numbers in the score boxes.';
-  }
-  return errors;
-};
-
 const deletePlayers = () => {
   if (window.confirm('Are you sure you want to delete all players?')) {
     if (window.confirm('Are you really sure?')) {
@@ -45,26 +34,24 @@ const resetPlayerScores = (players) => {
   }
 };
 
-const updateScores = (values, setSubmitted, players) => {
+const updateScores = (values, setSubmitted, players, survivors) => {
   const data = {
     values,
     players,
+    survivors,
   };
-  if (window.confirm('Are you sure you want to delete all player scores?')) {
-    if (window.confirm('Are you really sure?')) {
-      fetch('/api/updatescores', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then(() => {
-          setSubmitted(true);
-        })
-        .catch((err) => console.log(err));
-    }
-  }
+
+  fetch('/api/updatescores', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      setSubmitted(true);
+    })
+    .catch((err) => console.log(err));
 };
 
 const deleteEpisodeScores = (players, values) => {
@@ -108,9 +95,8 @@ export default function admin({ players, survivors }) {
           initialValues={initialValues}
           validateOnBlur={false}
           validateOnChange={false}
-          validate={validate}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            updateScores(values, setSubmitted, players);
+            updateScores(values, setSubmitted, players, survivors);
             resetForm();
           }}
         >
