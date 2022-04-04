@@ -50,6 +50,9 @@ const updateScores = (values, setSubmitted, players, survivors) => {
   })
     .then(() => {
       setSubmitted(true);
+      if (window.confirm('Scores updated. Do you want to reload the page?')) {
+        window.location.reload(true);
+      }
     })
     .catch((err) => console.log(err));
 };
@@ -67,6 +70,27 @@ const deleteEpisodeScores = (players, values) => {
     },
     body: JSON.stringify(data),
   }).catch((err) => console.log(err));
+};
+
+const clearEliminated = (survivors) => {
+  const data = { survivors };
+  fetch('/api/cleareliminated', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  })
+    .then(() => {
+      if (
+        window.confirm(
+          'Reset eliminated survivors. Do you want to reload the page?'
+        )
+      ) {
+        window.location.reload(true);
+      }
+    })
+    .catch((err) => console.log(err));
 };
 
 export default function admin({ players, survivors }) {
@@ -199,6 +223,12 @@ export default function admin({ players, survivors }) {
               onClick={() => resetPlayerScores(players)}
             >
               Reset player scores
+            </button>
+            <button
+              className="border p-1 ml-2 rounded"
+              onClick={() => clearEliminated(survivors)}
+            >
+              Clear Eliminated
             </button>
             <button className="border ml-2 p-1 rounded" onClick={deletePlayers}>
               Delete all players
