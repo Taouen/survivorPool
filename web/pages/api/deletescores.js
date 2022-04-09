@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   players.forEach((player) => {
     const { _id } = player;
     Client.patch(_id)
-      .set({ totalScore: 0, episodeScores: [], rank: 0 })
+      .set({ totalScore: 0, episodeScores: [], rank: [] })
       .commit();
   });
 

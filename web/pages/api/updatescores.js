@@ -63,8 +63,8 @@ export default async function handler(req, res) {
     let rank = ranks.indexOf(score) + 1;
 
     Client.patch(id)
-      .setIfMissing({ rank: 0 })
-      .set({ rank: rank })
+      .setIfMissing({ rank: [] })
+      .append('rank', [rank])
       .commit()
       .then(() => console.log('Updated rank'));
   });

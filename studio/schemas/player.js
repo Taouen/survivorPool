@@ -41,7 +41,9 @@ export default {
     {
       name: 'rank',
       title: 'Rank',
-      type: 'number',
+      type: 'array',
+      of: [{ type: 'number' }],
+      initialValue: [],
     },
     {
       name: 'paid',
