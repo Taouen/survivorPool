@@ -1,3 +1,7 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+
 export default function StandingsTable({ episode, players }) {
   const rankedPlayers = [...players].sort(
     (a, b) => a.rank[episode - 2] - b.rank[episode - 2]
@@ -23,7 +27,11 @@ export default function StandingsTable({ episode, players }) {
                 rank[episode - 2] - rank[episode - 3]
               );
               const rankChange =
-                rank[episode - 2] > rank[episode - 3] ? '-' : '+';
+                rank[episode - 2] > rank[episode - 3] ? (
+                  <FontAwesomeIcon icon={faCaretDown} />
+                ) : (
+                  <FontAwesomeIcon icon={faCaretUp} />
+                );
 
               return (
                 <tr
@@ -35,8 +43,10 @@ export default function StandingsTable({ episode, players }) {
                     {rank[episode - 2]}{' '}
                     {episode > 2 && (
                       <span
-                        className={`text-sm ${
-                          rankChange === '+' ? 'text-green-500' : 'text-red-500'
+                        className={`text-sm ml-2 ${
+                          rank[episode - 2] - rank[episode - 3] < 0
+                            ? 'text-green-500'
+                            : 'text-red-500'
                         }`}
                       >
                         {rankChange}
