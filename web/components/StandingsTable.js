@@ -23,9 +23,10 @@ export default function StandingsTable({ episode, players }) {
           {rankedPlayers
             .filter((player) => player.paid)
             .map(({ username, rank, episodeScores }, index) => {
-              const rankDifferential = Math.abs(
-                rank[episode - 2] - rank[episode - 3]
-              );
+              const rankDifferential =
+                Math.abs(rank[episode - 2] - rank[episode - 3]) === 0
+                  ? 0
+                  : Math.abs(rank[episode - 2] - rank[episode - 3]);
               const rankChange =
                 rank[episode - 2] > rank[episode - 3] ? (
                   <FontAwesomeIcon icon={faCaretDown} />
@@ -38,19 +39,19 @@ export default function StandingsTable({ episode, players }) {
                   key={index}
                   className={`flex w-full text-center md:text-left mb-1 even:bg-black/10 dark:even:bg-white/10`}
                 >
-                  <td className="p-2 text-left w-2/5">{username}</td>
+                  <td className="p-2 truncate text-left w-2/5">{username}</td>
                   <td className="p-2 w-1/5">
                     {rank[episode - 2]}{' '}
                     {episode > 2 && (
                       <span
-                        className={`text-sm ml-2 ${
+                        className={` ml-2 ${
                           rank[episode - 2] - rank[episode - 3] < 0
                             ? 'text-green-500'
                             : 'text-red-500'
                         }`}
                       >
-                        {rankChange}
-                        {rankDifferential}
+                        {rankDifferential === 0 ? null : rankChange}{' '}
+                        {rankDifferential === 0 ? null : rankDifferential}
                       </span>
                     )}
                   </td>
