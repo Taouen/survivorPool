@@ -93,8 +93,19 @@ const clearEliminated = (survivors) => {
     .catch((err) => console.log(err));
 };
 
+const copyEmails = async () => {
+  const emails = await fetch('/api/copyemails').then((data) => data.json());
+  const emailList = [];
+  emails.forEach((item) => {
+    emailList.push(item.email);
+  });
+
+  navigator.clipboard.writeText(emailList.join(','));
+};
+
 export default function admin({ players, survivors }) {
   const [Submitted, setSubmitted] = useState(false);
+  const [emails, setEmails] = useState('');
 
   const initialValues = {
     scores: {},
@@ -186,9 +197,12 @@ export default function admin({ players, survivors }) {
             </form>
           )}
         </Formik>
+
+        {/* --- DANGER ZONE --- */}
+
         <div className="border border-red-500 rounded w-full p-2">
           <h3 className="text-xl mb-4 ">Danger Zone</h3>
-          <div className="flex w-full justify-center">
+          <div className="flex w-full flex-col md:flex-row justify-center">
             <Formik
               initialValues={{ episode: '' }}
               validateOnBlur={false}
@@ -204,12 +218,12 @@ export default function admin({ players, survivors }) {
                     type="number"
                     id="episode"
                     name="episode"
-                    className="text-black p-1 ml-4 w-20 
+                    className="text-black p-1 mb-2 md:ml-4 w-20 
                        focus:ring focus:ring-lime-500 outline-none rounded border"
                     onChange={formik.handleChange}
                   />
                   <button
-                    className="border ml-2 p-1 rounded"
+                    className="border mb-2 ml-2 p-1 rounded"
                     onClick={formik.handleSubmit}
                     type="submit"
                   >
@@ -219,18 +233,28 @@ export default function admin({ players, survivors }) {
               )}
             </Formik>
             <button
-              className="border p-1 ml-2 rounded"
+              className="border p-1 mb-2 md:ml-2 rounded"
+              onClick={() => copyEmails()}
+            >
+              Copy Player Emails
+            </button>
+
+            <button
+              className="border p-1 mb-2 md:ml-2 rounded"
+              onClick={() => clearEliminated(survivors)}
+            >
+              Clear Eliminated
+            </button>
+            <button
+              className="border p-1 mb-2 md:ml-2 rounded"
               onClick={() => resetPlayerScores(players)}
             >
               Reset player scores
             </button>
             <button
-              className="border p-1 ml-2 rounded"
-              onClick={() => clearEliminated(survivors)}
+              className="border mb-2 md:ml-2 p-1 rounded"
+              onClick={deletePlayers}
             >
-              Clear Eliminated
-            </button>
-            <button className="border ml-2 p-1 rounded" onClick={deletePlayers}>
               Delete all players
             </button>
           </div>
