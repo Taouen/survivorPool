@@ -11,7 +11,7 @@ export default async function handler(req, res) {
     });
 
     Client.patch(_id)
-      .unset([`episodeScores[${episode - 2}]`])
+      .unset([`episodeScores[${episode - 2}]`, `rank[${episode - 2}]`])
       .dec({ totalScore: scoreToDelete })
       .commit();
   });

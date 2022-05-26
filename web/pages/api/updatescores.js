@@ -1,11 +1,11 @@
 import Client from '../../components/Client';
 
-const scoreRankings = [];
-const episodePlayers = [];
-
 export default async function handler(req, res) {
   const { values, players, survivors } = req.body;
   const { scores, eliminated } = values;
+
+  const totalScores = [];
+  const episodePlayers = [];
 
   players.forEach((player) => {
     const { mvp, picks, username, _id, totalScore } = player;
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
       .filter((element) => typeof element === 'number')
       .reduce((a, b) => a + b, 0);
 
-    scoreRankings.push(totalScore + episodeScore);
+    totalScores.push(totalScore + episodeScore);
     episodePlayers.push({
       score: totalScore + episodeScore,
       id: _id,
@@ -41,7 +41,7 @@ export default async function handler(req, res) {
       .catch((err) => console.error(err));
   });
 
-  scoreRankings.sort((a, b) => b - a);
+  totalScores.sort((a, b) => b - a);
 
   const createUniqueRanks = (arr) => {
     const ranks = [];
@@ -58,15 +58,11 @@ export default async function handler(req, res) {
 
   episodePlayers.forEach((player) => {
     const { score, id } = player;
-    const ranks = createUniqueRanks(scoreRankings);
+    const ranks = createUniqueRanks(totalScores);
 
     let rank = ranks.indexOf(score) + 1;
 
-    Client.patch(id)
-      .setIfMissing({ rank: [] })
-      .append('rank', [rank])
-      .commit()
-      .then(() => console.log('Updated rank'));
+    Client.patch(id).setIfMissing({ rank: [] }).append('rank', [rank]).commit();
   });
 
   survivors.forEach((survivor) => {
