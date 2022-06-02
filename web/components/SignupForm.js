@@ -92,9 +92,9 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
       {(formik) => (
         <form
           onSubmit={formik.handleSubmit}
-          className="flex flex-col text-lg md:text-base items-center"
+          className="flex flex-col items-center text-lg md:text-base"
         >
-          <div className="flex flex flex-col items-start mb-4 w-full">
+          <div className="flex flex-col items-start w-full mb-4">
             <label htmlFor="username" className="mb-1">
               Username:
             </label>
@@ -107,7 +107,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
             ) : null}
           </div>
 
-          <div className="flex flex-col items-start mb-4 w-full">
+          <div className="flex flex-col items-start w-full mb-4">
             <label htmlFor="email" className="mb-1">
               Email Address:
             </label>
@@ -123,25 +123,25 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
               (who you think will win)
             </legend>
             {formik.errors.mvp && formik.touched.mvp ? (
-              <div className="text-sm text-left text-red-400 self-start">
+              <div className="self-start text-sm text-left text-red-400">
                 {formik.errors.mvp}
               </div>
             ) : null}
             {formik.errors.picks && formik.touched.picks ? (
-              <div className="text-sm text-left self-start text-red-400">
+              <div className="self-start text-sm text-left text-red-400">
                 {formik.errors.picks}
               </div>
             ) : null}
             <h2 className="self-start">MVP</h2>
 
             {survivors.map((survivor) => (
-              <div className="flex mb-2 items-center" key={survivor.name}>
+              <div className="flex items-center mb-2" key={survivor.name}>
                 <Field
                   type="radio"
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor.name}
-                  className="ml-1 mr-4 form-radio text-transparent border border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
+                  className="ml-1 mr-4 text-transparent border outline-none form-radio border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
                   disabled={
@@ -168,7 +168,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   id={survivor.name}
                   name="picks"
                   value={survivor.name}
-                  className="mr-2 w-6 h-6 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
+                  className="w-6 h-6 mr-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                 />
                 {'  '}
@@ -190,7 +190,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
 
           {isSubmitting && <ClipLoader color={'lime'} />}
           <button
-            className="border mt-4 p-1 w-20 rounded"
+            className="w-20 p-1 mt-4 border rounded"
             onClick={formik.handleSubmit}
             type="submit"
           >

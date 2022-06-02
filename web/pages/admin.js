@@ -125,7 +125,7 @@ export default function admin({ players, survivors }) {
         <title>Survivor Fantasy Pool | Admin</title>
       </Head>
       <Layout>
-        <h2 className="text-xl md:text-2xl mb-8">Welcome to the admin page.</h2>
+        <h2 className="mb-8 text-xl md:text-2xl">Welcome to the admin page.</h2>
         <Formik
           initialValues={initialValues}
           validateOnBlur={false}
@@ -137,15 +137,14 @@ export default function admin({ players, survivors }) {
         >
           {(formik) => (
             <form
-              className="flex flex-col text-lg md:text-base items-center mb-8"
+              className="flex flex-col items-center mb-8 text-lg md:text-base"
               onSubmit={formik.handleSubmit}
             >
               {survivors.map((survivor) => {
                 return (
                   <div
                     key={survivor.name}
-                    className="flex w-full items-center justify-between
-                     p-1"
+                    className="flex items-center justify-between w-full p-1"
                   >
                     <label htmlFor={survivor.name + ' Episode Score'}>
                       {survivor.name}
@@ -158,15 +157,14 @@ export default function admin({ players, survivors }) {
                         onChange={formik.handleChange}
                         aria-label={survivor.name}
                         disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
-                        className="text-black p-1 ml-4 w-20 
-                       focus:ring focus:ring-lime-500 outline-none rounded border"
+                        className="w-20 p-1 ml-4 text-black border rounded outline-none focus:ring focus:ring-lime-500"
                       />
                       <Field
                         type="checkbox"
                         id={survivor.name + ' Eliminated'}
                         name="eliminated"
                         value={survivor.name}
-                        className="ml-2 w-6 h-6 md:w-4 md:h-4 outline-none focus:ring focus:ring-lime-500"
+                        className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                         onChange={formik.handleChange}
                         disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
                         checked={formik.values.eliminated.includes(
@@ -188,7 +186,7 @@ export default function admin({ players, survivors }) {
                 </div>
               ) : null}
               <button
-                className="border mt-4 p-1 rounded"
+                className="p-1 mt-4 border rounded"
                 onClick={formik.handleSubmit}
                 type="submit"
               >
@@ -200,9 +198,9 @@ export default function admin({ players, survivors }) {
 
         {/* --- DANGER ZONE --- */}
 
-        <div className="border border-red-500 rounded w-full p-2">
-          <h3 className="text-xl mb-4 ">Danger Zone</h3>
-          <div className="flex w-full flex-col md:flex-row justify-center">
+        <div className="w-full p-2 border border-red-500 rounded">
+          <h3 className="mb-4 text-xl ">Danger Zone</h3>
+          <div className="flex flex-col justify-center w-full md:flex-row">
             <Formik
               initialValues={{ episode: '' }}
               validateOnBlur={false}
@@ -218,12 +216,11 @@ export default function admin({ players, survivors }) {
                     type="number"
                     id="episode"
                     name="episode"
-                    className="text-black p-1 mb-2 md:ml-4 w-20 
-                       focus:ring focus:ring-lime-500 outline-none rounded border"
+                    className="w-20 p-1 mb-2 text-black border rounded outline-none md:ml-4 focus:ring focus:ring-lime-500"
                     onChange={formik.handleChange}
                   />
                   <button
-                    className="border mb-2 ml-2 p-1 rounded"
+                    className="p-1 mb-2 ml-2 border rounded"
                     onClick={formik.handleSubmit}
                     type="submit"
                   >
@@ -233,26 +230,26 @@ export default function admin({ players, survivors }) {
               )}
             </Formik>
             <button
-              className="border p-1 mb-2 md:ml-2 rounded"
+              className="p-1 mb-2 border rounded md:ml-2"
               onClick={() => copyEmails()}
             >
               Copy Player Emails
             </button>
 
             <button
-              className="border p-1 mb-2 md:ml-2 rounded"
+              className="p-1 mb-2 border rounded md:ml-2"
               onClick={() => clearEliminated(survivors)}
             >
               Clear Eliminated
             </button>
             <button
-              className="border p-1 mb-2 md:ml-2 rounded"
+              className="p-1 mb-2 border rounded md:ml-2"
               onClick={() => resetPlayerScores(players)}
             >
               Reset player scores
             </button>
             <button
-              className="border mb-2 md:ml-2 p-1 rounded"
+              className="p-1 mb-2 border rounded md:ml-2"
               onClick={deletePlayers}
             >
               Delete all players

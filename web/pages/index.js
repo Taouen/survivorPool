@@ -10,15 +10,15 @@ export default function Home(props) {
         <title>Survivor Fantasy Pool | Home</title>
       </Head>
       <Layout>
-        <h2 className="text-xl md:text-2xl mb-8">
+        <h2 className="mb-8 text-xl md:text-2xl">
           Welcome to the Survivor Fantasy Pool!
         </h2>
 
         <div className="flex flex-col items-start justify-start w-full px-4 md:px-16">
           <section className="mb-4 text-left">
-            <h3 className="text-xl mb-2">Rules</h3>
+            <h3 className="mb-2 text-xl">Rules</h3>
             <p>Entry Fee: $20</p>
-            <ol className="list-decimal  text-left ml-6 md:ml-4 flex flex-col items-start">
+            <ol className="flex flex-col items-start ml-6 text-left list-decimal md:ml-4">
               <li>
                 <p>
                   Head over to the{' '}
@@ -49,7 +49,7 @@ export default function Home(props) {
                 <p>
                   Check the{' '}
                   <Link href="/standings">
-                    <a className="text-red-600 dark:text-red-400  hover:underline">
+                    <a className="text-red-600 dark:text-red-400 hover:underline">
                       standings page
                     </a>
                   </Link>{' '}
@@ -59,12 +59,12 @@ export default function Home(props) {
             </ol>
           </section>
 
-          <section className="text-left mb-4">
-            <h3 className="text-xl mb-2">Scoring</h3>
+          <section className="mb-4 text-left">
+            <h3 className="mb-2 text-xl">Scoring</h3>
             <p>
               The scoring system used comes from{' '}
               <Link href="https://www.globaltv.com/shows/survivor/articles/survivor-42-fantasy-tribe-pool/#scoring">
-                <a className="text-red-600 dark:text-red-400  hover:underline">
+                <a className="text-red-600 dark:text-red-400 hover:underline">
                   Global TV's Scoring System
                 </a>
               </Link>

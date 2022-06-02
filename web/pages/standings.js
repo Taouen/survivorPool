@@ -49,13 +49,13 @@ export default function Home({ players }) {
         )}
         {currentEpisode > 1 && (
           <>
-            <p className=" text-left mb-8">
+            <p className="mb-8 text-left ">
               Don't see yourself in the standings? Make sure you've sent your
               entry fee via eTransfer to{' '}
               <strong>tanner.wiltshire@gmail.com</strong>. If you have sent your
               payment already and believe this is an error, please{' '}
               <a
-                className=" text-red-600 dark:text-red-400  hover:underline"
+                className="text-red-600  dark:text-red-400 hover:underline"
                 href="mailto:tanner.wiltshire@gmail.com?subject=User missing from standings"
               >
                 contact me

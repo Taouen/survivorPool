@@ -5,7 +5,7 @@ const Layout = (props) => {
   return (
     <>
       <Header />
-      <main className="flex flex-col items-center max-w-screen-lg w-full flex-1 px-4 text-center">
+      <main className="flex flex-col items-center flex-1 w-full max-w-screen-lg px-4 text-center">
         {props.children}
       </main>
       <Footer />

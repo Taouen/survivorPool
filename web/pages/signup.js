@@ -20,9 +20,9 @@ export default function signup({ survivors }) {
           <h3>Sign up has ended for this season!</h3>
         ) : isSubmitted ? (
           <div className="flex flex-col items-start">
-            <h2 className="text-xl mb-8 self-center">Thanks for signing up!</h2>
-            <h3 className="text-lg mb-4">Next Steps</h3>
-            <p className="text-left mb-4">
+            <h2 className="self-center mb-8 text-xl">Thanks for signing up!</h2>
+            <h3 className="mb-4 text-lg">Next Steps</h3>
+            <p className="mb-4 text-left">
               Send your $20 entry fee via eTransfer to{' '}
               <strong>tanner.wiltshire@gmail.com</strong>. Set the password to
               "survivor". You won't show up in the standings until your entry
