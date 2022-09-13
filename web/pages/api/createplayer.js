@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     mvp: mvp,
     episodeScores: [],
     totalScore: 0,
-    rank: 0,
+    rank: [],
     paid: false,
   })
     .then(() => {
