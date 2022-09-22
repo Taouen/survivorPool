@@ -72,6 +72,8 @@ const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
 
 export default function SignupForm({ survivors, setIsSubmitted }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [randomPicks, setRandomPicks] = useState([]);
+
   return (
     <Formik
       initialValues={{
@@ -132,6 +134,83 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 {formik.errors.picks}
               </div>
             ) : null}
+
+            <div className="flex justify-around w-full py-4 mx-auto md:w-3/4">
+              <button
+                type="button"
+                className="p-1 border rounded text-md w-28 md:w-32 "
+                onClick={() => {
+                  const selected = [];
+
+                  // remove eliminated survivors from options
+                  const availableSurvivors = survivors.filter(
+                    (survivor) => !survivor.eliminated
+                  );
+
+                  while (selected.length < 5) {
+                    // Create a random index to use for this selection
+                    const randomIndex = Math.floor(
+                      Math.random() * availableSurvivors.length
+                    );
+
+                    // Add the survivor at the randomIndex to the selected array
+                    selected.push(availableSurvivors[randomIndex].name);
+
+                    // Remove the survivor from the available survivors so they can't be selected at random again.
+                    availableSurvivors.splice(randomIndex, 1);
+                  }
+
+                  formik.setFieldValue('picks', selected);
+                }}
+              >
+                Suggest picks
+              </button>
+
+              <button
+                type="button"
+                className="p-1 border rounded text-md w-28 md:w-32 "
+                onClick={() => {
+                  const selected = [];
+
+                  // remove eliminated survivors from options
+                  const availableSurvivors = survivors.filter(
+                    (survivor) => !survivor.eliminated
+                  );
+
+                  while (selected.length < 5) {
+                    // Create a random index to use for this selection
+                    const randomIndex = Math.floor(
+                      Math.random() * availableSurvivors.length
+                    );
+
+                    // Add the survivor at the randomIndex to the selected array
+                    selected.push(availableSurvivors[randomIndex].name);
+
+                    // Remove the survivor from the available survivors so they can't be selected at random again.
+                    availableSurvivors.splice(randomIndex, 1);
+                  }
+
+                  formik.setFieldValue('picks', selected);
+                  formik.setFieldValue(
+                    'mvp',
+                    selected[Math.floor(Math.random() * selected.length)]
+                  );
+                }}
+              >
+                Pick for me
+              </button>
+              <button
+                className="p-1 border rounded text-md w-28 md:w-32 "
+                type="button"
+                onClick={() => {
+                  formik.setFieldValue('picks', []);
+                  formik.setFieldValue('mvp', '');
+                }}
+              >
+                Clear picks
+              </button>
+            </div>
+
             <h2 className="self-start">MVP</h2>
 
             {survivors.map((survivor) => (
