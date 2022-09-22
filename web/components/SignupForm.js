@@ -141,6 +141,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 className="p-1 border rounded text-md w-28 md:w-32 "
                 onClick={() => {
                   const selected = [];
+                  formik.setFieldValue('mvp', '');
 
                   // remove eliminated survivors from options
                   const availableSurvivors = survivors.filter(
