@@ -3,6 +3,26 @@
   "project": {
     "name": "survivorPool"
   },
+  "__experimental_spaces": [
+    {
+      "name": "season43",
+      "title": "Season 43",
+      "default": true,
+      "api": {
+        "projectId": "806pz8zb",
+        "dataset": "season43"
+      }
+    },
+    {
+      "name": "season42",
+      "title": "Season 42",
+      "api": {
+        "projectId": "806pz8zb",
+        "dataset": "season42"
+      }
+    }
+  ],
+
   "api": {
     "projectId": "806pz8zb",
     "dataset": "season43"
