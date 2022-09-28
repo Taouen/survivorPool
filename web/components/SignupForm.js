@@ -28,6 +28,9 @@ const validate = async (values) => {
     errors.picks = `Please select ${
       5 - values.picks.length
     } more survivors for your tribe`;
+    errors.randomMvp = `${
+      5 - values.picks.length
+    } more survivors needed in order to choose a random MVP`;
   }
 
   if (!values.mvp) {
@@ -72,7 +75,7 @@ const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
 
 export default function SignupForm({ survivors, setIsSubmitted }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [randomPicks, setRandomPicks] = useState([]);
+  const [randomMvpError, setRandomMvpError] = useState(false);
 
   return (
     <Formik
@@ -134,6 +137,13 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 {formik.errors.picks}
               </div>
             ) : null}
+            {randomMvpError && formik.values.picks.length !== 5 ? (
+              <div className="self-start text-sm text-left text-red-400">
+                {`${
+                  5 - formik.values.picks.length
+                } more survivors needed to choose a random MVP`}
+              </div>
+            ) : null}
 
             <div className="flex justify-around w-full py-4 mx-auto md:w-3/4">
               <button
@@ -141,7 +151,6 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 className="p-1 border rounded text-md w-28 md:w-32 "
                 onClick={() => {
                   const selected = [];
-                  formik.setFieldValue('mvp', '');
 
                   // remove eliminated survivors from options
                   const availableSurvivors = survivors.filter(
@@ -164,41 +173,26 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   formik.setFieldValue('picks', selected);
                 }}
               >
-                Suggest picks
+                Pick for me
               </button>
-
               <button
                 type="button"
                 className="p-1 border rounded text-md w-28 md:w-32 "
                 onClick={() => {
-                  const selected = [];
-
-                  // remove eliminated survivors from options
-                  const availableSurvivors = survivors.filter(
-                    (survivor) => !survivor.eliminated
-                  );
-
-                  while (selected.length < 5) {
-                    // Create a random index to use for this selection
-                    const randomIndex = Math.floor(
-                      Math.random() * availableSurvivors.length
+                  if (formik.values.picks.length < 5) {
+                    setRandomMvpError(true);
+                  } else {
+                    setRandomMvpError(false);
+                    formik.setFieldValue(
+                      'mvp',
+                      formik.values.picks[
+                        Math.floor(Math.random() * formik.values.picks.length)
+                      ]
                     );
-
-                    // Add the survivor at the randomIndex to the selected array
-                    selected.push(availableSurvivors[randomIndex].name);
-
-                    // Remove the survivor from the available survivors so they can't be selected at random again.
-                    availableSurvivors.splice(randomIndex, 1);
                   }
-
-                  formik.setFieldValue('picks', selected);
-                  formik.setFieldValue(
-                    'mvp',
-                    selected[Math.floor(Math.random() * selected.length)]
-                  );
                 }}
               >
-                Pick for me
+                Pick my MVP
               </button>
               <button
                 className="p-1 border rounded text-md w-28 md:w-32 "
@@ -206,6 +200,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 onClick={() => {
                   formik.setFieldValue('picks', []);
                   formik.setFieldValue('mvp', '');
+                  setRandomMvpError(false);
                 }}
               >
                 Clear picks
