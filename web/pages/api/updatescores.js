@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const totalScores = [];
   const episodePlayers = [];
 
-  players.forEach((player) => {
+  await players.forEach((player) => {
     const { mvp, picks, username, _id, totalScore } = player;
     const pickScores = [];
 
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     return ranks;
   };
 
-  episodePlayers.forEach((player) => {
+  await episodePlayers.forEach((player) => {
     const { score, id } = player;
     const ranks = createUniqueRanks(totalScores);
 
@@ -65,7 +65,7 @@ export default async function handler(req, res) {
     Client.patch(id).setIfMissing({ rank: [] }).append('rank', [rank]).commit();
   });
 
-  survivors.forEach((survivor) => {
+  await survivors.forEach((survivor) => {
     if (eliminated.includes(survivor.name)) {
       Client.patch(survivor._id).set({ eliminated: true }).commit();
     }
