@@ -4,8 +4,6 @@ export default async function handler(req, res) {
   const { values, players, survivors } = req.body;
   const { scores, eliminated } = values;
 
-  console.log('Log 1:', req.body);
-
   const totalScores = [];
   const episodePlayers = [];
 
@@ -32,7 +30,7 @@ export default async function handler(req, res) {
       score: totalScore + episodeScore,
       id: _id,
     });
-
+    console.log(`Beginning score update for ${username}...`);
     Client.patch(_id)
       .setIfMissing({ episodeScores: [] })
       .append('episodeScores', [episodeScore])
@@ -69,6 +67,7 @@ export default async function handler(req, res) {
     const ranks = createUniqueRanks(totalScores);
 
     let rank = ranks.indexOf(score) + 1;
+    console.log(`Beginning rank update for ${username}...`);
 
     Client.patch(id)
       .setIfMissing({ rank: [] })
@@ -86,6 +85,7 @@ export default async function handler(req, res) {
 
   survivors.forEach((survivor) => {
     if (eliminated.includes(survivor.name)) {
+      console.log(`Beginning eliminated update for ${survivor.name}...`);
       Client.patch(survivor._id)
         .set({ eliminated: true })
         .commit()
