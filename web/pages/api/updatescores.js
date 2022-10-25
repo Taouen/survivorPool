@@ -4,6 +4,8 @@ export default async function handler(req, res) {
   const { values, players, survivors } = req.body;
   const { scores, eliminated } = values;
 
+  console.log('Log 1:', req.body);
+
   const totalScores = [];
   const episodePlayers = [];
 
@@ -40,7 +42,11 @@ export default async function handler(req, res) {
       .then((updatedPlayer) =>
         console.log(`Updated scores for player ${username}:`, updatedPlayer)
       )
-      .catch((err) => console.error(err));
+      .catch((err) =>
+        console.log(
+          `An error occured while updating scores for player ${username}: ${err}`
+        )
+      );
   });
 
   totalScores.sort((a, b) => b - a);
@@ -70,6 +76,11 @@ export default async function handler(req, res) {
       .commit()
       .then((promise) =>
         console.log(`Updated rank for player ${username}:`, promise)
+      )
+      .catch((err) =>
+        console.log(
+          `An error occured while updating rank for player ${username}: ${err}`
+        )
       );
   });
 
@@ -82,6 +93,11 @@ export default async function handler(req, res) {
           console.log(
             `Updated eliminated for survivor ${survivor.name}:`,
             promise
+          )
+        )
+        .catch((err) =>
+          console.log(
+            `An error occured while updating eliminated for survivor ${survivor.name}: ${err}`
           )
         );
     }
