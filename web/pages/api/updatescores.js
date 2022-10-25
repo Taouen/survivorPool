@@ -7,7 +7,7 @@ export default async function handler(req, res) {
   const totalScores = [];
   const episodePlayers = [];
 
-  players.forEach(async (player) => {
+  players.forEach((player) => {
     const { mvp, picks, username, _id, totalScore } = player;
     const pickScores = [];
 
@@ -31,13 +31,15 @@ export default async function handler(req, res) {
       id: _id,
     });
 
-    await Client.patch(_id)
+    Client.patch(_id)
       .setIfMissing({ episodeScores: [] })
       .append('episodeScores', [episodeScore])
       .setIfMissing({ totalScore: 0 })
       .inc({ totalScore: episodeScore })
       .commit()
-      .then(() => console.log('Updated scores'))
+      .then((updatedPlayer) =>
+        console.log(`Updated scores for player ${username}:`, updatedPlayer)
+      )
       .catch((err) => console.error(err));
   });
 
@@ -56,21 +58,32 @@ export default async function handler(req, res) {
     return ranks;
   };
 
-  episodePlayers.forEach(async (player) => {
-    const { score, id } = player;
+  episodePlayers.forEach((player) => {
+    const { score, id, username } = player;
     const ranks = createUniqueRanks(totalScores);
 
     let rank = ranks.indexOf(score) + 1;
 
-    await Client.patch(id)
+    Client.patch(id)
       .setIfMissing({ rank: [] })
       .append('rank', [rank])
-      .commit();
+      .commit()
+      .then((promise) =>
+        console.log(`Updated rank for player ${username}:`, promise)
+      );
   });
 
-  survivors.forEach(async (survivor) => {
+  survivors.forEach((survivor) => {
     if (eliminated.includes(survivor.name)) {
-      await Client.patch(survivor._id).set({ eliminated: true }).commit();
+      Client.patch(survivor._id)
+        .set({ eliminated: true })
+        .commit()
+        .then((promise) =>
+          console.log(
+            `Updated eliminated for survivor ${survivor.name}:`,
+            promise
+          )
+        );
     }
   });
   res.status(201).json(req.body);
