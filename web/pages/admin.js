@@ -35,10 +35,58 @@ const resetPlayerScores = (players) => {
 };
 
 const updateScores = (values, setSubmitted, players, survivors) => {
+  const { eliminated } = values;
+
+  const scores = { ...values.scores };
+
+  for (const score in scores) {
+    scores[score] = scores[score] === '' ? 0 : scores[score];
+  }
+
+  const totalScores = [];
+
+  players.forEach((player) => {
+    const { mvp, picks, episodeScores } = player;
+
+    // Calculate episode score for player
+    const episodeScore = Object.values(
+      // get an array of just the scores without the survivor name
+      Object.fromEntries(
+        // convert the filtered array back into an object
+        Object.entries(scores).filter(
+          // convert scores object to an array and filter all scores down to just the players picks and MVP
+          (survivor) => picks.includes(survivor[0]) || survivor[0] === mvp
+        )
+      )
+    )
+      .filter((value) => typeof value === 'number') // filter out any '' scores from eliminated survivors
+      .reduce((a, b) => a + b, 0); // sum up scores
+
+    episodeScores.push(episodeScore);
+    player.totalScore += episodeScore;
+    totalScores.push(player.totalScore);
+  });
+
+  // Create array of Unique total scores sorted from higest to lowest to find ranks, then for each player, find their total score in the array and set their rank for this episode as the index + 1
+  const uniqueTotalScores = [...new Set(totalScores)].sort((a, b) => b - a);
+
+  players.forEach((player) => {
+    player.rank.push(uniqueTotalScores.indexOf(player.totalScore) + 1);
+  });
+
+  // compare values.eliminated to eliminated value of survivors, find any survivors who were eliminated this episode and update only those.
+  const eliminatedThisEpisode = [];
+  survivors
+    .filter((survivor) => survivor.eliminated === false)
+    .forEach((survivor) => {
+      if (eliminated.includes(survivor.name)) {
+        eliminatedThisEpisode.push(survivor);
+      }
+    });
+
   const data = {
-    values,
     players,
-    survivors,
+    eliminatedThisEpisode,
   };
 
   fetch('/api/updatescores', {
@@ -136,6 +184,8 @@ export default function admin({ players, survivors }) {
           }}
         >
           {(formik) => (
+            /* --- FORM START --- */
+
             <form
               className="flex flex-col items-center mb-8 text-lg md:text-base"
               onSubmit={formik.handleSubmit}
