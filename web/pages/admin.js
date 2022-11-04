@@ -68,10 +68,20 @@ const updateScores = (values, setSubmitted, players, survivors) => {
   });
 
   // Create array of Unique total scores sorted from higest to lowest to find ranks, then for each player, find their total score in the array and set their rank for this episode as the index + 1
-  const uniqueTotalScores = [...new Set(totalScores)].sort((a, b) => b - a);
+
+  totalScores.sort((a, b) => b - a);
+  const ranks = [];
+
+  totalScores.forEach((score) => {
+    if (ranks.indexOf(score) === -1) {
+      ranks.push(score);
+    } else {
+      ranks.push('skip');
+    }
+  });
 
   players.forEach((player) => {
-    player.rank.push(uniqueTotalScores.indexOf(player.totalScore) + 1);
+    player.rank.push(ranks.indexOf(player.totalScore) + 1);
   });
 
   // compare values.eliminated to eliminated value of survivors, find any survivors who were eliminated this episode and update only those.
@@ -108,7 +118,7 @@ const updateScores = (values, setSubmitted, players, survivors) => {
 const deleteLatestScore = (players) => {
   const data = { players };
 
-  fetch('/api/deleteepisodescore', {
+  fetch('/api/deletelatestscore', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
