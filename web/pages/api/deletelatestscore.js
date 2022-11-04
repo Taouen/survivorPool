@@ -29,10 +29,17 @@ export default async function handler(req, res) {
   });
 
   try {
-    const result = await Promise.all(requests);
-
-    res.status(200);
+    Promise.all(requests).then((result) => {
+      res
+        .status(200)
+        .send(
+          `Successfully reset latest score for all players. Result: ${result}`
+        );
+    });
   } catch (err) {
-    console.log(`An error occured during one or more requests: ${err}`);
+    res
+      .status(500)
+      .send({ error: 'An error occurred in one or more update requests:' });
+    console.error(err);
   }
 }

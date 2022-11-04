@@ -38,9 +38,8 @@ export default async function handler(req, res) {
   });
 
   try {
-    const result = await Promise.all(updateRequests);
-
-    res.status(200).send('Updates completed successfully');
+    const result = Promise.all(updateRequests);
+    res.status(200).send(`Updates completed successfully. Result: ${result}`);
   } catch (err) {
     res
       .status(500)
