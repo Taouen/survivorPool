@@ -68,10 +68,20 @@ const updateScores = (values, setSubmitted, players, survivors) => {
   });
 
   // Create array of Unique total scores sorted from higest to lowest to find ranks, then for each player, find their total score in the array and set their rank for this episode as the index + 1
-  const uniqueTotalScores = [...new Set(totalScores)].sort((a, b) => b - a);
+
+  totalScores.sort((a, b) => b - a);
+  const ranks = [];
+
+  totalScores.forEach((score) => {
+    if (ranks.indexOf(score) === -1) {
+      ranks.push(score);
+    } else {
+      ranks.push('skip');
+    }
+  });
 
   players.forEach((player) => {
-    player.rank.push(uniqueTotalScores.indexOf(player.totalScore) + 1);
+    player.rank.push(ranks.indexOf(player.totalScore) + 1);
   });
 
   // compare values.eliminated to eliminated value of survivors, find any survivors who were eliminated this episode and update only those.
@@ -105,13 +115,10 @@ const updateScores = (values, setSubmitted, players, survivors) => {
     .catch((err) => console.log(err));
 };
 
-const deleteEpisodeScores = (players, values) => {
-  const data = {
-    players,
-    values,
-  };
+const deleteLatestScore = (players) => {
+  const data = { players };
 
-  fetch('/api/deleteepisodescore', {
+  fetch('/api/deletelatestscore', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -251,34 +258,12 @@ export default function admin({ players, survivors }) {
         <div className="w-full p-2 border border-red-500 rounded">
           <h3 className="mb-4 text-xl ">Danger Zone</h3>
           <div className="flex flex-col justify-center w-full md:flex-row">
-            <Formik
-              initialValues={{ episode: '' }}
-              validateOnBlur={false}
-              validateOnChange={false}
-              onSubmit={(values, { resetForm }) => {
-                deleteEpisodeScores(players, values);
-                resetForm();
-              }}
+            <button
+              className="p-1 mb-2 border rounded md:ml-2"
+              onClick={() => deleteLatestScore()}
             >
-              {(formik) => (
-                <form onSubmit={formik.handleSubmit}>
-                  <Field
-                    type="number"
-                    id="episode"
-                    name="episode"
-                    className="w-20 p-1 mb-2 text-black border rounded outline-none md:ml-4 focus:ring focus:ring-lime-500"
-                    onChange={formik.handleChange}
-                  />
-                  <button
-                    className="p-1 mb-2 ml-2 border rounded"
-                    onClick={formik.handleSubmit}
-                    type="submit"
-                  >
-                    Delete Episode Scores
-                  </button>
-                </form>
-              )}
-            </Formik>
+              Delete latest score
+            </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
               onClick={() => copyEmails()}
