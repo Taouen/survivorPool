@@ -37,10 +37,17 @@ export default function Home({ players }) {
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
       <Layout>
+        {/* -------- Delete this when I've fixed the update scores api */}
+        <p className="mb-8 text-left text-red-600">
+          I've made some changes to the site and broken something. Standings
+          information will be incorrect. Please bear with me while I figure out
+          what went wrong and get the site working properly again.
+        </p>
+        {/* -------- Delete this when I've fixed the update scores api */}
+
         {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
         )}
-
         {currentEpisode === 1 && (
           <p>
             Points begin to accumulate starting with episode 2. Check back
@@ -55,7 +62,7 @@ export default function Home({ players }) {
               <strong>tanner.wiltshire@gmail.com</strong>. If you have sent your
               payment already and believe this is an error, please{' '}
               <a
-                className="text-red-600  dark:text-red-400 hover:underline"
+                className="text-red-600 dark:text-red-400 hover:underline"
                 href="mailto:tanner.wiltshire@gmail.com?subject=User missing from standings"
               >
                 contact me
