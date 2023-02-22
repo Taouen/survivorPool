@@ -60,6 +60,8 @@ const updateScores = (values, setSubmitted, players, survivors) => {
       )
     )
       .filter((value) => typeof value === 'number') // filter out any '' scores from eliminated survivors
+      .sort((a, b) => b - a) // sort highest to lowest
+      .splice(3) // remove everything after the first 3 scores
       .reduce((a, b) => a + b, 0); // sum up scores
 
     episodeScores.push(episodeScore);

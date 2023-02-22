@@ -7,25 +7,25 @@
     {
       "name": "season43",
       "title": "Season 43",
-      "default": true,
       "api": {
         "projectId": "806pz8zb",
         "dataset": "season43"
       }
     },
     {
-      "name": "season42",
-      "title": "Season 42",
+      "name": "season44",
+      "title": "Season 44",
+      "default": true,
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season42"
+        "dataset": "season44"
       }
     }
   ],
 
   "api": {
     "projectId": "806pz8zb",
-    "dataset": "season43"
+    "dataset": "season44"
   },
   "plugins": [
     "@sanity/base",
