@@ -40,13 +40,13 @@ export default function Home({ players }) {
         {/* -------- Delete this when I've fixed the api 
 
         Leaving in place in case I need to use it again.
+      -------- Delete this when I've fixed the api */}
 
         <p className="mb-8 text-left text-red-600">
           I've made some changes to the site and broken something. Standings
-          information will be incorrect. Please bear with me while I figure out
+          information may be incorrect. Please bear with me while I figure out
           what went wrong and get the site working properly again.
         </p>
-      -------- Delete this when I've fixed the api */}
 
         {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
