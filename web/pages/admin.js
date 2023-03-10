@@ -60,8 +60,8 @@ const updateScores = (values, setSubmitted, players, survivors) => {
       )
     )
       .filter((value) => typeof value === 'number') // filter out any '' scores from eliminated survivors
-      .sort((a, b) => b - a) // sort highest to lowest
-      .splice(3) // remove everything after the first 3 scores
+      .sort((a, b) => (a > b ? 1 : -1)) // sort highest to lowest
+      .splice(2) // remove everything after the first 3 scores
       .reduce((a, b) => a + b, 0); // sum up scores
 
     episodeScores.push(episodeScore);
@@ -262,7 +262,7 @@ export default function admin({ players, survivors }) {
           <div className="flex flex-col justify-center w-full md:flex-row">
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => deleteLatestScore()}
+              onClick={() => deleteLatestScore(players)}
             >
               Delete latest score
             </button>
