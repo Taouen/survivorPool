@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   const requests = [];
 
   players.forEach((player) => {
-    const { _id, username } = player;
+    const { _id, username, episodeScores, rank } = player;
 
     const scoreToDelete = player.episodeScores[episodeScores.length - 1];
 
