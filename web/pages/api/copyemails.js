@@ -6,7 +6,9 @@ export default async function handler(req, res) {
       console.log(err);
     }
   );
-  console.log(emails);
+  emails.forEach((item) => {
+    console.log(item.email);
+  });
 
   res.status(200).send({ message: 'Request completed.' });
 }
