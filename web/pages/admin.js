@@ -151,7 +151,8 @@ const clearEliminated = (survivors) => {
 };
 
 const copyEmails = async () => {
-  fetch('/api/copyemails');
+  const request = await fetch('/api/copyemails').then((data) => data.json());
+  console.log(request.message);
 };
 
 export default function admin({ players, survivors }) {

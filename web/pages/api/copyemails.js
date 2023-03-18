@@ -8,5 +8,5 @@ export default async function handler(req, res) {
   );
   console.log(emails);
 
-  res.status(200);
+  res.status(200).send({ message: 'Request completed.' });
 }
