@@ -22,7 +22,7 @@ export default async function handler(req, res) {
   });
 
   try {
-    const result = Promise.all(updateRequests);
+    const result = await Promise.all(updateRequests);
     res
       .status(200)
       .send(`Scores successfully reset for all players. Result :${result}`);
