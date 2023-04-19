@@ -5,11 +5,11 @@
   },
   "__experimental_spaces": [
     {
-      "name": "season43",
-      "title": "Season 43",
+      "name": "development",
+      "title": "Development",
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season43"
+        "dataset": "development"
       }
     },
     {
