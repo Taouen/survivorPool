@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSkull } from '@fortawesome/free-solid-svg-icons';
 
 import Layout from '../components/Layout';
 import Client from '../components/Client';
@@ -27,16 +29,46 @@ export default function picks({ players, survivors }) {
                     </tr>
                   </thead>
                   <tbody className="flex flex-col">
-                    <tr className="flex justify-center py-1 border border-grey-500">
-                      <td className="flex">MVP: {mvp}</td>
+                    <tr
+                      className={`flex justify-center p-2 border border-grey-500`}
+                    >
+                      <td
+                        className={`flex justify-center ${
+                          mvp.eliminated ? 'line-through opacity-50' : null
+                        }`}
+                      >
+                        {mvp.eliminated && (
+                          <FontAwesomeIcon
+                            icon={faSkull}
+                            style={{ color: '#7f7f7f80' }}
+                            size="2x"
+                            className="absolute self-center text-black -z-1 justify-self-center"
+                          />
+                        )}
+                        <p className="relative z-0">MVP: {mvp.name}</p>
+                      </td>
                     </tr>
                     <tr className="flex justify-around border border-t-0 border-grey-500">
                       {picks.map((pick) => (
                         <td
-                          key={pick}
-                          className="flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0"
+                          key={pick.name}
+                          className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0`}
                         >
-                          {pick}
+                          <div
+                            className={`flex justify-center ${
+                              pick.eliminated ? 'line-through opacity-50' : null
+                            }`}
+                          >
+                            {pick.eliminated && (
+                              <FontAwesomeIcon
+                                icon={faSkull}
+                                style={{ color: '#7f7f7f80' }}
+                                size="2x"
+                                className="absolute self-center text-black -z-1 justify-self-center"
+                              />
+                            )}
+                            <p className="relative z-0">{pick.name}</p>
+                          </div>
                         </td>
                       ))}
                     </tr>
@@ -56,7 +88,9 @@ export async function getStaticProps() {
       data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
     )
     .catch((err) => console.error(err));
-  const players = await Client.fetch('*[_type == "player"]')
+  const players = await Client.fetch(
+    '*[_type == "player"]{username, mvp->{name, eliminated}, picks[]->{name, eliminated}}'
+  )
     .then((data) =>
       data.sort((a, b) =>
         a.username.toLowerCase() - b.username.toLowerCase() < 0
