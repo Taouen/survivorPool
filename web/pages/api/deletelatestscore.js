@@ -4,10 +4,11 @@ export default async function handler(req, res) {
   const { players } = req.body;
   const requests = [];
 
+  console.log(players);
   players.forEach((player) => {
-    const { _id, username } = player;
+    const { _id, username, episodeScores, rank } = player;
 
-    const scoreToDelete = player.episodeScores[episodeScores.length - 1];
+    const scoreToDelete = episodeScores[episodeScores.length - 1];
 
     requests.push(
       Client.patch(_id)
