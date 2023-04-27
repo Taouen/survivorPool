@@ -4,7 +4,6 @@ export default async function handler(req, res) {
   const { players } = req.body;
   const requests = [];
 
-  console.log(players);
   players.forEach((player) => {
     const { _id, username, episodeScores, rank } = player;
 
@@ -30,13 +29,8 @@ export default async function handler(req, res) {
   });
 
   try {
-    Promise.all(requests).then((result) => {
-      res
-        .status(200)
-        .send(
-          `Successfully reset latest score for all players. Result: ${result}`
-        );
-    });
+    const result = await Promise.all(requests);
+    res.status(200).send(`Updates completed successfully. Result: ${result}`);
   } catch (err) {
     res
       .status(500)
