@@ -63,7 +63,7 @@ export default function Home(props) {
             <h3 className="mb-2 text-xl">Scoring</h3>
             <p>
               The scoring system used comes from{' '}
-              <Link href="https://www.globaltv.com/shows/survivor/articles/survivor-43-fantasy-tribe-pool/#scoring">
+              <Link href="https://www.globaltv.com/survivor-44-fantasy-tribe-pool/">
                 <a className="text-red-600 dark:text-red-400 hover:underline">
                   Global TV's Scoring System
                 </a>
