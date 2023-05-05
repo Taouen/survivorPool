@@ -17,13 +17,14 @@ export default {
       name: 'picks',
       title: 'Picks',
       type: 'array',
-      of: [{ type: 'string' }],
+      of: [{ type: 'reference', to: [{ type: 'survivor' }] }],
       initialValue: [],
     },
     {
       name: 'mvp',
       title: 'MVP',
-      type: 'string',
+      type: 'reference',
+      to: [{ type: 'survivor' }],
     },
     {
       name: 'episodeScores',

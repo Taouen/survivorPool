@@ -1,41 +1,53 @@
 import Client from '../../components/Client';
 
 export default async function handler(req, res) {
-  const { players } = req.body;
-  const requests = [];
+  const { players, survivors } = req.body;
 
-  players.forEach((player) => {
+  const playerRequests = players.map((player) => {
     const { _id, username, episodeScores, rank } = player;
 
-    const scoreToDelete = player.episodeScores[episodeScores.length - 1];
+    const scoreToDelete = episodeScores[episodeScores.length - 1];
 
-    requests.push(
-      Client.patch(_id)
-        .unset([
-          `episodeScores[${episodeScores.length - 1}]`,
-          `rank[${rank.length - 1}]`,
-        ])
-        .dec({ totalScore: scoreToDelete })
-        .commit()
-        .then(() => {
-          console.log(`Successfully deleted latest score for ${username}`);
-        })
-        .catch((err) => {
-          console.log(
-            `An error occurred while deleting latest score for ${username}: ${err}`
-          );
-        })
-    );
+    return Client.patch(_id)
+      .unset([
+        `episodeScores[${episodeScores.length - 1}]`,
+        `rank[${rank.length - 1}]`,
+      ])
+      .dec({ totalScore: scoreToDelete })
+      .commit()
+      .then(() => {
+        console.log(`Successfully deleted latest score for ${username}`);
+      })
+      .catch((err) => {
+        console.log(
+          `An error occurred while deleting latest score for ${username}: ${err}`
+        );
+      });
+  });
+
+  const survivorRequests = survivors.map((survivor) => {
+    const { _id, episodeScores } = survivor;
+
+    const scoreToDelete = episodeScores[episodeScores.length - 1];
+
+    return Client.patch(_id)
+      .unset([`episodeScores[${episodeScores.length - 1}]`])
+      .dec({ totalScore: scoreToDelete })
+      .commit()
+      .then(() => {
+        console.log(`Successfully deleted latest score for ${survivor.name}`);
+      })
+      .catch((err) => {
+        console.log(
+          `An error occurred while deleting latest score for ${survivor.name}: ${err}`
+        );
+        console.error(err);
+      });
   });
 
   try {
-    Promise.all(requests).then((result) => {
-      res
-        .status(200)
-        .send(
-          `Successfully reset latest score for all players. Result: ${result}`
-        );
-    });
+    const result = await Promise.all([...playerRequests, ...survivorRequests]);
+    res.status(200).send(`Updates completed successfully. Result: ${result}`);
   } catch (err) {
     res
       .status(500)

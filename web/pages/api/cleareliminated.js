@@ -2,21 +2,19 @@ import Client from '../../components/Client';
 
 export default async function handler(req, res) {
   const { survivors } = req.body;
-  const requests = [];
 
-  survivors.forEach((survivor) => {
+  const survivorRequests = survivors.map((survivor) => {
     const { _id, name } = survivor;
-    requests.push(
-      Client.patch(_id)
-        .set({ eliminated: false })
-        .commit()
-        .then(() => console.log(`Reset eliminated for ${name}`))
-        .catch((err) => console.error(err))
-    );
+
+    return Client.patch(_id)
+      .set({ eliminated: false })
+      .commit()
+      .then(() => console.log(`Reset eliminated for ${name}`))
+      .catch((err) => console.error(err));
   });
 
   try {
-    const result = await Promise.all(requests);
+    const result = await Promise.all(survivorRequests);
     res.status(200).send({ result });
   } catch (err) {
     res
