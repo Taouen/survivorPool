@@ -19,11 +19,15 @@ const deletePlayers = () => {
   }
 };
 
-const resetPlayerScores = (players) => {
-  const data = { players };
-  if (window.confirm('Are you sure you want to delete all player scores?')) {
+const resetScores = (players, survivors) => {
+  const data = { players, survivors };
+  if (
+    window.confirm(
+      'Are you sure you want to reset all player and survivor scores?'
+    )
+  ) {
     if (window.confirm('Are you really sure?')) {
-      fetch('/api/deletescores', {
+      fetch('/api/resetScores', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -35,70 +39,70 @@ const resetPlayerScores = (players) => {
 };
 
 const updateScores = (values, setSubmitted, players, survivors) => {
-  const { eliminated } = values;
-
   const scores = { ...values.scores };
 
   for (const score in scores) {
     scores[score] = scores[score] === '' ? 0 : scores[score];
   }
 
-  const totalScores = [];
+  const updatedSurvivors = survivors.map((survivor) => {
+    const updatedSurvivor = { ...survivor };
 
-  players.forEach((player) => {
-    const { mvp, picks, episodeScores } = player;
+    if (!updatedSurvivor.episodeScores) {
+      updatedSurvivor.episodeScores = [];
+    }
 
-    // Calculate episode score for player
-    const episodeScore = Object.values(
-      // get an array of just the scores without the survivor name
-      Object.fromEntries(
-        // convert the filtered array back into an object
-        Object.entries(scores).filter(
-          // convert scores object to an array and filter all scores down to just the players picks and MVP
-          (survivor) => picks.includes(survivor[0]) || survivor[0] === mvp
-        )
-      )
-    )
-      .filter((value) => typeof value === 'number') // filter out any '' scores from eliminated survivors
+    if (!updatedSurvivor.totalScore) {
+      updatedSurvivor.totalScore = 0;
+    }
+
+    updatedSurvivor.episodeScores.push(scores[updatedSurvivor.name]);
+    updatedSurvivor.totalScore += scores[updatedSurvivor.name];
+    updatedSurvivor.eliminated = values.eliminated.includes(
+      updatedSurvivor.name
+    );
+
+    return updatedSurvivor;
+  });
+
+  const updatedPlayers = players.map((player) => {
+    const updatedPlayer = { ...player };
+    const { mvp, picks, episodeScores } = updatedPlayer;
+
+    const pickScores = [];
+
+    picks.forEach((pick) => {
+      pickScores.push(scores[pick.name]);
+    });
+    pickScores.push(scores[mvp.name]);
+
+    const episodeScore = [...pickScores]
       .sort((a, b) => b - a) // sort highest to lowest
-      .splice(3) // remove everything after the first 3 scores
+      .slice(0, 3) // remove everything after the first 3 scores
       .reduce((a, b) => a + b, 0); // sum up scores
 
     episodeScores.push(episodeScore);
-    player.totalScore += episodeScore;
-    totalScores.push(player.totalScore);
+    updatedPlayer.totalScore = episodeScores.reduce((a, b) => a + b, 0);
+
+    return updatedPlayer;
   });
 
-  // Create array of Unique total scores sorted from higest to lowest to find ranks, then for each player, find their total score in the array and set their rank for this episode as the index + 1
+  // Determine ranks by sorting players by totalScore
+  const sortedPlayers = [...updatedPlayers].sort(
+    (a, b) => b.totalScore - a.totalScore
+  );
 
-  totalScores.sort((a, b) => b - a);
-  const ranks = [];
+  let rank = 1;
+  let prevScore = sortedPlayers[0].totalScore;
 
-  totalScores.forEach((score) => {
-    if (ranks.indexOf(score) === -1) {
-      ranks.push(score);
-    } else {
-      ranks.push('skip');
-    }
+  sortedPlayers.forEach((player, i) => {
+    player.rank.push(prevScore === player.totalScore ? rank : (rank = i + 1));
+    prevScore = player.totalScore;
   });
-
-  players.forEach((player) => {
-    player.rank.push(ranks.indexOf(player.totalScore) + 1);
-  });
-
-  // compare values.eliminated to eliminated value of survivors, find any survivors who were eliminated this episode and update only those.
-  const eliminatedThisEpisode = [];
-  survivors
-    .filter((survivor) => survivor.eliminated === false)
-    .forEach((survivor) => {
-      if (eliminated.includes(survivor.name)) {
-        eliminatedThisEpisode.push(survivor);
-      }
-    });
 
   const data = {
-    players,
-    eliminatedThisEpisode,
+    players: sortedPlayers,
+    survivors: updatedSurvivors,
   };
 
   fetch('/api/updatescores', {
@@ -117,8 +121,8 @@ const updateScores = (values, setSubmitted, players, survivors) => {
     .catch((err) => console.log(err));
 };
 
-const deleteLatestScore = (players) => {
-  const data = { players };
+const deleteLatestScore = (players, survivors) => {
+  const data = { players, survivors };
 
   fetch('/api/deletelatestscore', {
     method: 'POST',
@@ -257,7 +261,7 @@ export default function admin({ players, survivors }) {
           <div className="flex flex-col justify-center w-full md:flex-row">
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => deleteLatestScore()}
+              onClick={() => deleteLatestScore(players, survivors)}
             >
               Delete latest score
             </button>
@@ -276,9 +280,9 @@ export default function admin({ players, survivors }) {
             </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => resetPlayerScores(players)}
+              onClick={() => resetScores(players, survivors)}
             >
-              Reset player scores
+              Reset scores
             </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
@@ -294,22 +298,12 @@ export default function admin({ players, survivors }) {
 }
 
 export async function getStaticProps() {
-  const survivors = await Client.fetch('*[_type == "survivor"]')
-    .then((data) =>
-      data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
-    )
-    .catch((err) => console.error(err));
-  const players = await Client.fetch('*[_type == "player"]')
-    .then((data) =>
-      data.sort((a, b) =>
-        a.username.toLowerCase() - b.username.toLowerCase() < 0
-          ? 1
-          : b.username.toLowerCase() > a.username.toLowerCase()
-          ? -1
-          : 0
-      )
-    )
-    .catch((err) => console.error(err));
+  const survivors = await Client.fetch(
+    '*[_type == "survivor"] | order(name, asc)'
+  ).catch((err) => console.error(err));
+  const players = await Client.fetch(
+    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
+  ).catch((err) => console.error(err));
   return {
     props: {
       survivors,

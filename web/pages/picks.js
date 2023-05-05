@@ -89,7 +89,7 @@ export async function getStaticProps() {
     )
     .catch((err) => console.error(err));
   const players = await Client.fetch(
-    '*[_type == "player"]{username, mvp->{name, eliminated}, picks[]->{name, eliminated}}'
+    '*[_type == "player"]{..., mvp->{...}, picks[]->{...}}'
   )
     .then((data) =>
       data.sort((a, b) =>

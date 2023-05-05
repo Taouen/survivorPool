@@ -10,10 +10,17 @@ export default {
     },
 
     {
-      name: 'scores',
-      title: 'Scores',
+      name: 'episodeScores',
+      title: 'Episode Scores',
       type: 'array',
       of: [{ type: 'number' }],
+      initialValue: [],
+    },
+    {
+      name: 'totalScore',
+      title: 'Total Score',
+      type: 'number',
+      initialValue: 0,
     },
     {
       name: 'eliminated',
