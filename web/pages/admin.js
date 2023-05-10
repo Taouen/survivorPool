@@ -1,17 +1,20 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import { Formik, Field } from 'formik';
+import { ClipLoader } from 'react-spinners';
 
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
 
-const deletePlayers = () => {
+const deletePlayers = (setIsSubmitting) => {
+  setIsSubmitting(true);
   if (window.confirm('Are you sure you want to delete all players?')) {
     if (window.confirm('Are you really sure?')) {
       try {
-        fetch('/api/deleteplayers').then(() =>
-          window.alert('All players have been deleted.')
-        );
+        fetch('/api/deleteplayers').then(() => {
+          setIsSubmitting(false);
+          window.alert('All players have been deleted.');
+        });
       } catch {
         console.error(error);
       }
@@ -19,26 +22,32 @@ const deletePlayers = () => {
   }
 };
 
-const resetScores = (players, survivors) => {
+const resetScores = (players, survivors, setIsSubmitting) => {
   const data = { players, survivors };
+
   if (
     window.confirm(
       'Are you sure you want to reset all player and survivor scores?'
     )
   ) {
     if (window.confirm('Are you really sure?')) {
+      setIsSubmitting(true);
       fetch('/api/resetScores', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
-      }).catch((err) => console.log(err));
+      })
+        .then(() => {
+          setIsSubmitting(false);
+        })
+        .catch((err) => console.log(err));
     }
   }
 };
 
-const updateScores = (values, setSubmitted, players, survivors) => {
+const updateScores = (values, setIsSubmitting, players, survivors) => {
   const scores = { ...values.scores };
 
   for (const score in scores) {
@@ -104,7 +113,7 @@ const updateScores = (values, setSubmitted, players, survivors) => {
     players: sortedPlayers,
     survivors: updatedSurvivors,
   };
-
+  setIsSubmitting(true);
   fetch('/api/updatescores', {
     method: 'POST',
     headers: {
@@ -113,7 +122,7 @@ const updateScores = (values, setSubmitted, players, survivors) => {
     body: JSON.stringify(data),
   })
     .then(() => {
-      setSubmitted(true);
+      setIsSubmitting(false);
       if (window.confirm('Scores updated. Do you want to reload the page?')) {
         window.location.reload(true);
       }
@@ -121,20 +130,25 @@ const updateScores = (values, setSubmitted, players, survivors) => {
     .catch((err) => console.log(err));
 };
 
-const deleteLatestScore = (players, survivors) => {
+const deleteLatestScore = (players, survivors, setIsSubmitting) => {
   const data = { players, survivors };
-
+  setIsSubmitting(true);
   fetch('/api/deletelatestscore', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data),
-  }).catch((err) => console.log(err));
+  })
+    .then(() => {
+      setIsSubmitting(false);
+    })
+    .catch((err) => console.log(err));
 };
 
-const clearEliminated = (survivors) => {
+const clearEliminated = (survivors, setIsSubmitting) => {
   const data = { survivors };
+  setIsSubmitting(true);
   fetch('/api/cleareliminated', {
     method: 'POST',
     headers: {
@@ -143,6 +157,7 @@ const clearEliminated = (survivors) => {
     body: JSON.stringify(data),
   })
     .then(() => {
+      setIsSubmitting(false);
       if (
         window.confirm(
           'Reset eliminated survivors. Do you want to reload the page?'
@@ -160,8 +175,7 @@ const copyEmails = async () => {
 };
 
 export default function admin({ players, survivors }) {
-  const [Submitted, setSubmitted] = useState(false);
-  const [emails, setEmails] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const initialValues = {
     scores: {},
@@ -187,7 +201,7 @@ export default function admin({ players, survivors }) {
           validateOnBlur={false}
           validateOnChange={false}
           onSubmit={(values, { setSubmitting, resetForm }) => {
-            updateScores(values, setSubmitted, players, survivors);
+            updateScores(values, setIsSubmitting, players, survivors);
             resetForm();
           }}
         >
@@ -243,6 +257,7 @@ export default function admin({ players, survivors }) {
                   {formik.errors.eliminated}
                 </div>
               ) : null}
+              {isSubmitting && <ClipLoader color={'lime'} />}
               <button
                 className="p-1 mt-4 border rounded"
                 onClick={formik.handleSubmit}
@@ -261,32 +276,34 @@ export default function admin({ players, survivors }) {
           <div className="flex flex-col justify-center w-full md:flex-row">
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => deleteLatestScore(players, survivors)}
+              onClick={() =>
+                deleteLatestScore(players, survivors, setIsSubmitting)
+              }
             >
               Delete latest score
             </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => copyEmails()}
+              onClick={() => copyEmails(setIsSubmitting)}
             >
               Copy Player Emails
             </button>
 
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => clearEliminated(survivors)}
+              onClick={() => clearEliminated(survivors, setIsSubmitting)}
             >
               Clear Eliminated
             </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={() => resetScores(players, survivors)}
+              onClick={() => resetScores(players, survivors, setIsSubmitting)}
             >
               Reset scores
             </button>
             <button
               className="p-1 mb-2 border rounded md:ml-2"
-              onClick={deletePlayers}
+              onClick={() => deletePlayers(setIsSubmitting)}
             >
               Delete all players
             </button>

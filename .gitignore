@@ -3,6 +3,7 @@
 .DS_Store
 .AppleDouble
 .LSOverride
+query.groq
 
 # Icon must end with two \r
 Icon
