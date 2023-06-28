@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
+import { v4 as uuid } from 'uuid';
 
 const validate = async (values) => {
   const errors = {};
@@ -61,15 +62,28 @@ const TextInput = ({ name, formik }) => {
 };
 
 const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
+  const playerData = { ...values };
+  const { picks, mvp } = playerData;
+
+  const picksAsReferences = picks
+    .filter((element) => element !== mvp)
+    .map((pick) => {
+      return { _key: uuid(), _type: 'reference', _ref: pick };
+    }); // Remove MVP from the picks array, then return the object for sanity
+  playerData.picks = picksAsReferences;
+  playerData.mvp = { _type: 'reference', _ref: mvp };
+
   fetch('/api/createplayer', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(values),
+    body: JSON.stringify(playerData),
   })
-    .then(() => setIsSubmitted(true))
-    .then(() => setIsSubmitting(false))
+    .then(() => {
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+    })
     .catch((err) => console.log(err));
 };
 
@@ -164,7 +178,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                     );
 
                     // Add the survivor at the randomIndex to the selected array
-                    selected.push(availableSurvivors[randomIndex].name);
+                    selected.push(availableSurvivors[randomIndex]._id);
 
                     // Remove the survivor from the available survivors so they can't be selected at random again.
                     availableSurvivors.splice(randomIndex, 1);
@@ -215,7 +229,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                   type="radio"
                   name="mvp"
                   id={`${survivor.name}-radio`}
-                  value={survivor.name}
+                  value={survivor._id}
                   className="ml-1 mr-4 text-transparent border outline-none form-radio border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                   aria-label={survivor.name}
@@ -223,7 +237,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                     survivor.eliminated
                       ? true
                       : formik.values.picks.length < 5 ||
-                        formik.values.picks.includes(survivor.name)
+                        formik.values.picks.includes(survivor._id)
                       ? false
                       : true
                   }
@@ -236,13 +250,13 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                     survivor.eliminated
                       ? true
                       : formik.values.picks.length < 5 ||
-                        formik.values.picks.includes(survivor.name)
+                        formik.values.picks.includes(survivor._id)
                       ? false
                       : true
                   }
                   id={survivor.name}
                   name="picks"
-                  value={survivor.name}
+                  value={survivor._id}
                   className="w-6 h-6 mr-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                   onChange={formik.handleChange}
                 />
