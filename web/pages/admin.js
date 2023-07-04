@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { useState } from 'react';
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
+import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
@@ -174,7 +175,7 @@ const copyEmails = async () => {
   console.log(request.message);
 };
 
-export default function admin({ players, survivors }) {
+export default withPageAuthRequired(function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const initialValues = {
@@ -312,7 +313,7 @@ export default function admin({ players, survivors }) {
       </Layout>
     </div>
   );
-}
+});
 
 export async function getStaticProps() {
   const survivors = await Client.fetch(

@@ -1,6 +1,8 @@
 import Link from 'next/link';
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 const Header = () => {
+  const { user, error, isLoading } = useUser();
   const linkStyles =
     'px-2 md:px-4 hover:text-red-500 dark:hover:text-red-400 hover:underline';
 
@@ -32,6 +34,11 @@ const Header = () => {
             <Link href={page.path}>{page.title}</Link>
           </li>
         ))}
+        {user ? (
+          <a href="/api/auth/logout">Logout {user.name} </a>
+        ) : (
+          <a href="/api/auth/login">Login</a>
+        )}
       </ul>
     </div>
   );
