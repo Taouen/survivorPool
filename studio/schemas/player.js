@@ -51,5 +51,12 @@ export default {
       title: 'Paid',
       type: 'boolean',
     },
+    {
+      name: 'roles',
+      title: 'Roles',
+      type: 'array',
+      of: [{ type: 'string' }],
+      initialValue: [],
+    },
   ],
 };
