@@ -35,9 +35,13 @@ const Header = () => {
           </li>
         ))}
         {user ? (
-          <a href="/api/auth/logout">Logout {user.name} </a>
+          <a className={linkStyles} href="/api/auth/logout">
+            Logout {user.name}{' '}
+          </a>
         ) : (
-          <a href="/api/auth/login">Login</a>
+          <a className={linkStyles} href="/api/auth/login">
+            Login
+          </a>
         )}
       </ul>
     </div>
