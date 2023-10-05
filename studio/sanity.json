@@ -13,12 +13,12 @@
       }
     },
     {
-      "name": "season44",
-      "title": "Season 44",
+      "name": "season45",
+      "title": "Season 45",
       "default": true,
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season44"
+        "dataset": "season45"
       }
     }
   ],
