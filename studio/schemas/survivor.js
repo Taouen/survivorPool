@@ -8,7 +8,11 @@ export default {
       title: 'Name',
       type: 'string',
     },
-
+    {
+      name: 'nickname',
+      title: 'Nickname',
+      type: 'string',
+    },
     {
       name: 'episodeScores',
       title: 'Episode Scores',
