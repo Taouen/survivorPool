@@ -263,6 +263,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
                 {'  '}
                 <label htmlFor={survivor.name}>
                   {survivor.name}{' '}
+                  {survivor.nickname ? `"${survivor.nickname}"` : null}{' '}
                   <span className="text-red-600 dark:text-red-400">
                     {survivor.eliminated ? 'Eliminated' : null}
                   </span>

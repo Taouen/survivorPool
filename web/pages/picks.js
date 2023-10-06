@@ -5,7 +5,7 @@ import { faSkull } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../components/Layout';
 import Client from '../components/Client';
 
-export default function picks({ players, survivors }) {
+export default function picks({ players }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
       <Head>
@@ -45,13 +45,15 @@ export default function picks({ players, survivors }) {
                             className="absolute self-center text-black -z-1 justify-self-center"
                           />
                         )}
-                        <p className="relative z-0">MVP: {mvp.name}</p>
+                        <p className="relative z-0">
+                          MVP: {mvp.nickname ? mvp.nickname : mvp.name}
+                        </p>
                       </td>
                     </tr>
                     <tr className="flex justify-around border border-t-0 border-grey-500">
                       {picks.map((pick) => (
                         <td
-                          key={pick.name}
+                          key={pick.nickname ? pick.nickname : pick.name}
                           className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0`}
                         >
                           <div
@@ -67,7 +69,9 @@ export default function picks({ players, survivors }) {
                                 className="absolute self-center text-black -z-1 justify-self-center"
                               />
                             )}
-                            <p className="relative z-0">{pick.name}</p>
+                            <p className="relative z-0">
+                              {pick.nickname ? pick.nickname : pick.name}
+                            </p>
                           </div>
                         </td>
                       ))}
@@ -83,11 +87,6 @@ export default function picks({ players, survivors }) {
 }
 
 export async function getStaticProps() {
-  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
-    .then((data) =>
-      data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
-    )
-    .catch((err) => console.error(err));
   const players = await Client.fetch(
     '*[_type == "player"]{..., mvp->{...}, picks[]->{...}}'
   )
@@ -104,7 +103,6 @@ export async function getStaticProps() {
 
   return {
     props: {
-      survivors,
       players,
     },
     revalidate: 10,

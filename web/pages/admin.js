@@ -219,8 +219,10 @@ export default function admin({ players, survivors }) {
                     className="flex items-center justify-between w-full p-1"
                   >
                     <label htmlFor={survivor.name + ' Episode Score'}>
-                      {survivor.name}
+                      {survivor.name}{' '}
+                      {survivor.nickname ? `"${survivor.nickname}"` : null}
                     </label>
+
                     <div>
                       <Field
                         type="number"
