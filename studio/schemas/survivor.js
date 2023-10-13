@@ -9,6 +9,11 @@ export default {
       type: 'string',
     },
     {
+      name: 'tribeColour',
+      title: 'Tribe Colour',
+      type: 'string',
+    },
+    {
       name: 'nickname',
       title: 'Nickname',
       type: 'string',
