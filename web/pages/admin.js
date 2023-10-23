@@ -5,9 +5,24 @@ import Layout from '../components/Layout';
 import Client from '../components/Client.js';
 import DangerZone from '../components/DangerZone.js';
 import ScoreUpdater from '../components/ScoreUpdater.js';
+import AdminNav from '../components/AdminNav';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedPage, setSelectedPage] = useState('Update Scores');
+
+  const displayComponent = () => {
+    switch (selectedPage) {
+      case 'Update Scores':
+        return <ScoreUpdater players={players} survivors={survivors} />;
+      case 'Manage Survivors':
+        return <p>Manage Survivors</p>;
+      case 'Manage Players':
+        return <p>Manage Players</p>;
+      default:
+        return <p>No component found</p>;
+    }
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
@@ -16,13 +31,9 @@ export default function admin({ players, survivors }) {
       </Head>
       <Layout>
         <h2 className="mb-8 text-xl md:text-2xl">Welcome to the admin page.</h2>
-        <ScoreUpdater
-          players={players}
-          survivors={survivors}
-          isSubmitting={isSubmitting}
-          setIsSubmitting={setIsSubmitting}
-        />
-        {/* --- DANGER ZONE --- */}
+        <AdminNav setSelectedPage={setSelectedPage} />
+        {displayComponent()}
+
         <DangerZone
           players={players}
           survivors={survivors}
