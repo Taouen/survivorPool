@@ -6,17 +6,30 @@ import Client from '../components/Client.js';
 import DangerZone from '../components/DangerZone.js';
 import ScoreUpdater from '../components/ScoreUpdater.js';
 import AdminNav from '../components/AdminNav';
+import ManageSurvivors from '../components/ManageSurvivors';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedPage, setSelectedPage] = useState('Update Scores');
+  const [selectedPage, setSelectedPage] = useState('Manage Survivors');
 
   const displayComponent = () => {
     switch (selectedPage) {
       case 'Update Scores':
-        return <ScoreUpdater players={players} survivors={survivors} />;
+        return (
+          <ScoreUpdater
+            players={players}
+            survivors={survivors}
+            isSubmitting={isSubmitting}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
       case 'Manage Survivors':
-        return <p>Manage Survivors</p>;
+        return (
+          <ManageSurvivors
+            survivors={survivors}
+            setIsSubmitting={setIsSubmitting}
+          />
+        );
       case 'Manage Players':
         return <p>Manage Players</p>;
       default:
