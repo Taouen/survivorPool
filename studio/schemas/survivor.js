@@ -18,6 +18,7 @@ export default {
       title: 'Nickname',
       type: 'string',
     },
+    { name: 'tribeColor', title: 'Tribe Color', type: 'string' },
     {
       name: 'episodeScores',
       title: 'Episode Scores',
