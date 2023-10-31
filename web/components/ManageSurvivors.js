@@ -52,7 +52,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
           className="flex items-center justify-between py-1"
           key={survivor.name}
         >
-          <h1>{survivor.name}</h1>
+          <h1>{survivor.nickname ? survivor.nickname : survivor.name}</h1>
           <div className="pl-4">
             <input
               type="checkbox"
