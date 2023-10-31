@@ -5,6 +5,25 @@ import { faSkull } from '@fortawesome/free-solid-svg-icons';
 import Layout from '../components/Layout';
 import Client from '../components/Client';
 
+const getTribeColorClassname = (color) => {
+  switch (color) {
+    case 'red':
+      return 'ring-2 ring-inset ring-red-600';
+    case 'blue':
+      return 'ring-2 ring-inset ring-blue-600';
+    case 'green':
+      return 'ring-2 ring-inset ring-green-400';
+    case 'yellow':
+      return 'ring-2 ring-inset ring-yellow-300';
+    case 'orange':
+      return 'ring-2 ring-inset ring-orange-500';
+    case 'purple':
+      return 'ring-2 ring-inset ring-purple-600';
+    default:
+      return '';
+  }
+};
+
 export default function picks({ players }) {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
@@ -30,7 +49,11 @@ export default function picks({ players }) {
                   </thead>
                   <tbody className="flex flex-col">
                     <tr
-                      className={`flex justify-center p-2 border border-grey-500`}
+                      className={`flex justify-center p-2 border border-grey-500 ${
+                        mvp.tribeColor
+                          ? `${getTribeColorClassname(mvp.tribeColor)}`
+                          : ''
+                      }`}
                     >
                       <td
                         className={`flex justify-center ${
@@ -54,7 +77,11 @@ export default function picks({ players }) {
                       {picks.map((pick) => (
                         <td
                           key={pick.nickname ? pick.nickname : pick.name}
-                          className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0`}
+                          className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0 ${
+                            pick.tribeColor
+                              ? `${getTribeColorClassname(pick.tribeColor)}`
+                              : ''
+                          }`}
                         >
                           <div
                             className={`flex justify-center ${
