@@ -35,20 +35,52 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
     });
   };
 
+  const handleTribeColorChange = (name, color) => {
+    setUpdatedSurvivors((prevState) => {
+      const lastState = [...prevState];
+      lastState.map((survivor) => {
+        survivor.name === name ? (survivor.tribeColor = color) : survivor;
+      });
+      return lastState;
+    });
+  };
+
   return (
     <div>
       {updatedSurvivors.map((survivor) => (
-        <div className="flex justify-between w-32" key={survivor.name}>
+        <div
+          className="flex items-center justify-between py-1"
+          key={survivor.name}
+        >
           <h1>{survivor.name}</h1>
-          <input
-            type="checkbox"
-            value={survivor.eliminated}
-            checked={survivor.eliminated}
-            onChange={() => handleEliminatedChange(survivor.name)}
-          />
+          <div className="pl-4">
+            <input
+              type="checkbox"
+              value={survivor.eliminated}
+              checked={survivor.eliminated}
+              onChange={() => handleEliminatedChange(survivor.name)}
+            />
+            <select
+              onChange={(e) =>
+                handleTribeColorChange(survivor.name, e.target.value)
+              }
+              className="ml-2 dark:text-black"
+            >
+              <option value="none">--</option>
+              <option value="red">Red</option>
+              <option value="orange">Orange</option>
+              <option value="yellow">Yellow</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="purple">Purple</option>
+            </select>
+          </div>
         </div>
       ))}
-      <button onClick={() => updateSurvivors({ updatedSurvivors })}>
+      <button
+        className="p-1 border rounded text-md w-28 md:w-36 "
+        onClick={() => updateSurvivors({ updatedSurvivors })}
+      >
         Save Changes
       </button>
     </div>

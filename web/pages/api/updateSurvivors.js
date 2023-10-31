@@ -8,6 +8,7 @@ export default async function handler(req, res) {
       .set({ eliminated: survivor.eliminated })
       .set({ episodeScores: survivor.episodeScores })
       .set({ totalScore: survivor.totalScore })
+      .set({ tribeColor: survivor.tribeColor })
       .commit()
       .then((survivor) => {
         console.log(`Updated eliminated for survivor ${survivor.name}`);
