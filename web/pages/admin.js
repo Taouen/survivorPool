@@ -10,7 +10,7 @@ import ManageSurvivors from '../components/ManageSurvivors';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedPage, setSelectedPage] = useState('Manage Survivors');
+  const [selectedPage, setSelectedPage] = useState('Update Scores');
 
   const displayComponent = () => {
     switch (selectedPage) {
