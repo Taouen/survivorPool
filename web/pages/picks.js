@@ -12,7 +12,7 @@ const getTribeColorClassname = (color) => {
     case 'blue':
       return 'ring-2 ring-inset ring-blue-600';
     case 'green':
-      return 'ring-2 ring-inset ring-green-400';
+      return 'ring-2 ring-inset ring-green-500';
     case 'yellow':
       return 'ring-2 ring-inset ring-yellow-300';
     case 'orange':
