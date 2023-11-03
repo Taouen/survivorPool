@@ -7,6 +7,7 @@ import DangerZone from '../components/DangerZone.js';
 import ScoreUpdater from '../components/ScoreUpdater.js';
 import AdminNav from '../components/AdminNav';
 import ManageSurvivors from '../components/ManageSurvivors';
+import ManagePlayers from '../components/ManagePlayers';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -31,7 +32,9 @@ export default function admin({ players, survivors }) {
           />
         );
       case 'Manage Players':
-        return <p>Manage Players</p>;
+        return (
+          <ManagePlayers players={players} setIsSubmitting={setIsSubmitting} />
+        );
       default:
         return <p>No component found</p>;
     }
@@ -62,8 +65,18 @@ export async function getStaticProps() {
     '*[_type == "survivor"] | order(name, asc)'
   ).catch((err) => console.error(err));
   const players = await Client.fetch(
-    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
-  ).catch((err) => console.error(err));
+    '*[_type == "player"]{..., mvp->{...}, picks[]->{...}}'
+  )
+    .then((data) =>
+      data.sort((a, b) =>
+        a.username.toLowerCase() - b.username.toLowerCase() < 0
+          ? 1
+          : b.username.toLowerCase() > a.username.toLowerCase()
+          ? -1
+          : 0
+      )
+    )
+    .catch((err) => console.error(err));
   return {
     props: {
       survivors,
