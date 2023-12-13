@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
@@ -8,10 +9,27 @@ import ScoreUpdater from '../components/ScoreUpdater.js';
 import AdminNav from '../components/AdminNav';
 import ManageSurvivors from '../components/ManageSurvivors';
 import ManagePlayers from '../components/ManagePlayers';
+import useUser from '../lib/useUser';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedPage, setSelectedPage] = useState('Update Scores');
+  const router = useRouter();
+
+  // Fetch the user client-side
+  const { user } = useUser({
+    redirectTo: `/login?ref=admin`,
+    redirectIfUserFound: `/admin`,
+  });
+
+  // Server-render loading state
+  if (!user || user.isLoggedIn === false) {
+    return (
+      <Layout>
+        <div className="block min-h-screen"></div>
+      </Layout>
+    );
+  }
 
   const displayComponent = () => {
     switch (selectedPage) {
@@ -46,15 +64,23 @@ export default function admin({ players, survivors }) {
         <title>Survivor Fantasy Pool | Admin</title>
       </Head>
       <Layout>
-        <h2 className="mb-8 text-xl md:text-2xl">Welcome to the admin page.</h2>
-        <AdminNav setSelectedPage={setSelectedPage} />
-        {displayComponent()}
+        {router.isFallback ? (
+          <h1>Loading…</h1>
+        ) : (
+          <>
+            <h2 className="mb-8 text-xl md:text-2xl">
+              Welcome to the admin page.
+            </h2>
+            <AdminNav setSelectedPage={setSelectedPage} />
+            {displayComponent()}
 
-        <DangerZone
-          players={players}
-          survivors={survivors}
-          setIsSubmitting={setIsSubmitting}
-        />
+            <DangerZone
+              players={players}
+              survivors={survivors}
+              setIsSubmitting={setIsSubmitting}
+            />
+          </>
+        )}
       </Layout>
     </div>
   );
