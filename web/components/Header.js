@@ -21,6 +21,10 @@ const Header = () => {
       title: 'Player Picks',
       path: '/picks',
     },
+    {
+      title: 'Admin',
+      path: '/admin',
+    },
   ];
 
   return (
