@@ -86,28 +86,17 @@ export default function admin({ players, survivors }) {
   );
 }
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const survivors = await Client.fetch(
-    '*[_type == "survivor"] | order(name, asc)'
+    '*[_type == "survivor"] | order(name asc)'
   ).catch((err) => console.error(err));
   const players = await Client.fetch(
-    '*[_type == "player"]{..., mvp->{...}, picks[]->{...}}'
-  )
-    .then((data) =>
-      data.sort((a, b) =>
-        a.username.toLowerCase() - b.username.toLowerCase() < 0
-          ? 1
-          : b.username.toLowerCase() > a.username.toLowerCase()
-          ? -1
-          : 0
-      )
-    )
-    .catch((err) => console.error(err));
+    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
+  ).catch((err) => console.error(err));
   return {
     props: {
       survivors,
       players,
     },
-    revalidate: 10,
   };
 }

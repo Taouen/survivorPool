@@ -98,28 +98,17 @@ export default function Home({ players }) {
   );
 }
 
-export async function getStaticProps() {
-  const survivors = await Client.fetch('*[_type == "survivor"] {name}')
-    .then((data) =>
-      data.sort((a, b) => (a.name - b.name < 0 ? 1 : b.name > a.name ? -1 : 0))
-    )
-    .catch((err) => console.error(err));
-  const players = await Client.fetch('*[_type == "player"]')
-    .then((data) =>
-      data.sort((a, b) =>
-        a.username.toLowerCase() - b.username.toLowerCase() < 0
-          ? 1
-          : b.username.toLowerCase() > a.username.toLowerCase()
-          ? -1
-          : 0
-      )
-    )
-    .catch((err) => console.error(err));
+export async function getServerSideProps() {
+  const survivors = await Client.fetch(
+    '*[_type == "survivor"] | order(name asc) {name}'
+  ).catch((err) => console.error(err));
+  const players = await Client.fetch(
+    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
+  ).catch((err) => console.error(err));
   return {
     props: {
       survivors,
       players,
     },
-    revalidate: 10,
   };
 }
