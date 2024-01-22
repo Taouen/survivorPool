@@ -2,12 +2,12 @@ export default {
   name: 'season',
   title: 'Season',
   type: 'document',
-  fields: [
-    {
-      name: 'seasonName',
-      title: 'Season Name',
-      type: 'string',
+  preview: {
+    select: {
+      title: 'seasonNumber',
     },
+  },
+  fields: [
     {
       name: 'seasonNumber',
       title: 'Season Number',
