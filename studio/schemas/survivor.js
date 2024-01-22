@@ -22,11 +22,10 @@ export default {
           type: 'object',
           preview: {
             select: {
-              title: 'seasonNumber',
+              title: 'season.seasonNumber',
             },
           },
           fields: [
-            { name: 'seasonNumber', title: 'Season Number', type: 'number' },
             {
               name: 'season',
               title: 'Season',
