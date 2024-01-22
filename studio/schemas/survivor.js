@@ -13,25 +13,65 @@ export default {
       title: 'Nickname',
       type: 'string',
     },
-    { name: 'tribeColor', title: 'Tribe Color', type: 'string' },
     {
-      name: 'episodeScores',
-      title: 'Episode Scores',
+      name: 'seasons',
+      title: 'Seasons',
       type: 'array',
-      of: [{ type: 'number' }],
-      initialValue: [],
-    },
-    {
-      name: 'totalScore',
-      title: 'Total Score',
-      type: 'number',
-      initialValue: 0,
-    },
-    {
-      name: 'eliminated',
-      title: 'Eliminated',
-      type: 'boolean',
-      initialValue: false,
+      of: [
+        {
+          type: 'object',
+          preview: {
+            select: {
+              title: 'seasonNumber',
+            },
+          },
+          fields: [
+            { name: 'seasonNumber', title: 'Season Number', type: 'number' },
+            {
+              name: 'season',
+              title: 'Season',
+              type: 'reference',
+              to: { type: 'season' },
+            },
+            { name: 'tribeColor', title: 'Tribe Color', type: 'string' },
+            {
+              name: 'episodeScores',
+              title: 'Episode Scores',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  preview: {
+                    select: {
+                      title: 'episodeNumber',
+                    },
+                  },
+                  fields: [
+                    {
+                      name: 'episodeNumber',
+                      title: 'Episode Number',
+                      type: 'number',
+                    },
+                    { name: 'score', title: 'Score', type: 'number' },
+                  ],
+                },
+              ],
+            },
+            {
+              name: 'totalScore',
+              title: 'Total Score',
+              type: 'number',
+              initialValue: 0,
+            },
+            {
+              name: 'eliminated',
+              title: 'Eliminated',
+              type: 'boolean',
+              initialValue: false,
+            },
+          ],
+        },
+      ],
     },
   ],
 };
