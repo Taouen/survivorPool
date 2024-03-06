@@ -69,7 +69,7 @@ export default function Home(props) {
                 </a>
               </Link>
               . Your top three scoring survivors will earn you points each week.
-              Points begin to accumulate beginning with Episode 2.
+              Points begin to accumulate beginning with Episode 3.
             </p>
           </section>
         </div>
