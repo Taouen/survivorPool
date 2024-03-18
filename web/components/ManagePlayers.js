@@ -116,13 +116,13 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
       </div>
 
       <button
-        className="p-1 border rounded text-md w-28 md:w-36 "
+        className="p-1 mt-4 border rounded text-md w-28 md:w-36 "
         onClick={() => updatePlayers({ updatedPlayers })}
       >
         Save Changes
       </button>
 
-      <div className="w-full p-2 border border-red-500 rounded">
+      <div className="w-full p-2 mt-4 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
         <div className="flex flex-col justify-center w-full md:flex-row">
           <button
