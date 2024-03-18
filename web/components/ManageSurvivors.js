@@ -79,7 +79,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
         </div>
       ))}
       <button
-        className="p-1 border rounded text-md w-28 md:w-36 "
+        className="p-1 my-4 border rounded text-md w-28 md:w-36 "
         onClick={() => updateSurvivors({ updatedSurvivors })}
       >
         Save Changes
