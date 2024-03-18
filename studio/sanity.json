@@ -13,19 +13,19 @@
       }
     },
     {
-      "name": "season45",
-      "title": "Season 45",
+      "name": "season46",
+      "title": "Season 46",
       "default": true,
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season45"
+        "dataset": "season46"
       }
     }
   ],
 
   "api": {
     "projectId": "806pz8zb",
-    "dataset": "season45"
+    "dataset": "season46"
   },
   "plugins": [
     "@sanity/base",
