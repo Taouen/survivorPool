@@ -74,34 +74,42 @@ export default function picks({ players }) {
                       </td>
                     </tr>
                     <tr className="flex justify-around border border-t-0 border-grey-500">
-                      {picks.map((pick) => (
-                        <td
-                          key={pick.nickname ? pick.nickname : pick.name}
-                          className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0 ${
-                            pick.tribeColor
-                              ? `${getTribeColorClassname(pick.tribeColor)}`
-                              : ''
-                          }`}
-                        >
-                          <div
-                            className={`flex justify-center ${
-                              pick.eliminated ? 'line-through opacity-50' : null
+                      {picks
+                        .sort((a, b) => {
+                          const aName = a.nickname || a.name;
+                          const bName = b.nickname || b.name;
+                          return aName > bName ? 1 : -1;
+                        })
+                        .map((pick) => (
+                          <td
+                            key={pick.nickname ? pick.nickname : pick.name}
+                            className={`flex justify-center w-1/4 p-2 border-r border-grey-500 last:border-r-0 ${
+                              pick.tribeColor
+                                ? `${getTribeColorClassname(pick.tribeColor)}`
+                                : ''
                             }`}
                           >
-                            {pick.eliminated && (
-                              <FontAwesomeIcon
-                                icon={faSkull}
-                                style={{ color: '#7f7f7f80' }}
-                                size="2x"
-                                className="absolute self-center text-black -z-1 justify-self-center"
-                              />
-                            )}
-                            <p className="relative z-0">
-                              {pick.nickname ? pick.nickname : pick.name}
-                            </p>
-                          </div>
-                        </td>
-                      ))}
+                            <div
+                              className={`flex justify-center ${
+                                pick.eliminated
+                                  ? 'line-through opacity-50'
+                                  : null
+                              }`}
+                            >
+                              {pick.eliminated && (
+                                <FontAwesomeIcon
+                                  icon={faSkull}
+                                  style={{ color: '#7f7f7f80' }}
+                                  size="2x"
+                                  className="absolute self-center text-black -z-1 justify-self-center"
+                                />
+                              )}
+                              <p className="relative z-0">
+                                {pick.nickname ? pick.nickname : pick.name}
+                              </p>
+                            </div>
+                          </td>
+                        ))}
                     </tr>
                   </tbody>
                 </table>
