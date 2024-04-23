@@ -4,7 +4,6 @@ import { useRouter } from 'next/router';
 
 import Layout from '../components/Layout';
 import Client from '../components/Client.js';
-import DangerZone from '../components/DangerZone.js';
 import ScoreUpdater from '../components/ScoreUpdater.js';
 import AdminNav from '../components/AdminNav';
 import ManageSurvivors from '../components/ManageSurvivors';
@@ -73,12 +72,6 @@ export default function admin({ players, survivors }) {
             </h2>
             <AdminNav setSelectedPage={setSelectedPage} />
             {displayComponent()}
-
-            <DangerZone
-              players={players}
-              survivors={survivors}
-              setIsSubmitting={setIsSubmitting}
-            />
           </>
         )}
       </Layout>
