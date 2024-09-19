@@ -8,7 +8,7 @@ import Client from '../components/Client';
 export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   // https://currentmillis.com/?now use Milliseconds since Unix Epoch
-  const hideTime = 1710374400420; // Season 46 specific
+  const hideTime = 1727913600788; // Season 46 specific
   const hideSignup = Date.now() > hideTime;
 
   return (
