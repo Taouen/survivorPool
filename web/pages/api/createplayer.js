@@ -21,8 +21,11 @@ export default async function handler(req, res) {
     const result = await request;
     res.status(201).send(`Successfully created new player. Result: ${result}`);
   } catch (err) {
-    res.status(500).send({
+    res.status(500).json({
       error: `An error occured while trying to create a new player: ${err}`,
     });
+    console.error(
+      `An error occured while trying to create a new player: ${err}`
+    );
   }
 }

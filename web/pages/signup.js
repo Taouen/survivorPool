@@ -7,6 +7,7 @@ import Client from '../components/Client';
 
 export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isError, setIsError] = useState(false);
   // https://currentmillis.com/?now use Milliseconds since Unix Epoch
   const hideTime = 1727913600788; // Season 46 specific
   const hideSignup = Date.now() > hideTime;
@@ -19,6 +20,22 @@ export default function signup({ survivors }) {
       <Layout>
         {hideSignup ? (
           <h3>Sign up has ended for this season!</h3>
+        ) : isError ? (
+          <div className="flex flex-col items-start">
+            <h2 className="self-center mb-8 text-xl">Oops!</h2>
+
+            <p className="mb-4 text-left">
+              Sorry, something went wrong when trying to complete your signup.
+              Please refresh the page and try again. If the problem persists,
+              please contact me at{' '}
+              <a
+                href="mailto:tanner.wiltshire@gmail.com"
+                subject="Signup error"
+              >
+                tanner.wiltshire@gmail.com
+              </a>
+            </p>
+          </div>
         ) : isSubmitted ? (
           <div className="flex flex-col items-start">
             <h2 className="self-center mb-8 text-xl">Thanks for signing up!</h2>
@@ -35,7 +52,11 @@ export default function signup({ survivors }) {
             </p>
           </div>
         ) : (
-          <SignupForm survivors={survivors} setIsSubmitted={setIsSubmitted} />
+          <SignupForm
+            survivors={survivors}
+            setIsSubmitted={setIsSubmitted}
+            setIsError={setIsError}
+          />
         )}
       </Layout>
     </div>

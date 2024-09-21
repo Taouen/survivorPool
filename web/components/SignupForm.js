@@ -61,7 +61,7 @@ const TextInput = ({ name, formik }) => {
   );
 };
 
-const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
+const submitPlayer = (values, setIsSubmitted, setIsSubmitting, setIsError) => {
   const playerData = { ...values };
   const { picks, mvp } = playerData;
 
@@ -80,14 +80,26 @@ const submitPlayer = (values, setIsSubmitted, setIsSubmitting) => {
     },
     body: JSON.stringify(playerData),
   })
+    .then((response) => {
+      if (response.ok) {
+        return response.text();
+      } else {
+        return response.json().then((err) => {
+          throw new Error(err.error);
+        });
+      }
+    })
     .then(() => {
       setIsSubmitting(false);
       setIsSubmitted(true);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.error(err);
+      setIsError(true);
+    });
 };
 
-export default function SignupForm({ survivors, setIsSubmitted }) {
+export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [randomMvpError, setRandomMvpError] = useState(false);
 
@@ -104,7 +116,7 @@ export default function SignupForm({ survivors, setIsSubmitted }) {
       validateOnBlur={false}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         setIsSubmitting(true);
-        submitPlayer(values, setIsSubmitted, setIsSubmitting);
+        submitPlayer(values, setIsSubmitted, setIsSubmitting, setIsError);
         setSubmitting(false);
       }}
     >
