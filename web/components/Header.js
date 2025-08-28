@@ -14,6 +14,10 @@ const Header = () => {
       path: '/signup',
     },
     {
+      title: 'Invite a friend',
+      path: '/invite',
+    },
+    {
       title: 'Standings',
       path: '/standings',
     },
