@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 
 export default function Home(props) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
       <Head>
         <title>Survivor Fantasy Pool | Home</title>
       </Head>
@@ -22,10 +22,11 @@ export default function Home(props) {
               <li>
                 <p>
                   Head over to the{' '}
-                  <Link href="/signup">
-                    <a className="text-red-600 dark:text-red-400 hover:underline">
-                      Sign Up
-                    </a>
+                  <Link
+                    href="/signup"
+                    className="text-red-600 dark:text-red-400 hover:underline"
+                  >
+                    Sign Up
                   </Link>{' '}
                   page.
                 </p>
@@ -48,10 +49,11 @@ export default function Home(props) {
               <li>
                 <p>
                   Check the{' '}
-                  <Link href="/standings">
-                    <a className="text-red-600 dark:text-red-400 hover:underline">
-                      standings page
-                    </a>
+                  <Link
+                    href="/standings"
+                    className="text-red-600 dark:text-red-400 hover:underline"
+                  >
+                    standings page
                   </Link>{' '}
                   each week to see how you did!
                 </p>
@@ -63,10 +65,11 @@ export default function Home(props) {
             <h3 className="mb-2 text-xl">Scoring</h3>
             <p>
               The scoring system used comes from{' '}
-              <Link href="https://www.globaltv.com/survivor-48-fantasy-tribe/">
-                <a className="text-red-600 dark:text-red-400 hover:underline">
-                  Global TV's Scoring System
-                </a>
+              <Link
+                href="https://www.globaltv.com/survivor-48-fantasy-tribe/"
+                className="text-red-600 dark:text-red-400 hover:underline"
+              >
+                Global TV's Scoring System
               </Link>
               . Your top three scoring survivors will earn you points each week.
               Points begin to accumulate beginning with Episode 3.

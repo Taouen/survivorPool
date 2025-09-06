@@ -7,25 +7,26 @@
     "start": "next start"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.36",
-    "@fortawesome/free-regular-svg-icons": "^5.15.4",
-    "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/react-fontawesome": "^0.1.16",
-    "@sanity/client": "^3.1.0",
+    "@fortawesome/fontawesome-svg-core": "^7.0.1",
+    "@fortawesome/free-regular-svg-icons": "^7.0.1",
+    "@fortawesome/free-solid-svg-icons": "7.0.1",
+    "@fortawesome/react-fontawesome": "^3.0.2",
+    "@sanity/client": "^7.11.0",
     "formik": "^2.2.9",
-    "iron-session": "^6.3.1",
+    "iron-session": "^8.0.4",
     "next": "^14.2.32",
-    "nextjs-basic-auth-middleware": "^0.2.1",
+    "nextjs-basic-auth-middleware": "^3.1.0",
     "nuka-carousel": "^8.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-spinners": "^0.17.0",
     "swr": "^2.0.0",
-    "uuid": "^9.0.0"
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.13",
     "autoprefixer": "^10.2.6",
     "postcss": "^8.3.5",
-    "tailwindcss": "^2.2.19"
+    "tailwindcss": "^4.1.12"
   }
 }

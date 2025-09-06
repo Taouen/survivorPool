@@ -1,12 +1,12 @@
 import Head from 'next/head';
 import { useState, useEffect, useCallback } from 'react';
-import Carousel from 'nuka-carousel';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronRight,
-  faChevronLeft,
-} from '@fortawesome/free-solid-svg-icons';
-import '@fortawesome/fontawesome-svg-core/styles.css';
+import { Carousel } from 'nuka-carousel';
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import {
+//   faChevronRight,
+//   faChevronLeft,
+// } from '@fortawesome/free-solid-svg-icons';
+// import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import Layout from '../components/Layout';
 import StandingsTable from '../components/StandingsTable';
@@ -32,7 +32,7 @@ export default function Home({ players }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
       <Head>
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
@@ -72,22 +72,12 @@ export default function Home({ players }) {
               </a>
               .
             </p>
-
             <Carousel
-              renderTopLeftControls={({ previousSlide }) => (
-                <button onClick={previousSlide}>
-                  <FontAwesomeIcon icon={faChevronLeft} /> Previous
-                </button>
-              )}
-              renderTopRightControls={({ nextSlide }) => (
-                <button onClick={nextSlide}>
-                  Next <FontAwesomeIcon icon={faChevronRight} />
-                </button>
-              )}
-              renderCenterLeftControls={null}
-              renderCenterRightControls={null}
-              renderBottomCenterControls={null}
-              slideIndex={currentEpisode - 1}
+              className="max-w-full md:max-w-3/4"
+              initialPage={currentEpisode - 2}
+              scrollDistance="slide"
+              showDots
+              showArrows="hover"
             >
               {createTables(currentEpisode)}
             </Carousel>

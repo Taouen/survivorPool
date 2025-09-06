@@ -33,7 +33,9 @@ const Header = () => {
       <ul className="flex">
         {pages.map((page) => (
           <li key={page.title} className={linkStyles}>
-            <Link href={page.path}>{page.title}</Link>
+            <Link href={page.path} legacyBehavior>
+              {page.title}
+            </Link>
           </li>
         ))}
       </ul>

@@ -13,7 +13,7 @@ export default function signup({ survivors }) {
   const hideSignup = Date.now() > hideTime;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-grey-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
       <Head>
         <title>Survivor Fantasy Pool | Sign Up</title>
       </Head>

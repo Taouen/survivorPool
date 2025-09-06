@@ -1,4 +1,6 @@
-import 'tailwindcss/tailwind.css';
+// import 'tailwindcss/tailwind.css';
+import '../globals.css';
+
 import { SWRConfig } from 'swr';
 import fetchJson from '../lib/fetchJson';
 

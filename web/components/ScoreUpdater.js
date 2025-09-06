@@ -157,7 +157,7 @@ const ScoreUpdater = ({
         {(formik) => (
           /* --- FORM START --- */
 
-          <form
+          (<form
             className="flex flex-col items-center mb-8 text-lg md:text-base"
             onSubmit={formik.handleSubmit}
           >
@@ -214,7 +214,7 @@ const ScoreUpdater = ({
             >
               Update Scores
             </button>
-          </form>
+          </form>)
         )}
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
