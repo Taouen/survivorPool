@@ -7,7 +7,7 @@ export default function StandingsTable({ episode, players }) {
     (a, b) => a.rank[episode - 2] - b.rank[episode - 2]
   );
   return (
-    <div>
+    <div className="min-w-full">
       <h2 className="mb-4 text-xl">Episode {episode}</h2>
       <table className="w-full">
         <thead className="flex w-full text-white bg-black">
