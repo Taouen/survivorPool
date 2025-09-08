@@ -1,12 +1,6 @@
 import Head from 'next/head';
 import { useState, useEffect, useCallback } from 'react';
 import { Carousel } from 'nuka-carousel';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import {
-//   faChevronRight,
-//   faChevronLeft,
-// } from '@fortawesome/free-solid-svg-icons';
-// import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import Layout from '../components/Layout';
 import StandingsTable from '../components/StandingsTable';
