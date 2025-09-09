@@ -13,7 +13,7 @@
     "@fortawesome/react-fontawesome": "^3.0.2",
     "@sanity/client": "^7.11.0",
     "formik": "^2.2.9",
-    "iron-session": "^8.0.4",
+    "iron-session": "^6.3.1",
     "next": "^14.2.32",
     "nextjs-basic-auth-middleware": "^3.1.0",
     "nuka-carousel": "^8.2.0",
