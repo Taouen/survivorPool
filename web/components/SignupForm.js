@@ -46,7 +46,7 @@ const validate = async (values) => {
 const TextInput = ({ name, formik }) => {
   return (
     <input
-      className={`text-black p-1 w-full focus:ring focus:ring-lime-500 outline-none rounded border ${
+      className={`p-1 w-full focus:ring focus:ring-lime-500 outline-none rounded border ${
         formik.errors[name] && formik.touched[name]
           ? 'border-2 border-red-400'
           : null

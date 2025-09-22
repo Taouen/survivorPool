@@ -64,7 +64,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
               onChange={(e) =>
                 handleTribeColorChange(survivor.name, e.target.value)
               }
-              className="ml-2 dark:text-black"
+              className="ml-2 border rounded"
               defaultValue={survivor.tribeColor}
             >
               <option value="none">--</option>

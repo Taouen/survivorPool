@@ -157,7 +157,7 @@ const ScoreUpdater = ({
         {(formik) => (
           /* --- FORM START --- */
 
-          (<form
+          <form
             className="flex flex-col items-center mb-8 text-lg md:text-base"
             onSubmit={formik.handleSubmit}
           >
@@ -180,7 +180,7 @@ const ScoreUpdater = ({
                       onChange={formik.handleChange}
                       aria-label={survivor.name}
                       disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
-                      className="w-20 p-1 ml-4 text-black border rounded outline-none focus:ring focus:ring-lime-500"
+                      className="w-20 p-1 ml-4 border rounded outline-none focus:ring focus:ring-lime-500"
                     />
                     <Field
                       type="checkbox"
@@ -214,7 +214,7 @@ const ScoreUpdater = ({
             >
               Update Scores
             </button>
-          </form>)
+          </form>
         )}
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
