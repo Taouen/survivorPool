@@ -13,19 +13,18 @@
       }
     },
     {
-      "name": "season48",
-      "title": "Season 48",
+      "name": "season49",
+      "title": "Season 49",
       "default": true,
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season48"
+        "dataset": "season49"
       }
     }
   ],
-
   "api": {
     "projectId": "806pz8zb",
-    "dataset": "season48"
+    "dataset": "season49"
   },
   "plugins": [
     "@sanity/base",
