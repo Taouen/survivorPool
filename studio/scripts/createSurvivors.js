@@ -37,7 +37,7 @@ async function createSurvivors() {
     // Initialize Sanity client
     const client = sanityClient({
       projectId: '806pz8zb',
-      dataset: process.env.SANITY_DEVELOPMENT_DATASET || datasetName,
+      dataset: datasetName,
       apiVersion: '2022-02-08',
       token: process.env.SANITY_TOKEN,
       useCdn: false,
