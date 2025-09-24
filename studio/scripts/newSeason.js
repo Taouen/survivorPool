@@ -3,6 +3,10 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+require('dotenv').config({
+  path: path.resolve(__dirname, '../../web/.env.local'),
+});
+
 const seasonNumber = process.argv[2];
 if (!seasonNumber) {
   console.error('❌ Please provide a season number');
@@ -143,12 +147,77 @@ try {
   process.exit(1);
 }
 
+// Step 7: Create survivors
+console.log('🔄 Creating survivors...');
+try {
+  // Read survivors from config file or prompt for names
+  const survivorsConfigPath = path.join(__dirname, 'survivors.json');
+  let survivors = [];
+
+  if (fs.existsSync(survivorsConfigPath)) {
+    const survivorsConfig = require(survivorsConfigPath);
+    survivors = survivorsConfig[`season${seasonNumber}`] || [];
+  }
+
+  if (survivors.length === 0) {
+    console.log('❌ No survivors found in config file for this season.');
+    console.log(
+      '📝 Please update survivors.json with the correct survivor names.'
+    );
+    process.exit(1);
+  }
+
+  // Create survivor documents using Sanity client
+  const sanityClient = require('@sanity/client');
+  const client = sanityClient({
+    projectId: '806pz8zb',
+    dataset: process.env.SANITY_DEVELOPMENT_DATASET || datasetName,
+    apiVersion: '2022-02-08',
+    token: process.env.SANITY_TOKEN,
+    useCdn: false,
+  });
+
+  const createSurvivor = async (survivor) => {
+    return client.create({
+      _type: 'survivor',
+      eliminated: false,
+      episodeScores: [],
+      totalScore: 0,
+      name: survivor.name,
+      nickname: survivor.nickname || '',
+      tribeColor: 'none',
+    });
+  };
+
+  // Create all survivors
+  console.log('Creating survivors...');
+  (async () => {
+    for (const survivor of survivors) {
+      await createSurvivor(survivor);
+      console.log(`✅ Created survivor: ${survivor.name}`);
+    }
+  })().catch((err) => {
+    console.error('❌ Error creating survivors:');
+    console.error(err.message);
+    process.exit(1);
+  });
+
+  console.log('✅ All survivors created successfully');
+} catch (error) {
+  console.error('❌ Error creating survivors:');
+  console.error(error.message);
+  process.exit(1);
+}
+
 console.log(`
 ✅ Season ${seasonNumber} setup complete!
 
 📝 Manual steps remaining:
 1. Update sign-up hide time in web/pages/signup.js
 2. Update season link in web/pages/index.js
-3. Add new survivors in studio
-4. Set up weekly reminders
+3. Set up weekly reminders
+
+💡 To add or modify survivors:
+1. Edit /studio/scripts/survivors.json
+2. Run 'node scripts/createSurvivors.js ${seasonNumber}'
 `);
