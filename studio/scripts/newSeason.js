@@ -113,8 +113,8 @@ try {
 
   // Update file
   const clientContent = `
-const sanityClient = require('@sanity/client');
-const Client = sanityClient({
+import { createClient } from '@sanity/client';
+const Client = createClient({
   projectId: '806pz8zb',
   dataset: process.env.SANITY_DEVELOPMENT_DATASET || '${datasetName}',
   apiVersion: '2022-02-08', // use current UTC date - see "specifying API version"!
