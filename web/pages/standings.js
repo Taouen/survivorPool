@@ -47,7 +47,7 @@ export default function Home({ players }) {
         )}
         {currentEpisode === 1 && (
           <p>
-            Points begin to accumulate starting with episode 2. Check back
+            Points begin to accumulate starting with episode 3. Check back
             later!
           </p>
         )}
