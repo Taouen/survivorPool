@@ -8,17 +8,17 @@ import Client from '../components/Client';
 const getTribeColorClassname = (color) => {
   switch (color) {
     case 'red':
-      return 'ring-2 ring-inset ring-red-600';
+      return 'ring-3 ring-inset ring-red-600';
     case 'blue':
-      return 'ring-2 ring-inset ring-blue-600';
+      return 'ring-3 ring-inset ring-blue-500';
     case 'green':
-      return 'ring-2 ring-inset ring-green-500';
+      return 'ring-3 ring-inset ring-green-500';
     case 'yellow':
-      return 'ring-2 ring-inset ring-yellow-300';
+      return 'ring-3 ring-inset ring-yellow-300';
     case 'orange':
-      return 'ring-2 ring-inset ring-yellow-600';
+      return 'ring-3 ring-inset ring-orange-400';
     case 'purple':
-      return 'ring-2 ring-inset ring-purple-600';
+      return 'ring-3 ring-inset ring-purple-600';
     default:
       return '';
   }
