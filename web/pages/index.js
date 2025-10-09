@@ -66,7 +66,7 @@ export default function Home(props) {
             <p>
               The scoring system used comes from{' '}
               <Link
-                href="https://www.globaltv.com/survivor-48-fantasy-tribe/"
+                href="https://www.globaltv.com/survivor-49-fantasy-tribe/"
                 className="text-red-600 dark:text-red-400 hover:underline"
               >
                 Global TV's Scoring System
