@@ -36,7 +36,7 @@ export default function picks({ players }) {
             <p>Nobody has signed up yet, check back later!</p>
           )}
           {players.length > 0 &&
-            players.sort((a,b) => a.username > b.username ? -1 : 1).map(({ username, picks, mvp }) => {
+            players.sort((a,b) => a.username.toLowerCase() < b.username.toLowerCase() ? -1 : 1).map(({ username, picks, mvp }) => {
               return (
                 <table
                   key={username}
