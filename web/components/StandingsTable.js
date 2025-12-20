@@ -22,7 +22,7 @@ export default function StandingsTable({ episode, players }) {
         <tbody className="flex flex-col items-center justify-between w-full bg-grey-light">
           {rankedPlayers
             .filter((player) => player.paid)
-            .map(({ username, rank, episodeScores }, index) => {
+            .map(({ username, rank, episodeScores, totalScore }, index) => {
               const rankDifferential =
                 Math.abs(rank[episode - 2] - rank[episode - 3]) === 0
                   ? 0
@@ -56,11 +56,7 @@ export default function StandingsTable({ episode, players }) {
                     )}
                   </td>
                   <td className="w-1/5 p-2">{episodeScores[episode - 2]} </td>
-                  <td className="w-1/5 p-2">
-                    {episodeScores
-                      .slice(0, episode - 1)
-                      .reduce((a, b) => a + b, 0)}
-                  </td>
+                  <td className="w-1/5 p-2">{totalScore}</td>
                 </tr>
               );
             })}
