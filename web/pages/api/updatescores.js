@@ -21,6 +21,7 @@ export default async function handler(req, res) {
   const survivorRequests = survivors.map((survivor) => {
     return Client.patch(survivor._id)
       .set({ eliminated: survivor.eliminated })
+      .set({ winner: survivor.winner })
       .set({ episodeScores: survivor.episodeScores })
       .set({ totalScore: survivor.totalScore })
       .commit()

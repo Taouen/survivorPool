@@ -2,11 +2,19 @@ import Client from '../../components/Client';
 
 export default async function handler(req, res) {
   const { players, survivors } = req.body;
+  const winnerSelected = survivors.some((survivor) => survivor.winner);
 
   const playerRequests = players.map((player) => {
     const { _id, username, episodeScores, rank } = player;
 
-    const scoreToDelete = episodeScores[episodeScores.length - 1];
+    let scoreToDelete = episodeScores[episodeScores.length - 1];
+    if (winnerSelected) {
+      if (
+        player.mvp.name === survivors.find((survivor) => survivor.winner)?.name
+      ) {
+        scoreToDelete += 30;
+      }
+    }
 
     return Client.patch(_id)
       .unset([
@@ -31,6 +39,7 @@ export default async function handler(req, res) {
     const scoreToDelete = episodeScores[episodeScores.length - 1];
 
     return Client.patch(_id)
+      .set({ winner: false })
       .unset([`episodeScores[${episodeScores.length - 1}]`])
       .dec({ totalScore: scoreToDelete })
       .commit()

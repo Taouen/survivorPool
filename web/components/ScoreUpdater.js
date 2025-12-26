@@ -10,6 +10,7 @@ const ScoreUpdater = ({
   const initialValues = {
     scores: {},
     eliminated: [],
+    winner: [],
   };
 
   survivors.forEach((survivor) => {
@@ -17,6 +18,10 @@ const ScoreUpdater = ({
       initialValues.eliminated.push(survivor.name);
     }
     initialValues.scores[survivor.name] = '';
+
+    if (survivor.winner) {
+      initialValues.winner.push(survivor.name);
+    }
   });
 
   const updateScores = (values, setIsSubmitting, players, survivors) => {
@@ -42,6 +47,7 @@ const ScoreUpdater = ({
       updatedSurvivor.eliminated = values.eliminated.includes(
         updatedSurvivor.name
       );
+      updatedSurvivor.winner = values.winner.includes(updatedSurvivor.name);
 
       return updatedSurvivor;
     });
@@ -64,7 +70,11 @@ const ScoreUpdater = ({
 
       episodeScores.push(episodeScore);
       updatedPlayer.totalScore = episodeScores.reduce((a, b) => a + b, 0);
-
+      if (values.winner.length > 0) {
+        if (updatedPlayer.mvp.name === values.winner[0]) {
+          updatedPlayer.totalScore += 30; // bonus for picking winner
+        }
+      }
       return updatedPlayer;
     });
 
@@ -114,6 +124,9 @@ const ScoreUpdater = ({
     })
       .then(() => {
         setIsSubmitting(false);
+        if (window.confirm('Scores updated. Do you want to reload the page?')) {
+          window.location.reload(true);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -182,6 +195,7 @@ const ScoreUpdater = ({
                       disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
                       className="w-20 p-1 ml-4 border rounded outline-none focus:ring focus:ring-lime-500"
                     />
+
                     <Field
                       type="checkbox"
                       id={survivor.name + ' Eliminated'}
@@ -189,9 +203,31 @@ const ScoreUpdater = ({
                       value={survivor.name}
                       className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
                       onChange={formik.handleChange}
-                      disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
                       checked={formik.values.eliminated.includes(survivor.name)}
                     />
+                    <label
+                      htmlFor={survivor.name + ' Eliminated'}
+                      className="mx-2"
+                    >
+                      Elim.
+                    </label>
+
+                    <Field
+                      type="checkbox"
+                      id={survivor.name + ' Winner'}
+                      name="winner"
+                      value={survivor.name}
+                      className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
+                      onChange={formik.handleChange}
+                      disabled={
+                        formik.values.winner.length > 0 &&
+                        !formik.values.winner.includes(survivor.name)
+                      }
+                      checked={formik.values.winner.includes(survivor.name)}
+                    />
+                    <label htmlFor={survivor.name + ' Winner'} className="ml-2">
+                      Winner
+                    </label>
                   </div>
                 </div>
               );
