@@ -35,7 +35,7 @@ export default function Home({ players }) {
 
         Leaving in place in case I need to use it again.
 
-      -------- Delete this when I've fixed the api */}
+
         <p className="mb-8 text-left text-red-600">
           I've made some changes to the site and broken something. Standings
           information may be incorrect. Please bear with me while I figure out
@@ -45,7 +45,7 @@ export default function Home({ players }) {
           to the holiday I may be delayed in getting everything sorted out.
           Thank you for your patience!
         </p>
-
+      -------- Delete this when I've fixed the api */}
         {players.length === 0 && (
           <p>Nobody has signed up yet, check back later!</p>
         )}
