@@ -1,17 +1,14 @@
 import Client from '../../components/Client';
 
 export default async function handler(req, res) {
-  const emails = [];
   try {
-    Client.fetch('*[_type == "player"] {email}').then(item => emails.push(item.email));
-    console.log(emails);
+    const players = await Client.fetch('*[_type == "player"] {email}').then(data => 
+      data.map(player => player.email));
+    
+    console.log(players);
 
-    if (!emails?.length) {
+    if (!players?.length) {
       console.log('No player documents found.');
-    } else {
-      emails.forEach((item) => {
-        console.log('Player email:', item.email);
-      });
     }
 
     res.status(200).json({ message: 'Request completed.' });
