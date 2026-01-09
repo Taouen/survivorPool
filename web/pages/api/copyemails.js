@@ -1,9 +1,10 @@
 import Client from '../../components/Client';
 
 export default async function handler(req, res) {
+  const emails = [];
   try {
-    const emails = await Client.fetch('*[_type == "player"] {email}');
-    console.log('Raw fetch result:', emails);
+    Client.fetch('*[_type == "player"] {email}').then(item => emails.push(item.email));
+    console.log(emails);
 
     if (!emails?.length) {
       console.log('No player documents found.');
