@@ -9,7 +9,7 @@ export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isError, setIsError] = useState(false);
   // https://currentmillis.com/?now use Milliseconds since Unix Epoch
-  const hideTime = 1759967999131; // Season 49 specific
+  const hideTime = 1773273599093; // Season 50 specific
   const hideSignup = Date.now() > hideTime;
 
   return (
@@ -65,7 +65,7 @@ export default function signup({ survivors }) {
 
 export async function getServerSideProps() {
   const survivors = await Client.fetch(
-    '*[_type == "survivor"] | order(name asc)'
+    '*[_type == "survivor"] | order(name asc)',
   ).catch((err) => console.error(err));
 
   return {
