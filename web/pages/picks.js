@@ -19,6 +19,10 @@ const getTribeColorClassname = (color) => {
       return 'ring-3 ring-inset ring-orange-400';
     case 'purple':
       return 'ring-3 ring-inset ring-purple-600';
+    case 'teal':
+      return 'ring-3 ring-inset ring-teal-300';
+    case 'fuchsia':
+      return 'ring-3 ring-inset ring-fucshia-500';
     default:
       return '';
   }
