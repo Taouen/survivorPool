@@ -75,7 +75,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
               <option value="blue">Blue</option>
               <option value="purple">Purple</option>
               <option value="teal">Teal</option>
-              <option value="fucshia">Fucshia</option>
+              <option value="fuchsia">Fucshia</option>
             </select>
           </div>
         </div>
