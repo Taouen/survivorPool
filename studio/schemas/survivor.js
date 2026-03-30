@@ -33,5 +33,11 @@ export default {
       type: 'boolean',
       initialValue: false,
     },
+    {
+      name: 'winner',
+      title: 'Winner',
+      type: 'boolean',
+      initialValue: false,
+    },
   ],
 };
