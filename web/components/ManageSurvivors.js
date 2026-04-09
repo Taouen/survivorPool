@@ -48,7 +48,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
   return (
     <div>
       {updatedSurvivors.map((survivor) => (
-        {!survivor.eliminated
+        {!survivor.eliminated &&
         <div
           className="flex items-center justify-between py-1"
           key={survivor.name}
