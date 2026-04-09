@@ -48,6 +48,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
   return (
     <div>
       {updatedSurvivors.map((survivor) => (
+        {!survivor.eliminated
         <div
           className="flex items-center justify-between py-1"
           key={survivor.name}
@@ -79,7 +80,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
             </select>
           </div>
         </div>
-      ))}
+      }))}
       <button
         className="p-1 my-4 border rounded text-md w-28 md:w-36 "
         onClick={() => updateSurvivors({ updatedSurvivors })}
