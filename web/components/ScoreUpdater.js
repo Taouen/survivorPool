@@ -45,7 +45,7 @@ const ScoreUpdater = ({
       updatedSurvivor.episodeScores.push(scores[updatedSurvivor.name]);
       updatedSurvivor.totalScore += scores[updatedSurvivor.name];
       updatedSurvivor.eliminated = values.eliminated.includes(
-        updatedSurvivor.name
+        updatedSurvivor.name,
       );
       updatedSurvivor.winner = values.winner.includes(updatedSurvivor.name);
 
@@ -80,7 +80,7 @@ const ScoreUpdater = ({
 
     // Determine ranks by sorting players by totalScore
     const sortedPlayers = [...updatedPlayers].sort(
-      (a, b) => b.totalScore - a.totalScore
+      (a, b) => b.totalScore - a.totalScore,
     );
 
     let rank = 1;
@@ -136,7 +136,7 @@ const ScoreUpdater = ({
 
     if (
       window.confirm(
-        'Are you sure you want to reset all player and survivor scores?'
+        'Are you sure you want to reset all player and survivor scores?',
       )
     ) {
       if (window.confirm('Are you really sure?')) {
@@ -175,62 +175,69 @@ const ScoreUpdater = ({
             onSubmit={formik.handleSubmit}
           >
             {survivors.map((survivor) => {
-              return (
-                <div
-                  key={survivor.name}
-                  className="flex items-center justify-between w-full p-1"
-                >
-                  <label htmlFor={survivor.name + ' Episode Score'}>
-                    {survivor.name}{' '}
-                    {survivor.nickname ? `"${survivor.nickname}"` : null}
-                  </label>
-
-                  <div>
-                    <Field
-                      type="number"
-                      name={`scores.${survivor.name}`}
-                      id={survivor.name + ' Episode Score'}
-                      onChange={formik.handleChange}
-                      aria-label={survivor.name}
-                      disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
-                      className="w-20 p-1 ml-4 border rounded outline-none focus:ring focus:ring-lime-500"
-                    />
-
-                    <Field
-                      type="checkbox"
-                      id={survivor.name + ' Eliminated'}
-                      name="eliminated"
-                      value={survivor.name}
-                      className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
-                      onChange={formik.handleChange}
-                      checked={formik.values.eliminated.includes(survivor.name)}
-                    />
-                    <label
-                      htmlFor={survivor.name + ' Eliminated'}
-                      className="mx-2"
-                    >
-                      Elim.
+              if (!survivor.eliminated) {
+                return (
+                  <div
+                    key={survivor.name}
+                    className="flex items-center justify-between w-full p-1"
+                  >
+                    <label htmlFor={survivor.name + ' Episode Score'}>
+                      {survivor.name}{' '}
+                      {survivor.nickname ? `"${survivor.nickname}"` : null}
                     </label>
 
-                    <Field
-                      type="checkbox"
-                      id={survivor.name + ' Winner'}
-                      name="winner"
-                      value={survivor.name}
-                      className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
-                      onChange={formik.handleChange}
-                      disabled={
-                        formik.values.winner.length > 0 &&
-                        !formik.values.winner.includes(survivor.name)
-                      }
-                      checked={formik.values.winner.includes(survivor.name)}
-                    />
-                    <label htmlFor={survivor.name + ' Winner'} className="ml-2">
-                      Winner
-                    </label>
+                    <div>
+                      <Field
+                        type="number"
+                        name={`scores.${survivor.name}`}
+                        id={survivor.name + ' Episode Score'}
+                        onChange={formik.handleChange}
+                        aria-label={survivor.name}
+                        disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
+                        className="w-20 p-1 ml-4 border rounded outline-none focus:ring focus:ring-lime-500"
+                      />
+
+                      <Field
+                        type="checkbox"
+                        id={survivor.name + ' Eliminated'}
+                        name="eliminated"
+                        value={survivor.name}
+                        className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
+                        onChange={formik.handleChange}
+                        checked={formik.values.eliminated.includes(
+                          survivor.name,
+                        )}
+                      />
+                      <label
+                        htmlFor={survivor.name + ' Eliminated'}
+                        className="mx-2"
+                      >
+                        Elim.
+                      </label>
+
+                      <Field
+                        type="checkbox"
+                        id={survivor.name + ' Winner'}
+                        name="winner"
+                        value={survivor.name}
+                        className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
+                        onChange={formik.handleChange}
+                        disabled={
+                          formik.values.winner.length > 0 &&
+                          !formik.values.winner.includes(survivor.name)
+                        }
+                        checked={formik.values.winner.includes(survivor.name)}
+                      />
+                      <label
+                        htmlFor={survivor.name + ' Winner'}
+                        className="ml-2"
+                      >
+                        Winner
+                      </label>
+                    </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
             {formik.errors.scores && formik.touched.scores ? (
               <div className="text-sm text-left text-red-400">
