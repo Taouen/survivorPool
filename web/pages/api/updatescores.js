@@ -13,14 +13,18 @@ export default async function handler(req, res) {
       .then((player) => console.log(`Updated player ${player.username}`))
       .catch((err) =>
         console.log(
-          `An error occurred while updating player ${player.name}: ${err}`
-        )
+          `An error occurred while updating player ${player.name}: ${err}`,
+        ),
       );
   });
 
   const survivorRequests = survivors.map((survivor) => {
+    if (survivor.eliminated) {
+      survivor.tribeColor = 'none';
+    }
     return Client.patch(survivor._id)
       .set({ eliminated: survivor.eliminated })
+      .set({ tribeColor: survivor.tribeColor })
       .set({ winner: survivor.winner })
       .set({ episodeScores: survivor.episodeScores })
       .set({ totalScore: survivor.totalScore })
@@ -30,7 +34,7 @@ export default async function handler(req, res) {
       })
       .catch((err) => {
         console.log(
-          `An error occurred while updating survivor ${survivor.name}: ${err}`
+          `An error occurred while updating survivor ${survivor.name}: ${err}`,
         );
       });
   });
