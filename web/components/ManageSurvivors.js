@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Button from './ui/Button';
 
 const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
   const [updatedSurvivors, setUpdatedSurvivors] = useState([...survivors]);
@@ -80,12 +81,11 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
           </div>
         </div>
       ))}
-      <button
-        className="p-1 my-4 border rounded text-md w-28 md:w-36 "
+      <Button
         onClick={() => updateSurvivors({ updatedSurvivors })}
       >
         Save Changes
-      </button>
+      </Button>
     </div>
   );
 };

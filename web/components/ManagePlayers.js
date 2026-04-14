@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import Button from './ui/Button';
 
 const ManageSurvivors = ({ players, setIsSubmitting }) => {
   const [updatedPlayers, setupdatedPlayers] = useState([...players]);
@@ -107,36 +108,27 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
             </div>
 
             <div className="flex items-center justify-self-center">
-              <button onClick={() => deletePlayer(player)}>
+              <Button onClick={() => deletePlayer(player)}>
                 <FontAwesomeIcon icon={faTrashAlt} style={{ color: '#C00' }} />
-              </button>
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
-      <button
-        className="p-1 mt-4 border rounded text-md w-28 md:w-36 "
-        onClick={() => updatePlayers({ updatedPlayers })}
-      >
+      <Button onClick={() => updatePlayers({ updatedPlayers })}>
         Save Changes
-      </button>
+      </Button>
 
       <div className="w-full p-2 mt-4 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
         <div className="flex flex-col justify-center w-full md:flex-row">
-          <button
-            className="p-1 mb-2 border rounded md:ml-2"
-            onClick={() => copyEmails(setIsSubmitting)}
-          >
+          <Button onClick={() => copyEmails(setIsSubmitting)}>
             Copy Player Emails
-          </button>
-          <button
-            className="p-1 mb-2 border rounded md:ml-2"
-            onClick={() => deletePlayers(setIsSubmitting)}
-          >
+          </Button>
+          <Button onClick={() => deletePlayers(setIsSubmitting)}>
             Delete all players
-          </button>
+          </Button>
         </div>
       </div>
     </div>

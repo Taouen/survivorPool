@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
 import { v4 as uuid } from 'uuid';
+import Button from './ui/Button';
 
 const validate = async (values) => {
   const errors = {};
@@ -172,9 +173,8 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
             ) : null}
 
             <div className="flex justify-around w-full py-4 mx-auto md:w-3/4">
-              <button
+              <Button
                 type="button"
-                className="p-1 border rounded text-md w-28 md:w-32 "
                 onClick={() => {
                   const selected = [];
 
@@ -200,10 +200,9 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                 }}
               >
                 Pick for me
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="p-1 border rounded text-md w-28 md:w-32 "
                 onClick={() => {
                   if (formik.values.picks.length < 5) {
                     setRandomMvpError(true);
@@ -219,9 +218,8 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                 }}
               >
                 Pick my MVP
-              </button>
-              <button
-                className="p-1 border rounded text-md w-28 md:w-32 "
+              </Button>
+              <Button
                 type="button"
                 onClick={() => {
                   formik.setFieldValue('picks', []);
@@ -230,7 +228,7 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                 }}
               >
                 Clear picks
-              </button>
+              </Button>
             </div>
 
             <h2 className="self-start">MVP</h2>
@@ -291,13 +289,12 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
           )}
 
           {isSubmitting && <ClipLoader color={'lime'} />}
-          <button
-            className="w-20 p-1 mt-4 border rounded"
+          <Button
             onClick={formik.handleSubmit}
             type="submit"
           >
             Sign Up
-          </button>
+          </Button>
         </form>
       )}
     </Formik>

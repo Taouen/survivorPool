@@ -1,5 +1,6 @@
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
+import Button from './ui/Button';
 
 const ScoreUpdater = ({
   players,
@@ -250,33 +251,27 @@ const ScoreUpdater = ({
               </div>
             ) : null}
             {isSubmitting && <ClipLoader color={'lime'} />}
-            <button
-              className="p-1 mt-4 border rounded"
-              onClick={formik.handleSubmit}
-              type="submit"
-            >
+            <Button onClick={formik.handleSubmit} type="submit">
               Update Scores
-            </button>
+            </Button>
           </form>
         )}
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
         <div className="flex flex-col justify-center w-full md:flex-row">
-          <button
-            className="p-1 mb-2 border rounded"
+          <Button
             onClick={() =>
               deleteLatestScore(players, survivors, setIsSubmitting)
             }
           >
             Delete latest score
-          </button>
-          <button
-            className="p-1 mb-2 border rounded md:ml-2"
+          </Button>
+          <Button
             onClick={() => resetScores(players, survivors, setIsSubmitting)}
           >
             Reset scores
-          </button>
+          </Button>
         </div>
       </div>
     </div>

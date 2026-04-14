@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Layout from '../components/Layout';
 import useUser from '../lib/useUser';
+import Button from '../components/ui/Button';
 
 function Login() {
   // check if already logged in and redirect if so
@@ -65,12 +66,11 @@ function Login() {
               onChange={handleChange}
             />
           </label>
-          <button
+          <Button
             type="submit"
-            className="w-1/4 px-3 py-1 text-sm text-white bg-black rounded"
           >
             Submit
-          </button>
+          </Button>
           {errorMsg && <p>{errorMsg}</p>}
           <p className="mt-4 text-sm">
             If you believe you should have access to the admin settings, please{' '}
