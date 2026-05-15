@@ -158,7 +158,7 @@ const ScoreUpdater = ({
   };
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center w-full max-w-lg">
       <Formik
         initialValues={initialValues}
         validateOnBlur={false}
@@ -172,7 +172,7 @@ const ScoreUpdater = ({
           /* --- FORM START --- */
 
           <form
-            className="flex flex-col items-center mb-8 text-lg md:text-base"
+            className="flex flex-col items-center mb-4 text-lg md:text-base"
             onSubmit={formik.handleSubmit}
           >
             {survivors.map((survivor) => {
@@ -259,7 +259,7 @@ const ScoreUpdater = ({
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex flex-col justify-center w-full md:flex-row">
+        <div className="flex flex-col justify-around w-full md:flex-row">
           <Button
             onClick={() =>
               deleteLatestScore(players, survivors, setIsSubmitting)
