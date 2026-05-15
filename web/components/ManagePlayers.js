@@ -31,7 +31,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
 
     if (
       prompt(
-        'Are you sure you want to delete this player? Type the username to confirm.'
+        'Are you sure you want to delete this player? Type the username to confirm.',
       ) === player.username
     ) {
       setIsSubmitting(true);
@@ -87,7 +87,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
   };
 
   return (
-    <div className="flex flex-col items-center ">
+    <div className="flex flex-col items-center w-full max-w-lg">
       <div className="grid grid-cols-3 ">
         <p className="font-bold justify-self-start">Username</p>
         <p className="font-bold">Paid</p>
@@ -97,7 +97,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
             className="relative grid grid-cols-3 col-span-3 group justify-items-start last:pb-2"
             key={player._id}
           >
-            <p>{player.username}</p>
+            <p className="self-center">{player.username}</p>
             <div className="flex items-center justify-self-center">
               <input
                 type="checkbox"
@@ -108,8 +108,11 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
             </div>
 
             <div className="flex items-center justify-self-center">
-              <Button onClick={() => deletePlayer(player)}>
-                <FontAwesomeIcon icon={faTrashAlt} style={{ color: '#C00' }} />
+              <Button
+                className="max-w-fit"
+                onClick={() => deletePlayer(player)}
+              >
+                <FontAwesomeIcon icon={faTrashAlt} />
               </Button>
             </div>
           </div>
@@ -122,7 +125,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
 
       <div className="w-full p-2 mt-4 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex flex-col justify-center w-full md:flex-row">
+        <div className="flex justify-around w-full md:flex-row">
           <Button onClick={() => copyEmails(setIsSubmitting)}>
             Copy Player Emails
           </Button>
