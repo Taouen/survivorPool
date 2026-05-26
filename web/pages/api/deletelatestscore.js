@@ -1,10 +1,11 @@
 import Client from '../../components/Client';
+import { createBatchRequests, executeBatchRequests, sendSuccessResponse, sendErrorResponse } from '../../lib/apiHelpers';
 
 export default async function handler(req, res) {
   const { players, survivors } = req.body;
   const winnerSelected = survivors.some((survivor) => survivor.winner);
 
-  const playerRequests = players.map((player) => {
+  const playerRequests = createBatchRequests(players, (player) => {
     const { _id, username, episodeScores, rank } = player;
 
     let scoreToDelete = episodeScores[episodeScores.length - 1];
@@ -23,19 +24,15 @@ export default async function handler(req, res) {
       ])
       .dec({ totalScore: scoreToDelete })
       .commit()
-      .then(() => {
-        console.log(`Successfully deleted latest score for ${username}`);
-      })
+      .then(() => console.log(`Successfully deleted latest score for ${username}`))
       .catch((err) => {
-        console.log(
-          `An error occurred while deleting latest score for ${username}: ${err}`
-        );
+        console.log(`An error occurred while deleting latest score for ${username}: ${err}`);
+        throw err;
       });
   });
 
-  const survivorRequests = survivors.map((survivor) => {
+  const survivorRequests = createBatchRequests(survivors, (survivor) => {
     const { _id, episodeScores } = survivor;
-
     const scoreToDelete = episodeScores[episodeScores.length - 1];
 
     return Client.patch(_id)
@@ -43,24 +40,18 @@ export default async function handler(req, res) {
       .unset([`episodeScores[${episodeScores.length - 1}]`])
       .dec({ totalScore: scoreToDelete })
       .commit()
-      .then(() => {
-        console.log(`Successfully deleted latest score for ${survivor.name}`);
-      })
+      .then(() => console.log(`Successfully deleted latest score for ${survivor.name}`))
       .catch((err) => {
-        console.log(
-          `An error occurred while deleting latest score for ${survivor.name}: ${err}`
-        );
-        console.error(err);
+        console.log(`An error occurred while deleting latest score for ${survivor.name}: ${err}`);
+        throw err;
       });
   });
 
   try {
-    const result = await Promise.all([...playerRequests, ...survivorRequests]);
-    res.status(200).send(`Updates completed successfully. Result: ${result}`);
+    const result = await executeBatchRequests([...playerRequests, ...survivorRequests]);
+    sendSuccessResponse(res, 'Updates completed successfully', result);
   } catch (err) {
-    res
-      .status(500)
-      .send({ error: 'An error occurred in one or more update requests:' });
+    sendErrorResponse(res, `An error occurred in one or more update requests: ${err}`);
     console.error(err);
   }
 }

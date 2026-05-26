@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from './ui/Button';
+import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ManageSurvivors = ({ players, setIsSubmitting }) => {
   const [updatedPlayers, setupdatedPlayers] = useState([...players]);
@@ -9,21 +10,18 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
   const updatePlayers = ({ updatedPlayers }) => {
     const data = { players: updatedPlayers };
     setIsSubmitting(true);
-    fetch('/api/updateplayers', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
+    postJsonWithHandling(
+      '/api/updateplayers',
+      data,
+      () => {
         setIsSubmitting(false);
         alert('Changes successfully saved.');
-      })
-      .catch((err) => {
-        console.log(err);
+      },
+      (err) => {
+        setIsSubmitting(false);
         alert('Error saving changes. See console for error details.');
-      });
+      }
+    );
   };
 
   const deletePlayer = (player) => {
@@ -35,38 +33,39 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
       ) === player.username
     ) {
       setIsSubmitting(true);
-      fetch('/api/deletePlayer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      })
-        .then(() => {
+      postJsonWithHandling(
+        '/api/deletePlayer',
+        data,
+        () => {
           setIsSubmitting(false);
           alert(`Successfully deleted player ${player.username}`);
-        })
-        .catch((err) => {
-          console.log(err);
+        },
+        (err) => {
+          setIsSubmitting(false);
           alert('An error occurred. See console for error details.');
-        });
+        }
+      );
     } else {
       alert('Username entry did not match.');
     }
   };
 
   const deletePlayers = (setIsSubmitting) => {
-    setIsSubmitting(true);
     if (window.confirm('Are you sure you want to delete all players?')) {
       if (window.confirm('Are you really sure?')) {
-        try {
-          fetch('/api/deleteplayers').then(() => {
+        setIsSubmitting(true);
+        postJsonWithHandling(
+          '/api/deleteplayers',
+          {},
+          () => {
             setIsSubmitting(false);
             window.alert('All players have been deleted.');
-          });
-        } catch {
-          console.error(error);
-        }
+          },
+          (err) => {
+            setIsSubmitting(false);
+            console.error(err);
+          }
+        );
       }
     }
   };

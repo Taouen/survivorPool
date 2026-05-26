@@ -1,6 +1,7 @@
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
 import Button from './ui/Button';
+import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ScoreUpdater = ({
   players,
@@ -97,39 +98,39 @@ const ScoreUpdater = ({
       survivors: updatedSurvivors,
     };
     setIsSubmitting(true);
-    fetch('/api/updatescores', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
+    postJsonWithHandling(
+      '/api/updatescores',
+      data,
+      () => {
         setIsSubmitting(false);
         if (window.confirm('Scores updated. Do you want to reload the page?')) {
           window.location.reload(true);
         }
-      })
-      .catch((err) => console.log(err));
+      },
+      (err) => {
+        setIsSubmitting(false);
+        console.log(err);
+      }
+    );
   };
 
   const deleteLatestScore = (players, survivors, setIsSubmitting) => {
     const data = { players, survivors };
     setIsSubmitting(true);
-    fetch('/api/deletelatestscore', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
+    postJsonWithHandling(
+      '/api/deletelatestscore',
+      data,
+      () => {
         setIsSubmitting(false);
         if (window.confirm('Scores updated. Do you want to reload the page?')) {
           window.location.reload(true);
         }
-      })
-      .catch((err) => console.log(err));
+      },
+      (err) => {
+        setIsSubmitting(false);
+        console.log(err);
+      }
+    );
   };
 
   const resetScores = (players, survivors, setIsSubmitting) => {
@@ -142,17 +143,17 @@ const ScoreUpdater = ({
     ) {
       if (window.confirm('Are you really sure?')) {
         setIsSubmitting(true);
-        fetch('/api/resetScores', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(data),
-        })
-          .then(() => {
+        postJsonWithHandling(
+          '/api/resetScores',
+          data,
+          () => {
             setIsSubmitting(false);
-          })
-          .catch((err) => console.log(err));
+          },
+          (err) => {
+            setIsSubmitting(false);
+            console.log(err);
+          }
+        );
       }
     }
   };

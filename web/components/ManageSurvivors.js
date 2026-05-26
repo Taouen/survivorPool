@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Button from './ui/Button';
+import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
   const [updatedSurvivors, setUpdatedSurvivors] = useState([...survivors]);
@@ -7,21 +8,18 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
   const updateSurvivors = ({ updatedSurvivors }) => {
     const data = { survivors: updatedSurvivors };
     setIsSubmitting(true);
-    fetch('/api/updateSurvivors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    })
-      .then(() => {
+    postJsonWithHandling(
+      '/api/updateSurvivors',
+      data,
+      () => {
         setIsSubmitting(false);
         alert('Changes successfully saved.');
-      })
-      .catch((err) => {
-        console.log(err);
+      },
+      (err) => {
+        setIsSubmitting(false);
         alert('Error saving changes. See console for error details.');
-      });
+      }
+    );
   };
 
   const handleEliminatedChange = (name) => {
