@@ -1,4 +1,5 @@
 import Client from '../../components/Client';
+import { sendSuccessResponse, sendErrorResponse } from '../../lib/apiHelpers';
 
 export default async function handler(req, res) {
   const { picks, username, email, mvp } = req.body;
@@ -19,13 +20,11 @@ export default async function handler(req, res) {
 
   try {
     const result = await request;
-    res.status(201).send(`Successfully created new player. Result: ${result}`);
+    sendSuccessResponse(res, 'Successfully created new player', result, 201);
   } catch (err) {
-    res.status(500).json({
-      error: `An error occured while trying to create a new player: ${err}`,
-    });
     console.error(
       `An error occured while trying to create a new player: ${err}`
     );
+    sendErrorResponse(res, `An error occured while trying to create a new player: ${err}`);
   }
 }

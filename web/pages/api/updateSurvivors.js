@@ -1,9 +1,10 @@
 import Client from '../../components/Client';
+import { createBatchRequests, executeBatchRequests, sendSuccessResponse, sendErrorResponse } from '../../lib/apiHelpers';
 
 export default async function handler(req, res) {
   const { survivors } = req.body;
 
-  const survivorRequests = survivors.map((survivor) => {
+  const survivorRequests = createBatchRequests(survivors, (survivor) => {
     return Client.patch(survivor._id)
       .set({ eliminated: survivor.eliminated })
       .set({ episodeScores: survivor.episodeScores })
@@ -11,21 +12,18 @@ export default async function handler(req, res) {
       .set({ tribeColor: survivor.tribeColor })
       .commit()
       .then((survivor) => {
-        console.log(`Updated eliminated for survivor ${survivor.name}`);
+        console.log(`Updated survivor ${survivor.name}`);
       })
       .catch((err) => {
-        console.log(
-          `An error occurred while updating survivor ${survivor.name}: ${err}`
-        );
+        console.log(`An error occurred while updating survivor ${survivor.name}: ${err}`);
+        throw err;
       });
   });
 
   try {
-    const result = await Promise.all([...survivorRequests]);
-    res.status(200).send(`Updates completed successfully. Result: ${result}`);
+    const result = await executeBatchRequests(survivorRequests);
+    sendSuccessResponse(res, 'Survivors updated successfully', result);
   } catch (err) {
-    res.status(500).send({
-      error: `An error occurred in one or more update requests: ${err}`,
-    });
+    sendErrorResponse(res, `An error occurred in one or more update requests: ${err}`);
   }
 }

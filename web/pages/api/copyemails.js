@@ -1,4 +1,5 @@
 import Client from '../../components/Client';
+import { sendSuccessResponse, sendErrorResponse } from '../../lib/apiHelpers';
 
 export default async function handler(req, res) {
   try {
@@ -11,9 +12,9 @@ export default async function handler(req, res) {
       console.log('No player documents found.');
     }
 
-    res.status(200).json({ message: 'Request completed.' });
+    sendSuccessResponse(res, 'Player emails retrieved', { message: 'Request completed.' });
   } catch (err) {
     console.error('Fetch failed:', err);
-    res.status(500).json({ message: 'Error fetching emails.' });
+    sendErrorResponse(res, 'Error fetching emails');
   }
 }
