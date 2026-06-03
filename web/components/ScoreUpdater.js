@@ -110,7 +110,7 @@ const ScoreUpdater = ({
       (err) => {
         setIsSubmitting(false);
         console.log(err);
-      }
+      },
     );
   };
 
@@ -129,7 +129,7 @@ const ScoreUpdater = ({
       (err) => {
         setIsSubmitting(false);
         console.log(err);
-      }
+      },
     );
   };
 
@@ -152,7 +152,7 @@ const ScoreUpdater = ({
           (err) => {
             setIsSubmitting(false);
             console.log(err);
-          }
+          },
         );
       }
     }
@@ -173,7 +173,7 @@ const ScoreUpdater = ({
           /* --- FORM START --- */
 
           <form
-            className="flex flex-col items-center mb-4 text-lg md:text-base"
+            className="flex flex-col items-center mb-4"
             onSubmit={formik.handleSubmit}
           >
             {survivors.map((survivor) => {
@@ -188,7 +188,7 @@ const ScoreUpdater = ({
                       {survivor.nickname ? `"${survivor.nickname}"` : null}
                     </label>
 
-                    <div>
+                    <div className="flex items-center">
                       <Field
                         type="number"
                         name={`scores.${survivor.name}`}
@@ -260,7 +260,7 @@ const ScoreUpdater = ({
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex flex-col justify-around w-full md:flex-row">
+        <div className="flex justify-around w-full md:flex-row">
           <Button
             onClick={() =>
               deleteLatestScore(players, survivors, setIsSubmitting)
