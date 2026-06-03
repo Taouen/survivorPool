@@ -1,6 +1,5 @@
 import { withIronSessionApiRoute } from 'iron-session/next';
 import { sessionOptions } from '../../lib/session';
-import { sendSuccessResponse, sendErrorResponse } from '../../lib/apiHelpers';
 
 async function loginRoute(req, res) {
   const { password } = await req.body;
@@ -10,13 +9,13 @@ async function loginRoute(req, res) {
       const user = { isLoggedIn: true };
       req.session.user = user;
       await req.session.save();
-      sendSuccessResponse(res, 'Login successful', user);
+      res.json(user);
     } else {
       const user = { isLoggedIn: false };
-      sendErrorResponse(res, 'Invalid password', 403);
+      res.status(403).json(user);
     }
   } catch (error) {
-    sendErrorResponse(res, error.message);
+    res.status(500).json({ message: error.message });
   }
 }
 
