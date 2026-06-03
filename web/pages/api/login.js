@@ -1,14 +1,15 @@
-import { withIronSessionApiRoute } from 'iron-session/next';
+import { getIronSession } from 'iron-session';
 import { sessionOptions } from '../../lib/session';
 
 async function loginRoute(req, res) {
-  const { password } = await req.body;
+  const { password } = req.body;
 
   try {
     if (password === process.env.ADMIN_PASSWORD) {
+      const session = await getIronSession(req, res, sessionOptions);
       const user = { isLoggedIn: true };
-      req.session.user = user;
-      await req.session.save();
+      session.user = user;
+      await session.save();
       res.json(user);
     } else {
       const user = { isLoggedIn: false };
@@ -19,4 +20,4 @@ async function loginRoute(req, res) {
   }
 }
 
-export default withIronSessionApiRoute(loginRoute, sessionOptions);
+export default loginRoute;

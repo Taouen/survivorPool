@@ -1,10 +1,12 @@
-import { withIronSessionApiRoute } from 'iron-session/next';
+import { getIronSession } from 'iron-session';
 import { sessionOptions } from '../../lib/session';
 
 async function userRoute(req, res) {
-  if (req.session.user) {
+  const session = await getIronSession(req, res, sessionOptions);
+  
+  if (session.user) {
     res.json({
-      ...req.session.user,
+      ...session.user,
       isLoggedIn: true,
     });
   } else {
@@ -14,4 +16,4 @@ async function userRoute(req, res) {
   }
 }
 
-export default withIronSessionApiRoute(userRoute, sessionOptions);
+export default userRoute;

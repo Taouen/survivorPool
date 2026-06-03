@@ -66,11 +66,7 @@ function Login() {
               onChange={handleChange}
             />
           </label>
-          <Button
-            type="submit"
-          >
-            Submit
-          </Button>
+          <Button type="submit">Submit</Button>
           {errorMsg && <p>{errorMsg}</p>}
           <p className="mt-4 text-sm">
             If you believe you should have access to the admin settings, please{' '}
