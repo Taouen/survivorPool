@@ -58,7 +58,7 @@ export default function admin({ players, survivors }) {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
       <Head>
         <title>Survivor Fantasy Pool | Admin</title>
       </Head>
@@ -81,10 +81,10 @@ export default function admin({ players, survivors }) {
 
 export async function getServerSideProps() {
   const survivors = await Client.fetch(
-    '*[_type == "survivor"] | order(name asc)'
+    '*[_type == "survivor"] | order(name asc)',
   ).catch((err) => console.error(err));
   const players = await Client.fetch(
-    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
+    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}',
   ).catch((err) => console.error(err));
   return {
     props: {

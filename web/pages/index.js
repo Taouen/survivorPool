@@ -5,7 +5,7 @@ import Layout from '../components/Layout';
 
 export default function Home(props) {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
       <Head>
         <title>Survivor Fantasy Pool | Home</title>
       </Head>

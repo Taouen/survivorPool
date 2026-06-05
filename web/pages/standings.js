@@ -12,21 +12,25 @@ export default function Home({ players }) {
       ? players[0].episodeScores
         ? players[0].episodeScores.length + 1
         : 1
-      : 0
+      : 0,
   );
 
   const createTables = (episode) => {
     const tables = [];
     for (let i = 0; i < episode - 1; i++) {
       tables.push(
-        <StandingsTable key={'episode' + i} players={players} episode={i + 2} />
+        <StandingsTable
+          key={'episode' + i}
+          players={players}
+          episode={i + 2}
+        />,
       );
     }
     return tables;
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2 dark:text-white dark:bg-neutral-800">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 ">
       <Head>
         <title>Survivor Fantasy Pool | Standings</title>
       </Head>
@@ -88,10 +92,10 @@ export default function Home({ players }) {
 
 export async function getServerSideProps() {
   const survivors = await Client.fetch(
-    '*[_type == "survivor"] | order(name asc) {name}'
+    '*[_type == "survivor"] | order(name asc) {name}',
   ).catch((err) => console.error(err));
   const players = await Client.fetch(
-    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}'
+    '*[_type == "player"] | order(username asc) {..., mvp->{...}, picks[]->{...}}',
   ).catch((err) => console.error(err));
   return {
     props: {
