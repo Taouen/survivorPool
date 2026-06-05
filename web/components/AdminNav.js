@@ -7,13 +7,9 @@ const AdminNav = ({ setSelectedPage }) => {
     <div className="flex justify-around w-full max-w-lg py-4 mx-auto md:w-3/4">
       {pages.map((page) => {
         return (
-          <button
-            className="btn btn-primary"
-            key={page}
-            onClick={() => setSelectedPage(page)}
-          >
+          <Button key={page} onClick={() => setSelectedPage(page)}>
             {page}
-          </button>
+          </Button>
         );
       })}
     </div>
