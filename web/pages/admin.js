@@ -12,7 +12,7 @@ import useUser from '../lib/useUser';
 
 export default function admin({ players, survivors }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedPage, setSelectedPage] = useState('Update Scores');
+  const [currentPage, setCurrentPage] = useState('Update Scores');
   const router = useRouter();
 
   // Fetch the user client-side
@@ -31,7 +31,7 @@ export default function admin({ players, survivors }) {
   }
 
   const displayComponent = () => {
-    switch (selectedPage) {
+    switch (currentPage) {
       case 'Update Scores':
         return (
           <ScoreUpdater
@@ -70,7 +70,10 @@ export default function admin({ players, survivors }) {
             <h2 className="mb-8 text-xl md:text-2xl">
               Welcome to the admin page.
             </h2>
-            <AdminNav setSelectedPage={setSelectedPage} />
+            <AdminNav
+              selectedPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
             {displayComponent()}
           </>
         )}
