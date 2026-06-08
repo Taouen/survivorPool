@@ -71,7 +71,7 @@ export default function admin({ players, survivors }) {
               Welcome to the admin page.
             </h2>
             <AdminNav
-              selectedPage={currentPage}
+              currentPage={currentPage}
               setCurrentPage={setCurrentPage}
             />
             {displayComponent()}
