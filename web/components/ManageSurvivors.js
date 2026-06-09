@@ -18,7 +18,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
       (err) => {
         setIsSubmitting(false);
         alert('Error saving changes. See console for error details.');
-      }
+      },
     );
   };
 
@@ -79,9 +79,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
           </div>
         </div>
       ))}
-      <Button
-        onClick={() => updateSurvivors({ updatedSurvivors })}
-      >
+      <Button onClick={() => updateSurvivors({ updatedSurvivors })}>
         Save Changes
       </Button>
     </div>

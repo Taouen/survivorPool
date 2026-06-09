@@ -196,7 +196,7 @@ const ScoreUpdater = ({
                         onChange={formik.handleChange}
                         aria-label={survivor.name}
                         disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
-                        className="w-20 p-1 ml-4 border rounded outline-none focus:ring focus:ring-lime-500"
+                        className="w-20 h-8 p-1 mx-2 my-1 border rounded outline-none focus:ring focus:ring-lime-500"
                       />
 
                       <Field
@@ -212,7 +212,7 @@ const ScoreUpdater = ({
                       />
                       <label
                         htmlFor={survivor.name + ' Eliminated'}
-                        className="mx-2"
+                        className="mx-1"
                       >
                         Elim.
                       </label>
@@ -232,7 +232,7 @@ const ScoreUpdater = ({
                       />
                       <label
                         htmlFor={survivor.name + ' Winner'}
-                        className="ml-2"
+                        className="mx-1"
                       >
                         Winner
                       </label>
@@ -260,7 +260,7 @@ const ScoreUpdater = ({
       </Formik>
       <div className="w-full p-2 border border-red-500 rounded">
         <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex justify-around w-full md:flex-row">
+        <div className="flex justify-around w-full">
           <Button
             onClick={() =>
               deleteLatestScore(players, survivors, setIsSubmitting)
