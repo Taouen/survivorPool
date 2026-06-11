@@ -21,7 +21,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
       (err) => {
         setIsSubmitting(false);
         alert('Error saving changes. See console for error details.');
-      }
+      },
     );
   };
 
@@ -44,7 +44,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
         (err) => {
           setIsSubmitting(false);
           alert('An error occurred. See console for error details.');
-        }
+        },
       );
     } else {
       alert('Username entry did not match.');
@@ -65,7 +65,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
           (err) => {
             setIsSubmitting(false);
             console.error(err);
-          }
+          },
         );
       }
     }
@@ -88,40 +88,42 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
 
   return (
     <div className="flex flex-col items-center w-full max-w-lg">
-      <div className="grid grid-cols-3 ">
-        <p className="font-bold justify-self-start">Username</p>
-        <p className="font-bold">Paid</p>
-        <p className="font-bold">Delete</p>
-        {updatedPlayers.map((player) => (
-          <div
-            className="relative grid grid-cols-3 col-span-3 group justify-items-start last:pb-2"
-            key={player._id}
-          >
-            <p className="self-center">{player.username}</p>
-            <div className="flex items-center justify-self-center">
-              <input
-                type="checkbox"
-                value={player.paid}
-                checked={player.paid}
-                onChange={() => handlePaidChange(player._id)}
-              />
-            </div>
+      <div className="mb-4">
+        <div className="grid grid-cols-3">
+          <p className="font-bold justify-self-start">Username</p>
+          <p className="font-bold">Paid</p>
+          <p className="font-bold">Delete</p>
+          {updatedPlayers.map((player) => (
+            <div
+              className="relative grid grid-cols-3 col-span-3 group justify-items-start last:pb-2"
+              key={player._id}
+            >
+              <p className="self-center">{player.username}</p>
+              <div className="flex items-center justify-self-center">
+                <input
+                  type="checkbox"
+                  value={player.paid}
+                  checked={player.paid}
+                  onChange={() => handlePaidChange(player._id)}
+                />
+              </div>
 
-            <div className="flex items-center justify-self-center">
-              <Button
-                className="max-w-fit"
-                onClick={() => deletePlayer(player)}
-              >
-                <FontAwesomeIcon icon={faTrashAlt} />
-              </Button>
+              <div className="flex items-center justify-self-center">
+                <Button
+                  className="max-w-fit"
+                  onClick={() => deletePlayer(player)}
+                >
+                  <FontAwesomeIcon icon={faTrashAlt} />
+                </Button>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <Button onClick={() => updatePlayers({ updatedPlayers })}>
+          Save Changes
+        </Button>
       </div>
-
-      <Button onClick={() => updatePlayers({ updatedPlayers })}>
-        Save Changes
-      </Button>
 
       <DangerZone>
         <Button onClick={() => copyEmails(setIsSubmitting)}>
