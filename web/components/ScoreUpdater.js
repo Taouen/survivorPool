@@ -1,6 +1,7 @@
 import { Formik, Field } from 'formik';
 import { ClipLoader } from 'react-spinners';
 import Button from './ui/Button';
+import DangerZone from './ui/DangerZone';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ScoreUpdater = ({
@@ -258,23 +259,20 @@ const ScoreUpdater = ({
           </form>
         )}
       </Formik>
-      <div className="w-full p-2 border border-red-500 rounded">
-        <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex justify-around w-full">
-          <Button
-            onClick={() =>
-              deleteLatestScore(players, survivors, setIsSubmitting)
-            }
-          >
-            Delete latest score
-          </Button>
-          <Button
-            onClick={() => resetScores(players, survivors, setIsSubmitting)}
-          >
-            Reset scores
-          </Button>
-        </div>
-      </div>
+      <DangerZone>
+        <Button
+          onClick={() =>
+            deleteLatestScore(players, survivors, setIsSubmitting)
+          }
+        >
+          Delete latest score
+        </Button>
+        <Button
+          onClick={() => resetScores(players, survivors, setIsSubmitting)}
+        >
+          Reset scores
+        </Button>
+      </DangerZone>
     </div>
   );
 };

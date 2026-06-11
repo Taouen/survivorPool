@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from './ui/Button';
+import DangerZone from './ui/DangerZone';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ManageSurvivors = ({ players, setIsSubmitting }) => {
@@ -122,17 +123,14 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
         Save Changes
       </Button>
 
-      <div className="w-full p-2 mt-4 border border-red-500 rounded">
-        <h3 className="mb-4 text-xl ">Danger Zone</h3>
-        <div className="flex justify-around w-full md:flex-row">
-          <Button onClick={() => copyEmails(setIsSubmitting)}>
-            Copy Player Emails
-          </Button>
-          <Button onClick={() => deletePlayers(setIsSubmitting)}>
-            Delete all players
-          </Button>
-        </div>
-      </div>
+      <DangerZone>
+        <Button onClick={() => copyEmails(setIsSubmitting)}>
+          Copy Player Emails
+        </Button>
+        <Button onClick={() => deletePlayers(setIsSubmitting)}>
+          Delete all players
+        </Button>
+      </DangerZone>
     </div>
   );
 };
