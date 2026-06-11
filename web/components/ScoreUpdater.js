@@ -196,8 +196,7 @@ const ScoreUpdater = ({
                         id={survivor.name + ' Episode Score'}
                         onChange={formik.handleChange}
                         aria-label={survivor.name}
-                        disabled={survivor.eliminated} // set disabled based on server data rather than the current formik value for eliminated.
-                        className="w-20 h-8 p-1 mx-2 my-1 border rounded outline-none focus:ring focus:ring-lime-500"
+                        className="w-20 h-8 mx-2 my-1 input input-secondary"
                       />
 
                       <Field
@@ -205,7 +204,7 @@ const ScoreUpdater = ({
                         id={survivor.name + ' Eliminated'}
                         name="eliminated"
                         value={survivor.name}
-                        className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
+                        className="ml-2 checkbox checkbox-secondary checkbox-sm"
                         onChange={formik.handleChange}
                         checked={formik.values.eliminated.includes(
                           survivor.name,
@@ -223,7 +222,7 @@ const ScoreUpdater = ({
                         id={survivor.name + ' Winner'}
                         name="winner"
                         value={survivor.name}
-                        className="w-6 h-6 ml-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
+                        className="checkbox checkbox-secondary checkbox-sm"
                         onChange={formik.handleChange}
                         disabled={
                           formik.values.winner.length > 0 &&
