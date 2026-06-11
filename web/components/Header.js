@@ -52,7 +52,7 @@ const Header = () => {
           </div>
           <ul
             tabIndex="-1"
-            className="w-32 p-2 mt-3 shadow menu menu-md dropdown-content bg-base-100 rounded-box z-1"
+            className="w-32 p-2 mt-3 shadow menu menu-md dropdown-content bg-base-200 rounded-box z-1"
           >
             {pages.map((page) => (
               <li key={page.title} className={linkStyles}>
