@@ -1,7 +1,7 @@
 import { Formik, Field } from 'formik';
-import { ClipLoader } from 'react-spinners';
 import Button from './ui/Button';
 import DangerZone from './ui/DangerZone';
+import Loading from './ui/Loading';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ScoreUpdater = ({
@@ -252,7 +252,7 @@ const ScoreUpdater = ({
                 {formik.errors.eliminated}
               </div>
             ) : null}
-            {isSubmitting && <ClipLoader color={'lime'} />}
+            {isSubmitting && <Loading />}
             <Button onClick={formik.handleSubmit} type="submit">
               Update Scores
             </Button>
@@ -261,9 +261,7 @@ const ScoreUpdater = ({
       </Formik>
       <DangerZone>
         <Button
-          onClick={() =>
-            deleteLatestScore(players, survivors, setIsSubmitting)
-          }
+          onClick={() => deleteLatestScore(players, survivors, setIsSubmitting)}
         >
           Delete latest score
         </Button>
