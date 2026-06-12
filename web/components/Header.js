@@ -28,9 +28,7 @@ const Header = () => {
 
   return (
     <div className="mb-4 shadow-sm navbar bg-base-100">
-      <h1 className="p-2 text-xl navbar-start md:text-2xl ">
-        Survivor Fantasy Pool
-      </h1>
+      <h1 className="w-full p-2 text-xl md:text-2xl ">Survivor Fantasy Pool</h1>
       <div className="navbar-end">
         <div className="dropdown dropdown-end">
           <div tabIndex={0} role="button" className="btn btn-ghost md:hidden">
@@ -64,7 +62,7 @@ const Header = () => {
           </ul>
         </div>
       </div>
-      <div className="hidden navbar-end md:flex">
+      <div className="hidden md:flex">
         <ul className="px-1 w-max menu menu-horizontal md:menu-md lg:menu-lg">
           {pages.map((page) => (
             <li key={page.title} className={linkStyles}>

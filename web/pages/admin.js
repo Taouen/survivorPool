@@ -67,7 +67,7 @@ export default function admin({ players, survivors }) {
           <h1>Loading…</h1>
         ) : (
           <>
-            <h2 className="mb-8 text-xl md:text-2xl">
+            <h2 className="mb-4 text-xl md:text-2xl">
               Welcome to the admin page.
             </h2>
             <AdminNav
