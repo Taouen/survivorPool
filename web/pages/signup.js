@@ -9,7 +9,7 @@ export default function signup({ survivors }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isError, setIsError] = useState(false);
   // https://currentmillis.com/?now use Milliseconds since Unix Epoch
-  const hideTime = 1773273599093; // Season 50 specific
+  const hideTime = 1791417600024; // Season 50 specific
   const hideSignup = Date.now() > hideTime;
 
   return (

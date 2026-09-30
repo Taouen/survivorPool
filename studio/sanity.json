@@ -13,18 +13,18 @@
       }
     },
     {
-      "name": "season50",
-      "title": "Season 50",
+      "name": "season51",
+      "title": "Season 51",
       "default": true,
       "api": {
         "projectId": "806pz8zb",
-        "dataset": "season50"
+        "dataset": "season51"
       }
     }
   ],
   "api": {
     "projectId": "806pz8zb",
-    "dataset": "season50"
+    "dataset": "season51"
   },
   "plugins": [
     "@sanity/base",
