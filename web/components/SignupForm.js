@@ -9,7 +9,7 @@ const validate = async (values) => {
 
   const usernames = await fetch('/api/usernames').then((data) => data.json());
 
-  usernames.forEach((item) => {
+  usernames.result.forEach((item) => {
     if (values.username.toLowerCase() === item.username.toLowerCase()) {
       errors.username =
         'Please choose another username, this one has already been taken.';
@@ -180,13 +180,13 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
 
                   // remove eliminated survivors from options
                   const availableSurvivors = survivors.filter(
-                    (survivor) => !survivor.eliminated
+                    (survivor) => !survivor.eliminated,
                   );
 
                   while (selected.length < 5) {
                     // Create a random index to use for this selection
                     const randomIndex = Math.floor(
-                      Math.random() * availableSurvivors.length
+                      Math.random() * availableSurvivors.length,
                     );
 
                     // Add the survivor at the randomIndex to the selected array
@@ -212,7 +212,7 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                       'mvp',
                       formik.values.picks[
                         Math.floor(Math.random() * formik.values.picks.length)
-                      ]
+                      ],
                     );
                   }
                 }}
@@ -247,9 +247,9 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                     survivor.eliminated
                       ? true
                       : formik.values.picks.length < 5 ||
-                        formik.values.picks.includes(survivor._id)
-                      ? false
-                      : true
+                          formik.values.picks.includes(survivor._id)
+                        ? false
+                        : true
                   }
                 />
 
@@ -260,9 +260,9 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                     survivor.eliminated
                       ? true
                       : formik.values.picks.length < 5 ||
-                        formik.values.picks.includes(survivor._id)
-                      ? false
-                      : true
+                          formik.values.picks.includes(survivor._id)
+                        ? false
+                        : true
                   }
                   id={survivor.name}
                   name="picks"
@@ -289,10 +289,7 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
           )}
 
           {isSubmitting && <ClipLoader color={'lime'} />}
-          <Button
-            onClick={formik.handleSubmit}
-            type="submit"
-          >
+          <Button onClick={formik.handleSubmit} type="submit">
             Sign Up
           </Button>
         </form>
