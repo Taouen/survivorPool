@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Button from './ui/Button';
+import CheckboxField from './ui/CheckboxField';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
@@ -53,8 +54,7 @@ const ManageSurvivors = ({ survivors, setIsSubmitting }) => {
         >
           <h1>{survivor.nickname ? survivor.nickname : survivor.name}</h1>
           <div className="pl-4">
-            <input
-              type="checkbox"
+            <CheckboxField
               value={survivor.eliminated}
               checked={survivor.eliminated}
               onChange={() => handleEliminatedChange(survivor.name)}

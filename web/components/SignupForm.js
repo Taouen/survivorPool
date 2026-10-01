@@ -3,6 +3,8 @@ import { Formik, Field } from 'formik';
 import { v4 as uuid } from 'uuid';
 import Button from './ui/Button';
 import Loading from './ui/Loading';
+import RadioField from './ui/RadioField';
+import CheckboxField from './ui/CheckboxField';
 
 const validate = async (values) => {
   const errors = {};
@@ -236,12 +238,11 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
             {survivors.map((survivor) => (
               <div className="flex items-center mb-2" key={survivor.name}>
                 <Field
-                  type="radio"
+                  as={RadioField}
                   name="mvp"
                   id={`${survivor.name}-radio`}
                   value={survivor._id}
                   className="ml-1 mr-4 text-transparent border outline-none form-radio border-grey-500 disabled:bg-grey-400 md:ml-2 w-7 h-7 md:w-4 md:h-4 focus:ring focus:ring-lime-500"
-                  onChange={formik.handleChange}
                   aria-label={survivor.name}
                   disabled={
                     survivor.eliminated
@@ -254,7 +255,7 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                 />
 
                 <Field
-                  type="checkbox"
+                  as={CheckboxField}
                   // disable as long as 5 selections are made, but don't disable selected options. Then enable all when there are fewer than 5
                   disabled={
                     survivor.eliminated
@@ -268,7 +269,6 @@ export default function SignupForm({ survivors, setIsSubmitted, setIsError }) {
                   name="picks"
                   value={survivor._id}
                   className="w-6 h-6 mr-2 outline-none md:w-4 md:h-4 focus:ring focus:ring-lime-500"
-                  onChange={formik.handleChange}
                 />
                 {'  '}
                 <label htmlFor={survivor.name}>

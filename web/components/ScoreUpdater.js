@@ -2,6 +2,8 @@ import { Formik, Field } from 'formik';
 import Button from './ui/Button';
 import DangerZone from './ui/DangerZone';
 import Loading from './ui/Loading';
+import InputField from './ui/InputField';
+import CheckboxField from './ui/CheckboxField';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ScoreUpdater = ({
@@ -191,24 +193,19 @@ const ScoreUpdater = ({
 
                     <div className="flex items-center">
                       <Field
+                        as={InputField}
                         type="number"
                         name={`scores.${survivor.name}`}
                         id={survivor.name + ' Episode Score'}
-                        onChange={formik.handleChange}
                         aria-label={survivor.name}
-                        className="w-20 h-8 mx-2 my-1 input input-secondary"
                       />
 
                       <Field
-                        type="checkbox"
+                        as={CheckboxField}
                         id={survivor.name + ' Eliminated'}
                         name="eliminated"
                         value={survivor.name}
-                        className="ml-2 checkbox checkbox-secondary checkbox-sm"
-                        onChange={formik.handleChange}
-                        checked={formik.values.eliminated.includes(
-                          survivor.name,
-                        )}
+                        className="ml-2"
                       />
                       <label
                         htmlFor={survivor.name + ' Eliminated'}
@@ -218,17 +215,14 @@ const ScoreUpdater = ({
                       </label>
 
                       <Field
-                        type="checkbox"
+                        as={CheckboxField}
                         id={survivor.name + ' Winner'}
                         name="winner"
                         value={survivor.name}
-                        className="checkbox checkbox-secondary checkbox-sm"
-                        onChange={formik.handleChange}
                         disabled={
                           formik.values.winner.length > 0 &&
                           !formik.values.winner.includes(survivor.name)
                         }
-                        checked={formik.values.winner.includes(survivor.name)}
                       />
                       <label
                         htmlFor={survivor.name + ' Winner'}

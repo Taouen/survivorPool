@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 import Button from './ui/Button';
 import DangerZone from './ui/DangerZone';
+import CheckboxField from './ui/CheckboxField';
 import { postJsonWithHandling } from '../lib/fetchJson';
 
 const ManageSurvivors = ({ players, setIsSubmitting }) => {
@@ -100,8 +101,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
             >
               <p className="self-center">{player.username}</p>
               <div className="flex items-center justify-self-center">
-                <input
-                  type="checkbox"
+                <CheckboxField
                   value={player.paid}
                   checked={player.paid}
                   onChange={() => handlePaidChange(player._id)}
@@ -110,7 +110,7 @@ const ManageSurvivors = ({ players, setIsSubmitting }) => {
 
               <div className="flex items-center justify-self-center">
                 <Button
-                  className="max-w-fit"
+                  className="max-w-fit text-error"
                   onClick={() => deletePlayer(player)}
                 >
                   <FontAwesomeIcon icon={faTrashAlt} />
